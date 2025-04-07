@@ -1,0 +1,1 @@
+In questa cartella sono presenti tutti gli asset modificati con blender da importare nel progetto
