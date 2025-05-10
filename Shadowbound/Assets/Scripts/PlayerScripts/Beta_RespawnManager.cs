@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RespawnManager : MonoBehaviour
+public class Beta_RespawnManager : MonoBehaviour
 {
     [SerializeField] private PlayerStats _playerStats;
     [SerializeField] private Transform _respawnPoint;

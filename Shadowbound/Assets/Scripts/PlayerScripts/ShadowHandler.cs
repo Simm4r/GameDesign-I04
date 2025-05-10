@@ -63,7 +63,7 @@ public class ShadowDamageHandler : MonoBehaviour
                 continue;
             }
 
-            totalLightIntensity += pointLight.intensity / (distanceToLight * distanceToLight);  // Fattore di attenuazione inverso al quadrato della distanza
+            totalLightIntensity += pointLight.intensity / distanceToLight;
 
             if (totalLightIntensity >= _lightThreshold)
             {
