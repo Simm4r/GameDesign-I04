@@ -9135,6 +9135,7 @@ MonoBehaviour:
   height: 0.5
   smoothSpeed: 5
   rotationSmoothTime: 0.05
+  pitchAngle: 15
 --- !u!1 &971656735 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: 4c4fe4f8da5fdef4eb5aa36563046edc, type: 3}
@@ -16904,7 +16905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb86ee8a996608d44b0547813bc17892, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 2
+  walkSpeed: 1.5
   runSpeed: 4
   jumpHeight: 1.5
   gravity: -9.81
@@ -16923,6 +16924,7 @@ MonoBehaviour:
   walkSpeed: 2
   runSpeed: 4
   gravity: -9.81
+  rotationSpeed: 8
   cameraTransform: {fileID: 961739753}
 --- !u!1001 &1735324622
 PrefabInstance:

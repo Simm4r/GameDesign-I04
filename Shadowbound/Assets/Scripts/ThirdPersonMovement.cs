@@ -40,13 +40,19 @@ public class ThirdPersonMovement : MonoBehaviour
         Vector2 input = new Vector2(h, v).normalized;
         float currentSpeed = isRunning ? runSpeed : walkSpeed;
         float targetVert = 0f;
+        animator.speed = isRunning ? 1f : 1.5f;
 
         if (input.magnitude >= 0.1f)
         {
             // Calculate movement relative to camera
             float targetAngle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
             Quaternion targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+
+            // Reduce rotation speed when moving backward
+            float directionFactor = (v < -0.1f) ? 0.4f : 1f;
+            float adjustedRotationSpeed = rotationSpeed * directionFactor;
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * adjustedRotationSpeed);
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move(moveDir.normalized * currentSpeed * Time.deltaTime);
