@@ -14,6 +14,8 @@ public class ShadowDamageHandler : MonoBehaviour
     private bool _canTakeDamage = true;
     private List<Light> _pointLights = new();
 
+    private Possessable _currentPossessable;
+
     private void Awake()
     {
         _playerTransform = transform;
@@ -46,6 +48,8 @@ public class ShadowDamageHandler : MonoBehaviour
         Vector3 origin = _playerTransform.position + Vector3.down * _heightOffset;
         float totalLightIntensity = 0f;
 
+        Possessable detectedPossessable = null;
+
         foreach (Light pointLight in _pointLights)
         {
             if (pointLight == null || !pointLight.enabled)
@@ -60,28 +64,44 @@ public class ShadowDamageHandler : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(origin, directionToLight.normalized, out hit, distanceToLight, _shadowCastingLayers))
             {
+                Possessable possessable = hit.collider.GetComponent<Possessable>();
+                if (possessable != null)
+                {
+                    detectedPossessable = possessable;
+                }
+                // se il raycast colpisce uno shadow caster ignoro la fonte di luce
                 continue;
             }
 
+            // il raycast non ha colpito nulla, quindi considero la fonte di luce nel calcolo dell'intensità totale
             totalLightIntensity += pointLight.intensity / distanceToLight;
 
-            if (totalLightIntensity >= _lightThreshold)
-            {
-                if (_playerInShadow)
-                {
-                    _playerInShadow = false;
-                    _playerStats.ResetTimers();
-                }
-                return false;
-            }
         }
 
-        if (!_playerInShadow)
+        // aggiorno se necessario il _currentPossessable
+        if (_currentPossessable != detectedPossessable)
         {
-            _playerInShadow = true;
+            if (_currentPossessable != null)
+                _currentPossessable.HidePossessableCue();
+
+            if (detectedPossessable != null)
+            {
+                detectedPossessable.ShowPossessableCue();
+                Debug.Log("Il giocatore è nell'ombra di un oggetto possedibile: " + detectedPossessable.name);
+            }
+
+            _currentPossessable = detectedPossessable;
+        }
+
+        bool isInShadow = totalLightIntensity < _lightThreshold;
+
+        if (_playerInShadow != isInShadow)
+        {
+            _playerInShadow = isInShadow;
             _playerStats.ResetTimers();
         }
 
-        return true;
+        return isInShadow;
+
     }
 }

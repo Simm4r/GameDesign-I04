@@ -1,8 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class Healthbar : MonoBehaviour
 {
+    [SerializeField] private Transform _follow; // il transform del player
+    [SerializeField] private Vector3 _offset = new Vector3(0.3f, 0.5f, 0);
+
     [SerializeField] private Image _healthbarSprite;
     [SerializeField] private float _reduceSpeed = 2f;
     private float _target = 1;
@@ -38,10 +42,8 @@ public class Healthbar : MonoBehaviour
         _target = 1f;
         _healthbarSprite.fillAmount = _target;
     }
-
     private void Update()
     {
-        transform.rotation = Quaternion.LookRotation(transform.position - _camera.transform.position);
         _healthbarSprite.fillAmount = Mathf.MoveTowards(_healthbarSprite.fillAmount, _target, _reduceSpeed * Time.deltaTime);
 
         if (_target >= 1f)
@@ -53,4 +55,9 @@ public class Healthbar : MonoBehaviour
         _canvasGroup.alpha = Mathf.MoveTowards(_canvasGroup.alpha, targetAlpha, _fadeSpeed * Time.deltaTime);
     }
 
+    private void LateUpdate()
+    {
+        transform.position = _follow.position + _offset;
+        transform.rotation = Quaternion.LookRotation(transform.position - _camera.transform.position);
+    }
 }
