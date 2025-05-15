@@ -2,8 +2,14 @@ using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
+
 public class IsoPlayerController : MonoBehaviour
 {
+    [SerializeField] private DissolveController dissolveController;
+    [SerializeField] private ParticleSystem flameRing;
+    [SerializeField] private KeyCode possessKey = KeyCode.E;
+
+
     [Header("Movement")]
     public float walkSpeed = 2f;
     public float runSpeed = 4f;
@@ -78,5 +84,17 @@ public class IsoPlayerController : MonoBehaviour
         animator.SetFloat("Vert", flowVert);
         animator.SetFloat("State", flowState);
         //animator.SetBool("IsJumping", !isGrounded); // optional, requires IsJumping param in Animator
+
+        if (Input.GetKeyDown(possessKey))
+        {
+            if (dissolveController != null)
+                dissolveController.StartDissolve();
+
+            if (flameRing != null)
+            {
+                flameRing.Clear();
+                flameRing.Play();
+            }
+        }
     }
 }

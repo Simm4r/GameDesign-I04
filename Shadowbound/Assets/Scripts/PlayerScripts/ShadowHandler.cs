@@ -88,6 +88,7 @@ public class ShadowDamageHandler : MonoBehaviour
             {
                 detectedPossessable.ShowPossessableCue();
                 Debug.Log("Il giocatore è nell'ombra di un oggetto possedibile: " + detectedPossessable.name);
+
             }
 
             _currentPossessable = detectedPossessable;
