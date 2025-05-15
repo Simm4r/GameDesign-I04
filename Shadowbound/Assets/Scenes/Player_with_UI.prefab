@@ -664,7 +664,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _shadowCastingLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   _heightOffset: 0.445
   _lightThreshold: 1
 --- !u!1 &8358542453020051034

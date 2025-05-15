@@ -2,74 +2,92 @@ using UnityEngine;
 
 public class Dash : MonoBehaviour
 {
-    public GameObject catModel; // Il modello originale
-    public GameObject dashModel; // Il modello alternativo
-    public bool enableDash = true; // Master switch: Se false, il dash non funziona
-    public float dashDistance = 0.1f; // Distanza totale del dash
-    public float dashDuration = 0.5f; // Durata del dash
+    public GameObject catModel;
+    public GameObject dashModel;
+    public bool enableDash = true;
+    public float dashDistance = 5f;       // Forse un po' di meno
+    public float dashEffectDuration = 0.2f; 
+    public float cooldownDuration = 1.5f;
 
-    private bool canSwitch = true;
+    private bool isDashing = false;
+    private float effectTimer = 0f;
     private float cooldownTimer = 0f;
-    private float switchTimer = 0f;
-    private bool isSwitched = false;
     private CharacterController characterController;
-    private Vector3 dashVelocity;
+    private Vector3 dashTarget;
+    private bool dashApplied = false;
 
     private void Awake()
     {
         if (catModel == null || dashModel == null)
         {
-            Debug.LogWarning("Attenzione: catModel o dashModel non sono stati assegnati!");
+            Debug.LogWarning("catModel or dashModel not assigned!");
         }
         else
         {
-            dashModel.SetActive(false); // Disattiva dashModel all'inizio
+            dashModel.SetActive(false);
         }
 
         characterController = GetComponent<CharacterController>();
         if (characterController == null)
         {
-            Debug.LogError("Errore: Il GameObject non ha un CharacterController!");
+            Debug.LogError("Missing CharacterController!");
         }
     }
 
     private void Update()
     {
-        if (!enableDash) return; // Se il master switch è OFF, esce subito dal metodo Update
+        if (!enableDash) return;
 
         if (cooldownTimer > 0)
-        {
             cooldownTimer -= Time.deltaTime;
-        }
 
-        if (isSwitched)
+        if (isDashing)
         {
-            switchTimer -= Time.deltaTime;
+            effectTimer -= Time.deltaTime;
 
-            // Movimento con CharacterController
-            if (characterController != null)
+            if (!dashApplied)
             {
-                characterController.Move(dashVelocity * Time.deltaTime);
+                ApplyDash();
+                dashApplied = true;
             }
 
-            if (switchTimer <= 0)
+            if (effectTimer <= 0f)
             {
-                catModel.SetActive(true);
-                dashModel.SetActive(false);
-                isSwitched = false;
+                EndDash();
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && canSwitch && cooldownTimer <= 0)
+        if (Input.GetKeyDown(KeyCode.Space) && cooldownTimer <= 0f)
         {
-            catModel.SetActive(false);
-            dashModel.SetActive(true);
-            isSwitched = true;
-            switchTimer = dashDuration; // Tempo di visibilità di dashModel
-            cooldownTimer = 3f; // Avvia subito il cooldown alla pressione del tasto
-
-            // Configura la velocità di movimento per il dash
-            dashVelocity = transform.forward * (dashDistance / dashDuration);
+            StartDash();
         }
+    }
+
+    private void StartDash()
+    {
+        Vector3 dashDirection = transform.forward;
+        dashTarget = transform.position + dashDirection.normalized * dashDistance;
+
+        catModel.SetActive(false);
+        dashModel.SetActive(true);
+
+        isDashing = true;
+        dashApplied = false;
+        effectTimer = dashEffectDuration;
+        cooldownTimer = cooldownDuration;
+    }
+
+    private void ApplyDash()
+    {
+        characterController.enabled = false;
+        transform.position = dashTarget;
+        characterController.enabled = true;
+    }
+
+    private void EndDash()
+    {
+        catModel.SetActive(true);
+        dashModel.SetActive(false);
+        isDashing = false;
     }
 }
