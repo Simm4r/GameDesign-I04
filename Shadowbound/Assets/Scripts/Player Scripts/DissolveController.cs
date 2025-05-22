@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class DissolveController : MonoBehaviour
 {
-    [SerializeField] private float dissolveSpeed = 0.1f;
+    [SerializeField] private float dissolveSpeed = 1f;
 
     private float dissolveAmount = 0f;
     private bool dissolving = false;
@@ -17,6 +17,10 @@ public class DissolveController : MonoBehaviour
 
     private MaterialPropertyBlock propBlock;
 
+    public bool IsDissolving
+    {
+        get { return dissolving; }
+    }
     void Start()
     {
         propBlock = new MaterialPropertyBlock();
@@ -44,8 +48,10 @@ public class DissolveController : MonoBehaviour
             var rightEmission = rightEye.emission;
             rightEmission.rateOverTime = 0;
         }
-        if(dissolveAmount == 1) {
+        if (dissolveAmount == 1)
+        {
             Time.timeScale = 1.0f;
+            dissolving = false;
         }
     }
 
