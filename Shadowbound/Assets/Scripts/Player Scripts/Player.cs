@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        Application.targetFrameRate = 20;
+        Application.targetFrameRate = 500;
         _input = GetComponent<PlayerInput>();
         _camera = Camera.main.transform;
         _characterController = GetComponent<CharacterController>();

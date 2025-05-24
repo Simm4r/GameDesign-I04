@@ -10533,6 +10533,7 @@ GameObject:
   - component: {fileID: 4763887872757668794}
   - component: {fileID: 8313463002881875218}
   - component: {fileID: 6002466883494646987}
+  - component: {fileID: 1896245395274100764}
   - component: {fileID: 8591797864794040731}
   - component: {fileID: 2776468307905692813}
   - component: {fileID: 2865194175071063403}
@@ -10589,13 +10590,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cea044ce5645efe419969e40dcc62a7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardKey: 119
-  backWardKey: 115
-  leftKey: 97
-  rightKey: 100
-  sprintKey: 304
-  shadowStepKey: 32
-  possessionKey: 101
+  _forwardKey: 119
+  _backwardKey: 115
+  _leftKey: 97
+  _rightKey: 100
+  _sprintKey: 304
+  _shadowStepKey: 32
+  _possessionKey: 101
+  _interactionKey: 101
 --- !u!136 &6209159898219461626
 CapsuleCollider:
   m_ObjectHideFlags: 8
@@ -10734,7 +10736,24 @@ MonoBehaviour:
   leftEye: {fileID: 7050205134422549425}
   rightEye: {fileID: 695282308341854576}
   fadeMaterial: {fileID: 2100000, guid: 0f3fb8137d2c3cd418685f6204d24b95, type: 2}
-  originalMaterial: {fileID: 2100000, guid: f6730b960ba6c914e9141395fc93249f, type: 2}
+--- !u!114 &1896245395274100764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4330857223206950753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc750b4e21edec4439a335bbcc446049, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _undissolveSpeed: 1
+  _targetRenderer: {fileID: 5734044969941006780}
+  _targetOutline: {fileID: 931095401606351084}
+  _leftEye: {fileID: 7050205134422549425}
+  _rightEye: {fileID: 695282308341854576}
+  _originalMaterial: {fileID: 2100000, guid: f6730b960ba6c914e9141395fc93249f, type: 2}
 --- !u!114 &8591797864794040731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10784,7 +10803,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dissolveController: {fileID: 0}
+  _undissolveController: {fileID: 0}
   _flameRing: {fileID: 1446822320568429355}
+  _possessedEntity: {fileID: 0}
+  _possessionMaxTime: 15
+  _input: {fileID: 0}
 --- !u!1 &4811641069203863561
 GameObject:
   m_ObjectHideFlags: 0
