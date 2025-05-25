@@ -3,11 +3,18 @@ using UnityEngine;
 
 public class PullLeverHandler : MonoBehaviour
 {
-    [SerializeField] PortcullisHandler portcull;
-    [SerializeField] bool isOpenLever = false;
+    [SerializeField] private PortcullisHandler _portcull;
+    [SerializeField] private bool _isUpLever = false;
+    [SerializeField] private LeverSwitchController _switchController;
     private bool isEntityInRange = false;
     private GameObject entity;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    public bool IsUpLever
+    {
+        get { return _isUpLever; }
+        set { _isUpLever = value; }
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -27,6 +34,12 @@ public class PullLeverHandler : MonoBehaviour
         }
     }
 
+    void Awake()
+    {
+        _isUpLever = _portcull.IsUp;
+        _switchController.Portcullis = _portcull;
+        // portcull.SwitchController = _switchController;
+    }
     void Start()
     {
         
@@ -35,11 +48,16 @@ public class PullLeverHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isOpenLever = portcull.IsOpen;
-        if (isEntityInRange && Input.GetKeyDown(KeyCode.Q))
+        _isUpLever = _portcull.IsUp;
+        // _isUpLever = portcull.IsOpen;
+        if (isEntityInRange && Input.GetKeyDown(KeyCode.Q) && !_portcull.IsActive)
         {
             Debug.Log("Lever Pulled");
-            portcull.IsOpen = !portcull.IsOpen;
+            _portcull.StartAnimation();
+            _switchController.StartAnimation();
+            // _isUpLever = !_isUpLever;
+            // _switchController.IsActive = !_switchController.IsActive;
+            // portcull.IsOpen = !portcull.IsOpen;
         }
     }
 }
