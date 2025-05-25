@@ -29,7 +29,8 @@ public class PlayerInput : MonoBehaviour {
         GetInput();
     }
 
-    private void GetInput() {
+    private void GetInput()
+    {
         float x = 0f;
         float y = 0f;
         float z = 0f;
@@ -41,4 +42,5 @@ public class PlayerInput : MonoBehaviour {
 
         movementInput = new Vector3(x, y, z).normalized;
     }
+
 }

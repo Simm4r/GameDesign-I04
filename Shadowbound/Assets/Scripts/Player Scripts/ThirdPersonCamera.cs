@@ -3,33 +3,65 @@ using UnityEngine;
 public class ThirdPersonCamera : MonoBehaviour
 {
     public Transform player;
-    public float distance = 2f;
+    public float distance = 4f;
     public float height = 1.5f;
-    public float smoothSpeed = 5f;
-    public float rotationSmoothTime = 0.15f;
-    public float pitchAngle = 15f;    
+    public float rotationSpeed = 50f;
+    public float pitchAngle = 15f;
+    public bool invertX = false;
+    public bool invertY = false;
 
-    private Vector3 currentVelocity = Vector3.zero;
-    private float currentYaw;
+    [Header("Mouse Sensitivity")]
+    public float horizontalSensitivity = 3f;
+    public float verticalSensitivity = 2f;
+    [Header("Collision")]
+    public LayerMask collisionLayers;     
+    public float cameraRadius = 0.2f;
+    public float minDistance = 0.5f;
+
+
+    private float yaw = 0f;
+    private float pitch = 0f;
+
+    void Start()
+    {
+        Vector3 angles = transform.eulerAngles;
+        yaw = angles.y + 180f;
+        pitch = pitchAngle;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
 
     void LateUpdate()
     {
+        Debug.Log($"Mouse X: {Input.GetAxisRaw("Mouse X")} | Mouse Y: {Input.GetAxisRaw("Mouse Y")}");
+
         if (!player) return;
 
-        // Get the desired yaw from player rotation
-        float targetYaw = player.eulerAngles.y;
-        currentYaw = Mathf.SmoothDampAngle(currentYaw, targetYaw, ref currentVelocity.y, rotationSmoothTime);
+        float mouseX = Input.GetAxisRaw("Mouse X");
+        float mouseY = Input.GetAxisRaw("Mouse Y");
 
-        // Build rotation with yaw + pitch
-        Quaternion rotation = Quaternion.Euler(pitchAngle, currentYaw, 0f);
 
-        // Apply offset based on rotation
-        Vector3 offset = rotation * new Vector3(0, 0, -distance);
-        Vector3 desiredPosition = player.position + offset + Vector3.up * height;
+        yaw += (invertX ? -1 : 1) * mouseX * horizontalSensitivity;
+        pitch -= (invertY ? -1 : 1) * mouseY * verticalSensitivity;
+        pitch = Mathf.Clamp(pitch, 5f, 75f); // limit pitch
 
-        transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
+        Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
+        Vector3 targetOffset = new Vector3(0, 0, -distance);
+        Vector3 desiredCameraPos = player.position + (rotation * targetOffset) + Vector3.up * height;
 
-        Vector3 lookTarget = player.position + Vector3.up * 0.8f;
-        transform.LookAt(lookTarget);
+        Vector3 rayOrigin = player.position + Vector3.up * height;
+        Vector3 direction = (desiredCameraPos - rayOrigin).normalized;
+        float targetDistance = distance;
+
+        if (Physics.SphereCast(rayOrigin, cameraRadius, direction, out RaycastHit hit, distance, collisionLayers))
+        {
+            targetDistance = Mathf.Clamp(hit.distance - cameraRadius, minDistance, distance);
+        }
+
+        Vector3 correctedOffset = rotation * new Vector3(0, 0, -targetDistance);
+        Vector3 finalPosition = player.position + correctedOffset + Vector3.up * height;
+
+        transform.position = Vector3.Lerp(transform.position, finalPosition, Time.deltaTime * 10f);
+        transform.LookAt(player.position + Vector3.up * 0.8f);
+
     }
 }
