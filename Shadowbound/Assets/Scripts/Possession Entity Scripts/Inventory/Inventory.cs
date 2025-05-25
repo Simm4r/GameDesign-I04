@@ -53,6 +53,27 @@ public class Inventory : MonoBehaviour
         // Debug.Log($"inventario: {inventoryStr}");
     }
 
+    public bool Contains(ItemData targetItem)
+    {
+        InventoryItem item = items.Find(i => i.data == targetItem);
+
+        if (item == null)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public void PrintInventory()
+    {
+        string inventoryStr = "";
+        foreach (InventoryItem i in items)
+        {
+            inventoryStr = inventoryStr + " " + i.data.itemName;
+        }
+        Debug.Log($"inventario: {inventoryStr}");
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Awake()
