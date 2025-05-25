@@ -14,7 +14,14 @@ public class PossessedController : MonoBehaviour, ICharacterController
     [SerializeField] private float _stableMovementSharpness = 15f;
     [SerializeField] private float _orientationSharpness = 10f;
     [SerializeField] private Vector3 _gravity = new Vector3(0f, -30f, 0f);
+    private bool _alreadyPossessed = false;
 
+    public bool AlreadyPossessed
+    {
+        get { return _alreadyPossessed; }
+    }
+
+    
     public void AfterCharacterUpdate(float deltaTime)
     {
 
@@ -44,9 +51,15 @@ public class PossessedController : MonoBehaviour, ICharacterController
         _motor = GetComponent<KinematicCharacterMotor>();
         _motor.CharacterController = this;
         _entityCollider = GetComponent<CapsuleCollider>();
+        _entityCollider.isTrigger = true;
         _motor.enabled = false;
         _entityCollider.enabled = false;
         enabled = false;
+    }
+
+    private void Update()
+    {
+        _alreadyPossessed = true;
     }
 
     public void BeforeCharacterUpdate(float deltaTime)

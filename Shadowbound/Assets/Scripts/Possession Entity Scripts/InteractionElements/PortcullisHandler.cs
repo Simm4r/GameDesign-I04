@@ -1,8 +1,14 @@
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class PortcullisHandler : MonoBehaviour
 {
+    [SerializeField] private bool _isOpen = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public bool IsOpen
+    {
+        get { return _isOpen; }
+        set { _isOpen = value; }
+    }
     void Start()
     {
         
