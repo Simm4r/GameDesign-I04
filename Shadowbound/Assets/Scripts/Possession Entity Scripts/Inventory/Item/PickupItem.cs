@@ -1,0 +1,66 @@
+using Unity.VisualScripting;
+using UnityEngine;
+
+public class PickupItem : MonoBehaviour
+{
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public ItemData itemData;
+    private bool isEntityInRange = false;
+    private GameObject entity;
+    // [SerializeField] private PlayerInput _input;
+
+    private void Awake()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (isEntityInRange && Input.GetKeyDown(KeyCode.Q))
+        {
+            Inventory entityInventory = entity.GetComponent<Inventory>();
+
+            if (entityInventory == null)
+            {
+                return;
+            }
+            Debug.Log($"Picking Object");
+            entityInventory.AddItem(itemData);
+            Debug.Log($"Inserted {itemData.itemName}, {itemData.description}");
+            Destroy(gameObject);
+
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        // if(other.tag)
+        if (!other.CompareTag("Untagged"))
+        {
+            Debug.Log($"Entry Key Item trigger by: {other.tag}");
+        }
+
+        if (other.CompareTag("PossessableGrabberEntity"))
+        {
+            isEntityInRange = true;
+            entity = other.gameObject;
+            Debug.Log($"Entry Key Item trigger by: {other.tag} in possession");
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Untagged"))
+        {
+            Debug.Log($"Exit Key Item trigger by: {other.tag}");
+        }
+        
+        if (other.CompareTag("PossessableGrabberEntity"))
+        {
+            isEntityInRange = false;
+            entity = null;
+            Debug.Log($"Exit Key Item trigger by: {other.tag}");
+        }
+    }
+}
