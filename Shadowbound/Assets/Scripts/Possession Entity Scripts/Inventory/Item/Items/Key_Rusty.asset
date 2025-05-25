@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067a4384f2b544cf59ee9fdef79704ab, type: 3}
   m_Name: Key_Rusty
   m_EditorClassIdentifier: 
-  itemName: 
+  itemName: Key Rusty
   id: 0
   icon: {fileID: 0}
-  description: 
+  description: An old key. Maybe it opens some damn port uh?
