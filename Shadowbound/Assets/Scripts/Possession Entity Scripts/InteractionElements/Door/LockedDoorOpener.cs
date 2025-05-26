@@ -36,7 +36,7 @@ public class LockedDoorOpener : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_isEntityInRange && Input.GetKeyDown(KeyCode.Q) && !_isAnimationStarted && _targetInventory != null)
+        if (_isEntityInRange && Input.GetKeyDown(KeyCode.E) && !_isAnimationStarted && _targetInventory != null)
         {
             // find element
             bool isContainingKey = _targetInventory.Contains(_key);

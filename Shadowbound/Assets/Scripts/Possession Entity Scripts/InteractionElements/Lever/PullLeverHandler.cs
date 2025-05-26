@@ -50,7 +50,7 @@ public class PullLeverHandler : MonoBehaviour
     {
         _isUpLever = _portcull.IsUp;
         // _isUpLever = portcull.IsOpen;
-        if (isEntityInRange && Input.GetKeyDown(KeyCode.Q) && !_portcull.IsActive)
+        if (isEntityInRange && Input.GetKeyDown(KeyCode.E) && !_portcull.IsActive)
         {
             Debug.Log("Lever Pulled");
             _portcull.StartAnimation();

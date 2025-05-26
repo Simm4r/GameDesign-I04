@@ -58,7 +58,7 @@ public class DoorOpener : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_isEntityInRange && Input.GetKeyDown(KeyCode.Q) && !_isAnimationStarted)
+        if (_isEntityInRange && Input.GetKeyDown(KeyCode.E) && !_isAnimationStarted)
         {
             StartAnimation();
         }

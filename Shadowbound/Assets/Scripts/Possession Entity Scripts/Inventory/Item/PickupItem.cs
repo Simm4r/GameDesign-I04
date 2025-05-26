@@ -17,7 +17,7 @@ public class PickupItem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isEntityInRange && Input.GetKeyDown(KeyCode.Q))
+        if (isEntityInRange && Input.GetKeyDown(KeyCode.E))
         {
             Inventory entityInventory = entity.GetComponent<Inventory>();
 

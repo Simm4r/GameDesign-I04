@@ -2348,7 +2348,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4522127152073552130, guid: deec9506d642e4e3e87aded996878ba9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.8279996
+      value: 20.38
       objectReference: {fileID: 0}
     - target: {fileID: 4522127152073552130, guid: deec9506d642e4e3e87aded996878ba9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2356,7 +2356,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4522127152073552130, guid: deec9506d642e4e3e87aded996878ba9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 19.907
+      value: 10.82
       objectReference: {fileID: 0}
     - target: {fileID: 4522127152073552130, guid: deec9506d642e4e3e87aded996878ba9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6934,15 +6934,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7253317231851300288, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.38
+      value: 19.19
       objectReference: {fileID: 0}
     - target: {fileID: 7253317231851300288, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.573
+      value: 1.31
       objectReference: {fileID: 0}
     - target: {fileID: 7253317231851300288, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.67
+      value: 9.34
       objectReference: {fileID: 0}
     - target: {fileID: 7253317231851300288, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: m_LocalRotation.w
@@ -24282,10 +24282,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6c77e8d634c6430e8bfba3b0448a274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tagTrigger: PossessableGrabberEnity
   _key: {fileID: 11400000, guid: c782717fd4f9e4f6fbc680559dc58cd7, type: 2}
   _targetInventory: {fileID: 0}
-  _angle: -90
+  _angle: 90
   _duration: 1
 --- !u!54 &2036476539
 Rigidbody:
