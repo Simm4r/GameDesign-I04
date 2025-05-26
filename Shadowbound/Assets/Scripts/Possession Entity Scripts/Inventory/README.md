@@ -8,7 +8,7 @@ Inventory/
 |   ├──Items/
 |   ├──InventoryItem.cs
 |   ├──ItemData.cs
-|   ├──PickupItem.cs
+|   └──PickupItem.cs
 ├──Inventory.cs
 └──README.md
 </pre>
