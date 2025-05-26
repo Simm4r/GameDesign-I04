@@ -4,13 +4,13 @@ La cartella `Inventory` è organizzata come segue:
 
 <pre>
 Inventory/
-├──Item/
-|   ├──Items/
-|   ├──InventoryItem.cs
-|   ├──ItemData.cs
-|   └──PickupItem.cs
-├──Inventory.cs
-└──README.md
+  ├──Item/
+  |   ├──Items/
+  |   ├──InventoryItem.cs
+  |   ├──ItemData.cs
+  |   └──PickupItem.cs
+  ├──Inventory.cs
+  └──README.md
 </pre>
 
 - La cartella `Item/` contiene tutte le informazioni per gli items che possono essere collezionati:

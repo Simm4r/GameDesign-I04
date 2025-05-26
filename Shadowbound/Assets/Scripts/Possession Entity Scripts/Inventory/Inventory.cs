@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    [SerializeField] private InventoryUI _inventoryUI;
     public List<InventoryItem> items;
     [SerializeField] int maxItems = 3;
 
@@ -17,6 +18,8 @@ public class Inventory : MonoBehaviour
         {
             items.Add(new InventoryItem(newItem));
             Debug.Log($"Aggiunto {newItem.itemName}");
+            // _inventoryUI.UpdateUI();
+            _inventoryUI.UpdateSlot(newItem.icon);
 
             // string inventoryStr = "";
             // foreach (InventoryItem i in items)
@@ -44,6 +47,8 @@ public class Inventory : MonoBehaviour
 
         items.Remove(item);
         Debug.Log($"Removed Item {item.data.itemName}");
+        // _inventoryUI.UpdateUI();
+        _inventoryUI.ClearSlot();
 
         // string inventoryStr = "";
         // foreach (InventoryItem i in items)
@@ -62,6 +67,15 @@ public class Inventory : MonoBehaviour
             return false;
         }
         return true;
+    }
+
+    public void ExchangeItem(ItemData itemToExchange, ItemData traderItem, Inventory traderInventory)
+    {
+        RemoveItem(itemToExchange);
+        traderInventory.RemoveItem(traderItem);
+
+        AddItem(traderItem);
+        traderInventory.AddItem(itemToExchange);
     }
 
     public void PrintInventory()
