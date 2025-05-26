@@ -1,7 +1,7 @@
 using KinematicCharacterController;
 using UnityEngine;
 
-public class GuardAnimatorController : MonoBehaviour
+public class EntityAnimatorController : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
     [SerializeField] private KinematicCharacterMotor _motor;
@@ -11,7 +11,7 @@ public class GuardAnimatorController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        _animator = GetComponent<Animator>();
+        _animator = GetComponentInChildren<Animator>();
         _motor = GetComponent<KinematicCharacterMotor>();
         enabled = false;
     }

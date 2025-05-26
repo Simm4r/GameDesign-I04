@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - Passable
+  - Possessable_Object
+  - Possessable_Guard
+  - Possessable_Animal
   layers:
   - Default
   - TransparentFX

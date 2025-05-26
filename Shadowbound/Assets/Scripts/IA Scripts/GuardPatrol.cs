@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class GuardPatrol : MonoBehaviour
 {
     public enum GuardState { Patrolling, Waiting, Alerted, Chasing, Investigating, Returning }
-    private GuardState _currentState = GuardState.Patrolling;
+    [SerializeField] private GuardState _currentState = GuardState.Patrolling;
 
     [Header("Patrol Settings")]
     [SerializeField] private Transform[] _waypoints;
@@ -17,10 +17,9 @@ public class GuardPatrol : MonoBehaviour
     [SerializeField] private Transform _target;
     [SerializeField] private float _alertRange = 8f;
     [SerializeField] private float _alertAngle = 120f;
-    [SerializeField] private Transform _alertMark;
 
     [Header("Chase Settings")]
-    [SerializeField] private float _chaseSpeed = 2f;
+    [SerializeField] private float _chaseSpeed = 2.1f;
     [SerializeField] private float _chaseDuration = 50f;
     [SerializeField] private float _stopDistance = 2f;
 
@@ -30,6 +29,9 @@ public class GuardPatrol : MonoBehaviour
     private NavMeshAgent _agent;
     private Animator _animator;
     private float _walkingSpeed;
+    private GameObject _exclamationMark;
+    private GameObject _questionMark;
+    private GuardPatrol[] _allGuards;
 
     private int _currentIndex = 0;
     private bool _goingForward = true;
@@ -39,23 +41,32 @@ public class GuardPatrol : MonoBehaviour
     private bool _isTargetVisible;
 
     private Vector3 _investigationPoint;
-    private float _investigationTimer = 0f;
     private int _investigationPhase = 0;
     private float _lookAroundTimer = 0f;
     private float _nextLookDuration = 0f;
     private Quaternion _lookAroundRotation;
     private bool _isLookingAround = false;
 
-    private void Start()
+    private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
+        _exclamationMark = transform.Find("ExclamationMark").gameObject;
+        _questionMark = transform.Find("QuestionMark").gameObject;
         _walkingSpeed = _agent.speed;
+        _allGuards = Object.FindObjectsByType<GuardPatrol>(FindObjectsSortMode.None);
 
-        if (_waypoints.Length > 0)
+        if (_waypoints != null && _waypoints.Length > 0)
+        {
             _agent.SetDestination(_waypoints[_currentIndex].position);
+        }
+        else
+        {
+            _currentState = GuardState.Waiting;
+            _agent.isStopped = true;
+        }
 
-        ResetAlert();
+        // HideMark();
     }
 
     private void Update()
@@ -65,12 +76,12 @@ public class GuardPatrol : MonoBehaviour
 
         switch (_currentState)
         {
-            case GuardState.Patrolling:       PatrolUpdate(); break;
-            case GuardState.Waiting:          WaitingUpdate(); break;
-            case GuardState.Alerted:          AlertedUpdate(); break;
-            case GuardState.Chasing:          ChasingUpdate(); break;
-            case GuardState.Investigating:    InvestigatingUpdate(); break;
-            case GuardState.Returning:        ReturningUpdate(); break;
+            case GuardState.Patrolling: PatrolUpdate(); break;
+            case GuardState.Waiting: WaitingUpdate(); break;
+            case GuardState.Alerted: AlertedUpdate(); break;
+            case GuardState.Chasing: ChasingUpdate(); break;
+            case GuardState.Investigating: InvestigatingUpdate(); break;
+            case GuardState.Returning: ReturningUpdate(); break;
         }
 
         HandleVision();
@@ -88,7 +99,6 @@ public class GuardPatrol : MonoBehaviour
                 _currentState = GuardState.Waiting;
                 _stateTimer = 0f;
                 _agent.isStopped = true;
-                _animator.SetBool("isWalking", false);
             }
             else
             {
@@ -99,11 +109,13 @@ public class GuardPatrol : MonoBehaviour
 
     private void WaitingUpdate()
     {
+        if (_waypoints == null || _waypoints.Length == 0)
+            return;
+
         _stateTimer += Time.deltaTime;
         if (_stateTimer >= _waitTime)
         {
             _agent.isStopped = false;
-            _animator.SetBool("isWalking", true);
             AdvanceToNextWaypoint();
             _currentState = GuardState.Patrolling;
         }
@@ -111,6 +123,9 @@ public class GuardPatrol : MonoBehaviour
 
     private void AdvanceToNextWaypoint()
     {
+        if (_waypoints == null || _waypoints.Length == 0)
+            return;
+
         if (_goingForward)
         {
             if (++_currentIndex >= _waypoints.Length)
@@ -135,6 +150,8 @@ public class GuardPatrol : MonoBehaviour
     // === VISION SYSTEM ===
     private void HandleVision()
     {
+        if (_target == null) return;
+
         Vector3 eyePos = transform.position + Vector3.up * 1.25f + transform.forward * 0.2f;
         Vector3 dirToTarget = (_target.position - eyePos).normalized;
         float distToTarget = Vector3.Distance(eyePos, _target.position);
@@ -155,39 +172,54 @@ public class GuardPatrol : MonoBehaviour
         {
             if (Physics.Raycast(eyePos, dirToTarget, out RaycastHit hit, _alertRange))
             {
-                Debug.Log($"{_agent.name} Hit: {hit.transform.root.name}");
+                // Debug.Log($"{_agent.name} - Hit: {hit.transform.root.name}");
                 if (hit.transform == _target || hit.transform.IsChildOf(_target))
                 {
                     _isTargetVisible = true;
                     _lastKnownPosition = _target.position;
 
-                    if (_currentState != GuardState.Chasing)
+                    if (_currentState == GuardState.Investigating)
                     {
-                        _currentState = GuardState.Alerted;
-                        _stateTimer = 0f;
-                        _agent.isStopped = true;
-                        _alertMark.localPosition = new Vector3(0, 1.7f, 0);
+                        StartChase();
+                    }
+
+                    if (_currentState != GuardState.Chasing && _currentState != GuardState.Alerted)
+                    {
+                        StartAlert();
                     }
 
                     FaceTarget();
                 }
             }
         }
-
-        if (_isTargetVisible && (_currentState == GuardState.Alerted || _currentState == GuardState.Investigating))
-        {
-            StartChase();
-        }
     }
 
     // === ALERTED ===
+    private void StartAlert()
+    {
+        _currentState = GuardState.Alerted;
+        _stateTimer = 0f;
+        _agent.isStopped = true;
+        ShowMark(_questionMark);
+    }
+
     private void AlertedUpdate()
     {
-        _stateTimer += Time.deltaTime;
-
-        if (_stateTimer > 1.5f && !_isTargetVisible)
+        Debug.Log(_isTargetVisible);
+        if (!_isTargetVisible)
         {
-            StartChase();
+            _stateTimer -= Time.deltaTime;
+            if (_stateTimer <= 0)
+                StartReturning();
+        }
+        else
+        {
+            _stateTimer += Time.deltaTime;
+
+            if (_stateTimer > 1.5f && _isTargetVisible)
+            {
+                StartChase();
+            }
         }
     }
 
@@ -196,11 +228,10 @@ public class GuardPatrol : MonoBehaviour
     {
         _currentState = GuardState.Chasing;
         _stateTimer = 0f;
-        _alertMark.localScale = Vector3.one * 0.3f;
-        _alertMark.localPosition = new Vector3(0, 1.7f, 0);
         _agent.stoppingDistance = _stopDistance;
         _agent.isStopped = false;
         _agent.speed = _chaseSpeed;
+        ShowMark(_exclamationMark);
     }
 
     private void ChasingUpdate()
@@ -247,10 +278,9 @@ public class GuardPatrol : MonoBehaviour
 
     private bool IsClosestGuardToTarget()
     {
-        GuardPatrol[] all = Object.FindObjectsByType<GuardPatrol>(FindObjectsSortMode.None);
         float myDist = Vector3.Distance(transform.position, _target.position);
 
-        foreach (var guard in all)
+        foreach (var guard in _allGuards)
         {
             if (guard == this) continue;
             if (Vector3.Distance(guard.transform.position, _target.position) < myDist)
@@ -264,21 +294,22 @@ public class GuardPatrol : MonoBehaviour
     {
         _currentState = GuardState.Investigating;
         _agent.isStopped = true;
-        _investigationTimer = 0f;
+        _stateTimer = 0f;
         _investigationPhase = 0;
         _agent.speed = _walkingSpeed;
+        ShowMark(_questionMark);
     }
 
     private void InvestigatingUpdate()
     {
-        _investigationTimer += Time.deltaTime;
+        _stateTimer += Time.deltaTime;
 
-    switch (_investigationPhase)
+        switch (_investigationPhase)
         {
             case 0: // Guarda attorno
-                if (_investigationTimer >= 1f)
+                if (_stateTimer >= 3f)
                 {
-                    _investigationTimer = 0f;
+                    _stateTimer = 0f;
                     _investigationPoint = GetRandomPointNear(_lastKnownPosition, _investigateDistance);
                     _agent.SetDestination(_investigationPoint);
                     _agent.isStopped = false;
@@ -294,21 +325,16 @@ public class GuardPatrol : MonoBehaviour
                 if (!_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance)
                 {
                     _agent.isStopped = true;
-                    _investigationTimer = 0f;
+                    _stateTimer = 0f;
                     _investigationPhase = 2;
                 }
                 break;
 
             case 2: // Guarda attorno
-                if (_investigationTimer >= 2f)
+                if (_stateTimer >= 3f)
                 {
                     _investigationPhase = 3;
-                    _agent.isStopped = false;
-                    _currentState = GuardState.Returning;
-                    _agent.isStopped = false;
-                    _agent.ResetPath();
-                    _agent.SetDestination(_waypoints[_currentIndex].position);
-                    ResetAlert();
+                    StartReturning();
                 }
                 else
                 {
@@ -343,6 +369,15 @@ public class GuardPatrol : MonoBehaviour
     }
 
     // === RETURNING ===
+    private void StartReturning()
+    {
+        _stateTimer = 0f;
+        _agent.isStopped = false;
+        _currentState = GuardState.Returning;
+        _agent.ResetPath();
+        _agent.SetDestination(_waypoints[_currentIndex].position);
+        HideMark();
+    }
     private void ReturningUpdate()
     {
         if (!_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance)
@@ -351,11 +386,17 @@ public class GuardPatrol : MonoBehaviour
         }
     }
 
-    // === UTILS ===
-    private void ResetAlert()
+    // === UTILS === 
+    private void ShowMark(GameObject markToShow)
     {
-        _alertMark.localScale = Vector3.one * 0.1f;
-        _alertMark.localPosition = new Vector3(0, -20, 0);
+        _exclamationMark.SetActive(markToShow == _exclamationMark);
+        _questionMark.SetActive(markToShow == _questionMark);
+    }
+
+    private void HideMark()
+    {
+        _exclamationMark.SetActive(false);
+        _questionMark.SetActive(false);
     }
 
     private void FaceTarget()
@@ -391,7 +432,7 @@ public class GuardPatrol : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Vector3 origin = transform.position;
-        Vector3 eyePos = transform.position + Vector3.up * 1.25f  + transform.forward * 0.2f;
+        Vector3 eyePos = transform.position + Vector3.up * 1.25f + transform.forward * 0.2f;
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(eyePos, 0.1f);
 
@@ -431,4 +472,8 @@ public class GuardPatrol : MonoBehaviour
         }
     }
 
+    void OnDisable()
+    {
+        HideMark();
+    }
 }
