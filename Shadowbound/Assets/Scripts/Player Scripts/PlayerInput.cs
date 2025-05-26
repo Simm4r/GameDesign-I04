@@ -13,10 +13,12 @@ public class PlayerInput : MonoBehaviour {
     [Header("Abilità Momo")]
     [SerializeField] private KeyCode _shadowStepKey = KeyCode.Space;
     [SerializeField] private KeyCode _possessionKey = KeyCode.E;
+    [SerializeField] private KeyCode _shadowVisionKey = KeyCode.Q;
 
     [Header("Abilità Posseduti")]
     [SerializeField] private KeyCode _interactionKey = KeyCode.E;
     [SerializeField] private KeyCode _quitPossessionKey = KeyCode.X;
+    
     private Vector3 _movementInput;
     private bool _inPossession = false;
 
@@ -31,6 +33,8 @@ public class PlayerInput : MonoBehaviour {
     public bool ShadowStep => !_inPossession && Input.GetKey(_shadowStepKey);
 
     public bool Possessing => !_inPossession && Input.GetKey(_possessionKey);
+
+    public bool ShadowVision => !_inPossession && Input.GetKey(_shadowVisionKey);
 
     public bool Interact => _inPossession && Input.GetKey(_interactionKey);
 
