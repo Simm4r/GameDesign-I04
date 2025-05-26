@@ -41,7 +41,7 @@ public class PickupItem : MonoBehaviour
             Debug.Log($"Entry Key Item trigger by: {other.tag}");
         }
 
-        if (other.CompareTag("PossessableGrabberEntity"))
+        if (other.CompareTag("Possessable_Guard"))
         {
             isEntityInRange = true;
             entity = other.gameObject;
@@ -56,7 +56,7 @@ public class PickupItem : MonoBehaviour
             Debug.Log($"Exit Key Item trigger by: {other.tag}");
         }
         
-        if (other.CompareTag("PossessableGrabberEntity"))
+        if (other.CompareTag("Possessable_Guard"))
         {
             isEntityInRange = false;
             entity = null;

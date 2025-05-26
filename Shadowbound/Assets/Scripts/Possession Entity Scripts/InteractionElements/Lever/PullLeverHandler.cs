@@ -18,7 +18,7 @@ public class PullLeverHandler : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("PossessableGrabberEntity"))
+        if (other.CompareTag("Possessable_Guard"))
         {
             isEntityInRange = true;
             entity = other.gameObject;   
@@ -27,7 +27,7 @@ public class PullLeverHandler : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("PossessableGrabberEntity"))
+        if (other.CompareTag("Possessable_Guard"))
         {
             isEntityInRange = false;
             entity = null;

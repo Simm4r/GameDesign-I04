@@ -3,7 +3,7 @@ using UnityEngine;
 public class LockedDoorOpener : MonoBehaviour
 {
 
-    // [SerializeField] private string _tagTrigger = "PossessableGrabberEntity";
+    // [SerializeField] private string _tagTrigger = "Possessable_Guard";
     [SerializeField] private ItemData _key;
     [SerializeField] private Inventory _targetInventory;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -60,7 +60,7 @@ public class LockedDoorOpener : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         Debug.Log($"[LOCKED-DOOR-enter] TAG: {other.tag}");
-        if (other.CompareTag("PossessableGrabberEntity"))
+        if (other.CompareTag("Possessable_Guard"))
         {
             _isEntityInRange = true;
             _entity = other.gameObject;
@@ -73,7 +73,7 @@ public class LockedDoorOpener : MonoBehaviour
     void OnTriggerExit(Collider other)
     {
         Debug.Log($"[LOCKED-DOOR-exit] TAG: {other.tag}");
-        if (other.CompareTag("PossessableGrabberEntity"))
+        if (other.CompareTag("Possessable_Guard"))
         {
             _isEntityInRange = false;
             _entity = null;
