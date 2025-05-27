@@ -6774,6 +6774,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7847235424874486270, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
+      propertyPath: _sprintWithButton
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8313463002881875218, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: _screenFade
       value: 
@@ -16445,6 +16449,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -6215578681670096451, guid: 4f2f93639cdd9eb4d9a8275848122e51, type: 3}
+      propertyPath: _target
+      value: 
+      objectReference: {fileID: 349649395}
+    - target: {fileID: -6215578681670096451, guid: 4f2f93639cdd9eb4d9a8275848122e51, type: 3}
       propertyPath: '_waypoints.Array.data[0]'
       value: 
       objectReference: {fileID: 1892288284}
@@ -24870,6 +24878,10 @@ PrefabInstance:
       propertyPath: _den
       value: 
       objectReference: {fileID: 938883939}
+    - target: {fileID: 4183756938194432999, guid: ce9605ef2f8dec44c8d593d0ef0c40ee, type: 3}
+      propertyPath: _player
+      value: 
+      objectReference: {fileID: 349649395}
     - target: {fileID: 4850321507030799766, guid: ce9605ef2f8dec44c8d593d0ef0c40ee, type: 3}
       propertyPath: m_LocalPosition.x
       value: 28.76
