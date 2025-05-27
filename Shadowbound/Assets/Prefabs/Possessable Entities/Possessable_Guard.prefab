@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _possessableCueParticles: {fileID: 1783896023908867710}
+  _playerStats: {fileID: 0}
 --- !u!1 &165669118219878565
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,6 +322,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4963894111313955524}
   - component: {fileID: 5206319299650763399}
+  - component: {fileID: 2549168388882917742}
+  - component: {fileID: 6910585360550497060}
   m_Layer: 0
   m_Name: WK_HeavyIntantry
   m_TagString: Untagged
@@ -417,6 +420,38 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.07668215, y: 0.018954292, z: -0.000000059604645}
     m_Extent: {x: 0.8097978, y: 0.27729267, z: 0.8639633}
   m_DirtyAABB: 0
+--- !u!114 &2549168388882917742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206139755385954885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 5
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
+  outlineWidth: 0
+  precomputeOutline: 1
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &6910585360550497060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206139755385954885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c0e8ce51dd145b47bb61f4d802335bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerStats: {fileID: 0}
+  _outlineMaxLifetime: 5
 --- !u!1 &1461615361688997705
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,6 +627,7 @@ GameObject:
   - component: {fileID: 8622556951194838015}
   - component: {fileID: 2964730368002242940}
   - component: {fileID: 2095253518798421577}
+  - component: {fileID: 5501961096247372116}
   m_Layer: 3
   m_Name: Possessable_Guard
   m_TagString: Possessable_Guard
@@ -792,6 +828,19 @@ MonoBehaviour:
   _motor: {fileID: 0}
   _walkTreshold: 0.1
   _sprintTreshold: 1.6
+--- !u!114 &5501961096247372116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3857898243154144184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 045562f9dcfc4654282cfd44e9c972d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _entityLevel: 2
 --- !u!1 &4072064822688295622
 GameObject:
   m_ObjectHideFlags: 0
@@ -841,7 +890,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4693167169307150585
 Transform:
   m_ObjectHideFlags: 0

@@ -32,7 +32,6 @@ public class ThirdPersonCamera : MonoBehaviour
 
     void LateUpdate()
     {
-        Debug.Log($"Mouse X: {Input.GetAxisRaw("Mouse X")} | Mouse Y: {Input.GetAxisRaw("Mouse Y")}");
 
         if (!player) return;
 

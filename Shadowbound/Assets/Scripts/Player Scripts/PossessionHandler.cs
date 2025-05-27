@@ -59,7 +59,7 @@ public class PossessionHandler : MonoBehaviour
             _possessedMotor = _possessedEntity.GetComponent<KinematicCharacterMotor>();
             _possessedMotorCollider = _possessedEntity.GetComponent<CapsuleCollider>();
             _possessedController = _possessedEntity.GetComponent<PossessedController>();
-            _possessedCollider = _shadowHandler.CurrentPossessable.gameObject.GetComponent<MeshCollider>();
+            _possessedCollider = _shadowHandler.CurrentPossessable.gameObject.GetComponentInChildren<MeshCollider>();
         }
         else if (_possessedEntity.tag == "Possessable_Animal")
         {
@@ -100,23 +100,25 @@ public class PossessionHandler : MonoBehaviour
         if (!_shadowHandler.CurrentPossessable)
                 return;
 
+        if (_shadowHandler.CurrentPossessable.GetComponentInParent<EntityStats>().EntityLevel > GetComponent<PlayerStats>().PossessionLevel)
+            return;
         if (_input.Possessing)
-        {
-            _healthbar.SetActive(false);
-            //Setto la possessable entity target
-            SetPossessedEntity();
-
-            _isPossessing = true;
-            if (_dissolveController != null)
-                _dissolveController.StartDissolve();
-
-            if (_flameRing != null)
             {
-                _flameRing.Clear();
-                _flameRing.Play();
-                
+                _healthbar.SetActive(false);
+                //Setto la possessable entity target
+                SetPossessedEntity();
+
+                _isPossessing = true;
+                if (_dissolveController != null)
+                    _dissolveController.StartDissolve();
+
+                if (_flameRing != null)
+                {
+                    _flameRing.Clear();
+                    _flameRing.Play();
+
+                }
             }
-        }
     }
     private void HandlePossessionTransition()
     {
@@ -197,7 +199,6 @@ public class PossessionHandler : MonoBehaviour
                 Vector3 correctedPosition = new Vector3(currentPositionAndRotation.position.x, motor.GroundingStatus.GroundPoint.y + _collider.radius, currentPositionAndRotation.position.z);
                 motor.SetPositionAndRotation(correctedPosition, currentPositionAndRotation.rotation);
                 motor.MoveCharacter(correctedPosition - _possessedEntity.transform.forward * 1.5f);
-                motor.ForceUnground();
             }
 
         }

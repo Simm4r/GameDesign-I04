@@ -146,7 +146,7 @@ public class ShadowDamageHandler : MonoBehaviour
                 continue;
 
             Collider gameObjectCollider = obj.GetComponentsInChildren<Collider>().Where(c => c.enabled && c.gameObject.activeInHierarchy).ToArray()[0];
-            Debug.Log("Object transform Position" + obj.transform.position);
+
             RaycastHit[] hits = Physics.RaycastAll(transform.position, (obj.transform.position + 0.5f * Vector3.up - transform.position).normalized, (obj.transform.position + 0.5f * Vector3.up - transform.position).magnitude, _shadowCastingLayers);
 
             bool collided = false;
@@ -155,7 +155,6 @@ public class ShadowDamageHandler : MonoBehaviour
                 if (hit.collider == momoCollider || hit.collider == gameObjectCollider)
                     continue;
                 collided = true;
-                Debug.Log("Hitted a Collider " + hit.collider.name);
             }
 
             if (collided)

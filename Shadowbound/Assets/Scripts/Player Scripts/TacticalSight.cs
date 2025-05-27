@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -7,16 +8,52 @@ public class TacticalSight : MonoBehaviour
     [SerializeField] private PlayerInput _input;
     [SerializeField] private float _maxCooldown = 5f;
 
+    private float _maxRadius;
+    private float _effectDuration;
+    private float _timer = 0.0f;
     private float _cooldown = 0.0f;
-
+    private float _heightOffset = 0.15f;
+    private HashSet<Collider> _alreadyDetected = new();
+    private List<GameObject> _rootObjects = new();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-
+        _effectDuration = _expandingSight.main.startLifetime.constant;
+        _maxRadius = _expandingSight.main.startSize.constant / 2;
     }
     private void HandleSightCollider()
     {
+        _timer += Time.unscaledDeltaTime;
+        
+        float radius = Mathf.Lerp(0.0f, _maxRadius, _timer / _effectDuration);
 
+        Collider[] hits = Physics.OverlapSphere(transform.position + Vector3.down * _heightOffset, radius);
+
+        foreach (Collider hit in hits)
+        {
+
+            if (hit.transform.root.gameObject.tag.StartsWith("Possessable_"))
+            {
+
+                Debug.Log(hit.transform.root.gameObject.tag);
+                if (_alreadyDetected.Contains(hit))
+                    continue;
+
+                _alreadyDetected.Add(hit);
+                _rootObjects.Add(hit.transform.root.gameObject);
+
+                GameObject root = hit.transform.root.gameObject;
+                OutlineHandler outlineHandler = root.GetComponentInChildren<OutlineHandler>();
+                outlineHandler.UnoutlineEntity();
+                outlineHandler.OutlineEntity(ref root);
+            }
+        }
+
+        if (_timer >= _effectDuration)
+        {
+            _cooldown = _maxCooldown;
+            _timer = 0.0f;
+        }
     }
     // Update is called once per frame
     void Update()
@@ -31,9 +68,11 @@ public class TacticalSight : MonoBehaviour
         if (_input.ShadowVision && !_expandingSight.IsAlive())
         {
             _expandingSight.Play();
-            _cooldown = _maxCooldown;
+            _timer = 0.0f;
+            HandleSightCollider();
+            _alreadyDetected.Clear();
         }
-        else if (_expandingSight.IsAlive())
+        else if (_expandingSight.IsAlive()) 
             HandleSightCollider();
     }
 

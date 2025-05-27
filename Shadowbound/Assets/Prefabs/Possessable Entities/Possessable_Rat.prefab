@@ -926,6 +926,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _possessableCueParticles: {fileID: 3361898745626073705}
+  _playerStats: {fileID: 0}
 --- !u!1 &4569759715443316210
 GameObject:
   m_ObjectHideFlags: 0
@@ -1070,6 +1071,7 @@ GameObject:
   - component: {fileID: 9042872949523382587}
   - component: {fileID: 3564985206292206954}
   - component: {fileID: 4183756938194432999}
+  - component: {fileID: 1212966343647346706}
   m_Layer: 0
   m_Name: Possessable_Rat
   m_TagString: Possessable_Animal
@@ -1126,7 +1128,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5189304672232558380}
   m_Enabled: 1
-  m_AgentTypeID: -1372625422
+  m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3
   m_Acceleration: 8
@@ -1254,11 +1256,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentState: 0
-  _player: {fileID: 0}
+  _player: {fileID: 5650353880619122655}
   _den: {fileID: 0}
   _detectionRange: 3
   _pathRecalculateInterval: 1.2
   _avoidStrength: 1.5
+--- !u!114 &1212966343647346706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5189304672232558380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 045562f9dcfc4654282cfd44e9c972d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _entityLevel: 1
 --- !u!1 &5959837680884872710
 GameObject:
   m_ObjectHideFlags: 0
@@ -6515,6 +6530,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2626385441575872445}
   - component: {fileID: 4795932859131410707}
+  - component: {fileID: 8843803146523565269}
+  - component: {fileID: 5654382313924048204}
   m_Layer: 0
   m_Name: Rat
   m_TagString: Untagged
@@ -6625,6 +6642,38 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0000062258914, y: 0.027787175, z: -0.033708584}
     m_Extent: {x: 0.02056856, y: 0.036420178, z: 0.08940652}
   m_DirtyAABB: 0
+--- !u!114 &8843803146523565269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8991446750565624012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 5
+  outlineColor: {r: 0, g: 0, b: 0, a: 0}
+  outlineWidth: 0
+  precomputeOutline: 1
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &5654382313924048204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8991446750565624012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c0e8ce51dd145b47bb61f4d802335bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerStats: {fileID: 0}
+  _outlineMaxLifetime: 5
 --- !u!1 &8999441907028823233
 GameObject:
   m_ObjectHideFlags: 0
