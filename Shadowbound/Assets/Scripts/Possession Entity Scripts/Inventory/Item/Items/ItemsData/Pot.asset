@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067a4384f2b544cf59ee9fdef79704ab, type: 3}
   m_Name: Pot
   m_EditorClassIdentifier: 
-  itemName: 
-  id: 0
-  icon: {fileID: 0}
-  description: 
+  itemName: Pot
+  id: 123
+  icon: {fileID: 21300000, guid: 21e55f80bdf7ae94c815fe641109dfc8, type: 3}
+  description: Put your fucking cactus idiot
