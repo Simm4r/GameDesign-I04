@@ -1,3 +1,4 @@
+
 using KinematicCharacterController;
 using UnityEngine;
 
@@ -11,15 +12,15 @@ public class CharacterController : MonoBehaviour, ICharacterController
     [SerializeField] private float _sprintSpeed = 3.0f;
     [SerializeField] private float _stableMoveSpeed;
     [SerializeField] private float _maxStableMoveSpeed = 5.5f;
-    [SerializeField] private float _stableMovementSharpness = 20f;
-    [SerializeField] private float _orientationSharpness = 100f;
+    [SerializeField] private float _stableMovementSharpness = 15f;
+    [SerializeField] private float _orientationSharpness = 10f;
     [SerializeField] private Vector3 _gravity = new Vector3(0f, -30f, 0f);
 
     public float MaxStableMoveSpeed
     {
         get { return _maxStableMoveSpeed; }
     }
-    void Start()
+    void Awake()
     {
         _stableMoveSpeed = _walkSpeed;
         _motor = GetComponent<KinematicCharacterMotor>();
@@ -28,38 +29,36 @@ public class CharacterController : MonoBehaviour, ICharacterController
 
     public void SetSprintState(bool sprint)
     {
-        
+
     }
 
     public void SetInputs(ref PlayerInput input, ref Transform camera)
     {
         Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(input.MovementInput.x, 0.0f, input.MovementInput.z), 1.0f);
+        Vector3 cameraPlanarDirection = Vector3.ProjectOnPlane(camera.rotation * Vector3.forward, _motor.CharacterUp).normalized;
 
-        Vector3 camForward = camera.forward;
-        Vector3 camRight = camera.right;
+        if (cameraPlanarDirection.sqrMagnitude == 0.0f)
+        {
+            cameraPlanarDirection = Vector3.ProjectOnPlane(camera.rotation * Vector3.up, _motor.CharacterUp).normalized;
+        }
 
-        camForward.y = 0f;
-        camRight.y = 0f;
-        camForward.Normalize();
-        camRight.Normalize();
+        Quaternion cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, _motor.CharacterUp);
+        _moveInputVector = cameraPlanarRotation * moveInputVector;
+        _lookInputVector = _moveInputVector.normalized;
 
-        // Convert input to world-relative
-        _moveInputVector = (camForward * moveInputVector.z + camRight * moveInputVector.x).normalized;
-
-        _lookInputVector = _moveInputVector;
-
-        // Sprint toggle
-        _stableMoveSpeed = input.Sprint ? _sprintSpeed : _walkSpeed;
+        if (input.Sprint)
+            _stableMoveSpeed = _sprintSpeed;
+        else
+            _stableMoveSpeed = _walkSpeed;
     }
-
     public void AfterCharacterUpdate(float deltaTime)
     {
-     
+
     }
 
     public void BeforeCharacterUpdate(float deltaTime)
     {
-    
+
     }
 
     public bool IsColliderValidForCollisions(Collider coll)
@@ -69,44 +68,37 @@ public class CharacterController : MonoBehaviour, ICharacterController
 
     public void OnDiscreteCollisionDetected(Collider hitCollider)
     {
-    
+
     }
 
     public void OnGroundHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
     {
-    
+
     }
 
     public void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
     {
-    
+
     }
 
     public void PostGroundingUpdate(float deltaTime)
     {
-    
+
     }
 
     public void ProcessHitStabilityReport(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, Vector3 atCharacterPosition, Quaternion atCharacterRotation, ref HitStabilityReport hitStabilityReport)
     {
-    
+
     }
 
     public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
     {
         if (_lookInputVector.sqrMagnitude > 0f && _orientationSharpness > 0.0f)
         {
-            Vector3 smoothedLookInputDirection = Vector3.Slerp(
-                _motor.CharacterForward,
-                _lookInputVector,
-                1 - Mathf.Exp(-_orientationSharpness * deltaTime)
-            ).normalized;
-
+            Vector3 smoothedLookInputDirection = Vector3.Slerp(_motor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-_orientationSharpness * deltaTime)).normalized;
             currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, _motor.CharacterUp);
         }
     }
-
-
 
     public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
     {

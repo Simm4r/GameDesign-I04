@@ -10589,13 +10589,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cea044ce5645efe419969e40dcc62a7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardKey: 119
-  backWardKey: 115
-  leftKey: 97
-  rightKey: 100
-  sprintKey: 304
-  shadowStepKey: 32
-  possessionKey: 101
+  _forwardKey: 119
+  _backwardKey: 115
+  _leftKey: 97
+  _rightKey: 100
+  _sprintKey: 304
+  _shadowStepKey: 32
+  _possessionKey: 101
+  _shadowVisionKey: 113
+  _interactionKey: 101
+  _quitPossessionKey: 120
 --- !u!136 &6209159898219461626
 CapsuleCollider:
   m_ObjectHideFlags: 8
@@ -10785,6 +10788,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dissolveController: {fileID: 0}
   _flameRing: {fileID: 1446822320568429355}
+  _trialGuard: {fileID: 0}
 --- !u!1 &4811641069203863561
 GameObject:
   m_ObjectHideFlags: 0

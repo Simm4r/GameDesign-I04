@@ -36,8 +36,15 @@ public class ThirdPersonCamera : MonoBehaviour
 
         if (!player) return;
 
-        float mouseX = Input.GetAxisRaw("Mouse X");
-        float mouseY = Input.GetAxisRaw("Mouse Y");
+        Vector2 camInput = Vector2.zero;
+
+        if (player.TryGetComponent(out PlayerInput playerInput))
+        {
+            camInput = playerInput.CameraInput;
+        }
+
+        float mouseX = camInput.x;
+        float mouseY = camInput.y;
 
 
         yaw += (invertX ? -1 : 1) * mouseX * horizontalSensitivity;
@@ -64,4 +71,9 @@ public class ThirdPersonCamera : MonoBehaviour
         transform.LookAt(player.position + Vector3.up * 0.8f);
 
     }
+    public void SetTarget(Transform newTarget)
+    {
+        player = newTarget;
+    }
+
 }

@@ -53,7 +53,7 @@ public class PossessionHandler : MonoBehaviour
                 script.enabled = false;
         }
         _collider.enabled = false;
-        _camera.player = _trialGuard;
+        _camera.SetTarget(_trialGuard);
     }
     // Update is called once per frame
     void Update()

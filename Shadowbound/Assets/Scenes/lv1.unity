@@ -9183,7 +9183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 426e3c012d31e954caff4e618896fc48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1418761089}
+  player: {fileID: 349649395}
   distance: 2
   height: 0.5
   rotationSpeed: 2
@@ -17418,11 +17418,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e71deb4332d8834e8dccf626ce8d29b, type: 3}
---- !u!4 &1418761089 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2532251569047083303, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
-  m_PrefabInstance: {fileID: 634244068}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1425416437
 GameObject:
   m_ObjectHideFlags: 0
