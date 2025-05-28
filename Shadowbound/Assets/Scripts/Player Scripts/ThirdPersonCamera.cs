@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ThirdPersonCamera : MonoBehaviour
 {
+    [SerializeField] private PlayerInput _input;
     public Transform player;
     public float distance = 4f;
     public float height = 1.5f;
@@ -32,19 +33,11 @@ public class ThirdPersonCamera : MonoBehaviour
 
     void LateUpdate()
     {
-        Debug.Log($"Mouse X: {Input.GetAxisRaw("Mouse X")} | Mouse Y: {Input.GetAxisRaw("Mouse Y")}");
 
         if (!player) return;
 
-        Vector2 camInput = Vector2.zero;
-
-        if (player.TryGetComponent(out PlayerInput playerInput))
-        {
-            camInput = playerInput.CameraInput;
-        }
-
-        float mouseX = camInput.x;
-        float mouseY = camInput.y;
+        float mouseX = _input.LookInput.x;
+        float mouseY = _input.LookInput.y;
 
 
         yaw += (invertX ? -1 : 1) * mouseX * horizontalSensitivity;

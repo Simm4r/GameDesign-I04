@@ -13,20 +13,21 @@ public class DissolveController : MonoBehaviour
     [SerializeField] private ParticleSystem leftEye;
     [SerializeField] private ParticleSystem rightEye;
     [SerializeField] private Material fadeMaterial;
-    [SerializeField] private Material originalMaterial;
 
     private MaterialPropertyBlock propBlock;
+    private UndissolveController _undissolveController;
 
     public bool IsDissolving
     {
         get { return dissolving; }
     }
-    void Start()
+    void Awake()
     {
         propBlock = new MaterialPropertyBlock();
         targetRenderer.GetPropertyBlock(propBlock);
         propBlock.SetFloat("_DissolveAmount", dissolveAmount);
         targetRenderer.SetPropertyBlock(propBlock);
+        _undissolveController = GetComponent<UndissolveController>();
     }
 
     void Update()
@@ -48,10 +49,12 @@ public class DissolveController : MonoBehaviour
             var rightEmission = rightEye.emission;
             rightEmission.rateOverTime = 0;
         }
-        if (dissolveAmount == 1)
+        if (dissolveAmount == 1 && dissolving)
         {
             Time.timeScale = 1.0f;
             dissolving = false;
+            _undissolveController.enabled = true;
+            enabled = false;
         }
     }
 

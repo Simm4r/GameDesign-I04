@@ -1,71 +1,84 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerInput : MonoBehaviour
 {
-    [Header("Movimento")]
-    [SerializeField] private KeyCode _forwardKey = KeyCode.W;
-    [SerializeField] private KeyCode _backwardKey = KeyCode.S;
-    [SerializeField] private KeyCode _leftKey = KeyCode.A;
-    [SerializeField] private KeyCode _rightKey = KeyCode.D;
-    [SerializeField] private KeyCode _sprintKey = KeyCode.LeftShift;
-
-    [Header("Abilità Momo")]
-    [SerializeField] private KeyCode _shadowStepKey = KeyCode.Space;
-    [SerializeField] private KeyCode _possessionKey = KeyCode.E;
-    [SerializeField] private KeyCode _shadowVisionKey = KeyCode.Q;
-
-    [Header("Abilità Posseduti")]
-    [SerializeField] private KeyCode _interactionKey = KeyCode.E;
-    [SerializeField] private KeyCode _quitPossessionKey = KeyCode.X;
-
-    private Vector3 _movementInput;
-    private Vector2 _cameraInput;
-    public Vector2 CameraInput => _cameraInput;
-
-    private bool _inPossession = false;
-
-    public Vector3 MovementInput => _movementInput;
+    [SerializeField] private bool _sprintWithButton = true;
+    private PlayerControls _controls;
+    private Vector2 _moveInput;
+    private bool _inPossession;
+    private bool _sprintKeyPressed;
+    private Vector2 _lookInput;
+    public Vector2 LookInput => _lookInput;
+    public Vector3 MovementInput => new Vector3(_moveInput.x, 0f, _moveInput.y);
     public bool InPossession
     {
-        get { return _inPossession; }
-        set { _inPossession = value; }
-    }
-    public bool Sprint => Input.GetKey(_sprintKey);
-
-    public bool ShadowStep => !_inPossession && Input.GetKey(_shadowStepKey);
-
-    public bool Possessing => !_inPossession && Input.GetKey(_possessionKey);
-
-    public bool ShadowVision => !_inPossession && Input.GetKey(_shadowVisionKey);
-
-    public bool Interact => _inPossession && Input.GetKey(_interactionKey);
-
-    public bool QuitPossession => _inPossession && Input.GetKey(_quitPossessionKey);
-
-    private void Update()
-    {
-        GetInput();
-        _cameraInput = new Vector2(
-            Input.GetAxisRaw("Mouse X"),
-            Input.GetAxisRaw("Mouse Y")
-        );
-
+        get => _inPossession;
+        set => _inPossession = value;
     }
 
-    private void GetInput()
+private bool _isAnalogSprinting = false;
+
+    public bool Sprint
     {
-        float x = 0f;
-        float y = 0f;
-        float z = 0f;
+        get
+        {
+            bool usingGamepad = Gamepad.current != null && Gamepad.current.wasUpdatedThisFrame;
 
-        if (Input.GetKey(_forwardKey)) z += 1f;
-        if (Input.GetKey(_backwardKey)) z -= 1f;
-        if (Input.GetKey(_rightKey)) x += 1f;
-        if (Input.GetKey(_leftKey)) x -= 1f;
+            if (usingGamepad)
+            {
+                if (_sprintWithButton)
+                {
+                    return _sprintKeyPressed;
+                }
+                else
+                {
+                    float thresholdEnter = 0.8f;
+                    float thresholdExit = 0.6f;
 
-        _movementInput = new Vector3(x, y, z).normalized;
+                    if (!_isAnalogSprinting && _moveInput.magnitude >= thresholdEnter)
+                        _isAnalogSprinting = true;
+                    else if (_isAnalogSprinting && _moveInput.magnitude <= thresholdExit)
+                        _isAnalogSprinting = false;
+
+                    return _isAnalogSprinting;
+                }
+            }
+            else
+            {
+                return _sprintKeyPressed; // da tastiera
+            }
+        }
+    }
+
+    public bool ShadowStep => !_inPossession && _controls.Player.ShadowStep.ReadValue<float>() > 0;
+    public bool Possessing => !_inPossession && _controls.Player.Possession.ReadValue<float>() > 0;
+    public bool ShadowVision => !_inPossession && _controls.Player.ShadowVision.ReadValue<float>() > 0;
+    public bool Interact => _inPossession && _controls.Player.Interact.ReadValue<float>() > 0;
+    public bool QuitPossession => _inPossession && _controls.Player.QuitPossession.ReadValue<float>() > 0;
+
+    private void Awake()
+    {
+        _controls = new PlayerControls();
+
+        _controls.Player.Move.performed += ctx => _moveInput = ctx.ReadValue<Vector2>();
+        _controls.Player.Move.canceled += ctx => _moveInput = Vector2.zero;
+
+        _controls.Player.Sprint.performed += ctx => _sprintKeyPressed = true;
+        _controls.Player.Sprint.canceled += ctx => _sprintKeyPressed = false;
+
+        _controls.Player.Look.performed += ctx => _lookInput = ctx.ReadValue<Vector2>();
+        _controls.Player.Look.canceled += ctx => _lookInput = Vector2.zero;
+    }
+
+    private void OnEnable()
+    {
+        _controls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _controls.Disable();
     }
 
 }

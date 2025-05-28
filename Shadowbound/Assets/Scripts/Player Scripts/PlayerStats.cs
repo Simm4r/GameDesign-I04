@@ -1,8 +1,10 @@
 using System;
 using UnityEngine;
 
+
 public class PlayerStats : MonoBehaviour
 {
+
     [SerializeField] private float _maxHealth = 100f;
     private float _currentHealth;
 
@@ -14,6 +16,8 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private float _healOverTimeInterval = 0.5f;
     private float _healTimer = 0f;
 
+    [SerializeField] private int _possessionLevel = 1;
+    [SerializeField] private int _shadowVisionLevel = 1;
 
     [SerializeField] private bool _isDead = false;
 
@@ -21,6 +25,10 @@ public class PlayerStats : MonoBehaviour
 
     public event Action OnPlayerDeath;
 
+    public int PossessionLevel => _possessionLevel;
+
+    public int ShadowVisionLevel => _shadowVisionLevel;
+    
     private void Start()
     {
         _currentHealth = _maxHealth;
