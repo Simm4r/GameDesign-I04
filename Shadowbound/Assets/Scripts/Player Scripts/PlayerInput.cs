@@ -7,7 +7,7 @@ public class PlayerInput : MonoBehaviour
     private PlayerControls _controls;
     private Vector2 _moveInput;
     private bool _inPossession;
-    private bool _sprintKeyPressed;
+    private bool _sprintKeyPressed = false;
     private Vector2 _lookInput;
     public Vector2 LookInput => _lookInput;
     public Vector3 MovementInput => new Vector3(_moveInput.x, 0f, _moveInput.y);
@@ -17,15 +17,14 @@ public class PlayerInput : MonoBehaviour
         set => _inPossession = value;
     }
 
-private bool _isAnalogSprinting = false;
-
+    private bool _isAnalogSprinting = false;
+    private bool _usingGamepad = false;
     public bool Sprint
     {
         get
         {
-            bool usingGamepad = Gamepad.current != null && Gamepad.current.wasUpdatedThisFrame;
 
-            if (usingGamepad)
+            if (_usingGamepad)
             {
                 if (_sprintWithButton)
                 {
@@ -33,9 +32,9 @@ private bool _isAnalogSprinting = false;
                 }
                 else
                 {
-                    float thresholdEnter = 0.8f;
-                    float thresholdExit = 0.6f;
-
+                    float thresholdEnter = 0.6f;
+                    float thresholdExit = 0.5f;
+                    Debug.Log(_moveInput.magnitude);
                     if (!_isAnalogSprinting && _moveInput.magnitude >= thresholdEnter)
                         _isAnalogSprinting = true;
                     else if (_isAnalogSprinting && _moveInput.magnitude <= thresholdExit)
@@ -46,7 +45,8 @@ private bool _isAnalogSprinting = false;
             }
             else
             {
-                return _sprintKeyPressed; // da tastiera
+                Debug.Log("Sono entrato qui");
+                return _sprintKeyPressed;
             }
         }
     }
@@ -61,7 +61,11 @@ private bool _isAnalogSprinting = false;
     {
         _controls = new PlayerControls();
 
-        _controls.Player.Move.performed += ctx => _moveInput = ctx.ReadValue<Vector2>();
+        _controls.Player.Move.performed += ctx =>
+        {
+            _moveInput = ctx.ReadValue<Vector2>();
+            _usingGamepad = ctx.control.device is Gamepad;
+        };
         _controls.Player.Move.canceled += ctx => _moveInput = Vector2.zero;
 
         _controls.Player.Sprint.performed += ctx => _sprintKeyPressed = true;

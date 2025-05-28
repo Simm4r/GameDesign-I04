@@ -626,8 +626,8 @@ GameObject:
   - component: {fileID: -6215578681670096451}
   - component: {fileID: 8622556951194838015}
   - component: {fileID: 2964730368002242940}
-  - component: {fileID: 2095253518798421577}
   - component: {fileID: 5501961096247372116}
+  - component: {fileID: 3432132460986637221}
   m_Layer: 3
   m_Name: Possessable_Guard
   m_TagString: Possessable_Guard
@@ -812,22 +812,6 @@ MonoBehaviour:
   _stableMovementSharpness: 15
   _orientationSharpness: 10
   _gravity: {x: 0, y: -30, z: 0}
---- !u!114 &2095253518798421577
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3857898243154144184}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a1d9bdb6ed436d4588584335f40963c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animator: {fileID: 0}
-  _motor: {fileID: 0}
-  _walkTreshold: 0.1
-  _sprintTreshold: 1.6
 --- !u!114 &5501961096247372116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -841,6 +825,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityLevel: 2
+--- !u!114 &3432132460986637221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3857898243154144184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2f1091ee5526d42904d458bebc2f01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxSpeed: 3
+  _maxMotorSpeed: 5
+  _animationTransitionTime: 0.2
+  _input: {fileID: 0}
 --- !u!1 &4072064822688295622
 GameObject:
   m_ObjectHideFlags: 0

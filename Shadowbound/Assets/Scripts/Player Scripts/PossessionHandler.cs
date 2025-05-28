@@ -1,4 +1,5 @@
 using KinematicCharacterController;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -13,7 +14,6 @@ public class PossessionHandler : MonoBehaviour
     [SerializeField] private GameObject _healthbar;
     [SerializeField] private float _possessionMaxTime = 15f;
     [SerializeField] private float _possessionMaxCooldown = 10f;
-    [SerializeField] private EntityAnimatorController _entityAnimationController;
     
 
     [SerializeField] private PlayerInput _input;
@@ -52,7 +52,15 @@ public class PossessionHandler : MonoBehaviour
             _navMeshAgent = _possessedEntity.GetComponent<NavMeshAgent>();
             _possessedCollider = _shadowHandler.CurrentPossessable.gameObject.GetComponent<CapsuleCollider>();
             _guardPatrol = _possessedEntity.GetComponent<GuardPatrol>();
-            _entityAnimationController = _possessedEntity.GetComponent<EntityAnimatorController>();
+
+            TextMeshPro[] marks = _possessedEntity.GetComponentsInChildren<TextMeshPro>();
+
+            foreach (TextMeshPro mark in marks)
+            {
+                Debug.Log(mark.gameObject);
+                if (mark.gameObject.activeSelf)
+                    mark.gameObject.SetActive(false);
+            }
         }
         else if (_possessedEntity.tag == "Possessable_Object")
         {
@@ -69,7 +77,6 @@ public class PossessionHandler : MonoBehaviour
             _navMeshAgent = _possessedEntity.GetComponent<NavMeshAgent>();
             _possessedCollider = _shadowHandler.CurrentPossessable.gameObject.GetComponent<CapsuleCollider>();
             _fleeingEntity = _possessedEntity.GetComponent<FleeingEntity>();
-            _entityAnimationController = _possessedEntity.GetComponent<EntityAnimatorController>();
         }
         
     }
@@ -143,7 +150,6 @@ public class PossessionHandler : MonoBehaviour
             _navMeshAgent.isStopped = true;
             _navMeshAgent.ResetPath();
             _navMeshAgent.enabled = false;
-            _entityAnimationController.enabled = true;
 
             if (_possessedEntity.tag == "Possessable_Guard")
                 _guardPatrol.enabled = false;
@@ -159,6 +165,7 @@ public class PossessionHandler : MonoBehaviour
         _camera.player = _possessedEntity.transform;
 
         _input.InPossession = true;
+        _possessedEntity.GetComponentInChildren<EyeParticlesHandler>().LitEyes();
         _possessionCooldown = _possessionMaxCooldown;
     }
 
@@ -166,21 +173,17 @@ public class PossessionHandler : MonoBehaviour
     {
         _possessionTime = 0.0f;
         _possessedMotor.enabled = false;
-        Debug.Log("Possessed Motor Collider" + _possessedMotorCollider.GetType() + _possessedMotorCollider.name);
         _possessedMotorCollider.enabled = false;
         _possessedController.enabled = false;
-        Debug.Log("PossessedCollider" + _possessedCollider.GetType() + _possessedCollider.name);
         _possessedCollider.enabled = true;
 
         if (_possessedEntity.tag == "Possessable_Guard")
         {
-            _entityAnimationController.enabled = false;
             _navMeshAgent.enabled = true;
             _guardPatrol.enabled = true;
         }
         else if (_possessedEntity.tag == "Possessable_Animal")
         {
-            _entityAnimationController.enabled = false;
             _navMeshAgent.enabled = true;
             _fleeingEntity.enabled = true;
         }
@@ -212,6 +215,7 @@ public class PossessionHandler : MonoBehaviour
         }
         _isPossessing = false;
         _input.InPossession = false;
+        _possessedEntity.GetComponentInChildren<EyeParticlesHandler>().UnlitEyes();
         UnsetPossessedEntity();
         GetComponent<PlayerStats>().ResetPlayer();
         _healthbar.SetActive(true);
