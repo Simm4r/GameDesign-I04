@@ -19,6 +19,11 @@ public class PossessedController : MonoBehaviour, ICharacterController
     public bool AlreadyPossessed {
         get { return _alreadyPossessed; }
     }
+
+    public float StableMovementSpeed
+    {
+        get { return _stableMoveSpeed; }
+    }
     public void AfterCharacterUpdate(float deltaTime)
     {
 

@@ -27,7 +27,6 @@ public class GuardPatrol : MonoBehaviour
     [SerializeField] private float _investigateDistance = 5f;
 
     private NavMeshAgent _agent;
-    private Animator _animator;
     private float _walkingSpeed;
     private GameObject _exclamationMark;
     private GameObject _questionMark;
@@ -50,7 +49,6 @@ public class GuardPatrol : MonoBehaviour
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
-        _animator = GetComponent<Animator>();
         _exclamationMark = transform.Find("ExclamationMark").gameObject;
         _questionMark = transform.Find("QuestionMark").gameObject;
         _walkingSpeed = _agent.speed;
@@ -71,17 +69,14 @@ public class GuardPatrol : MonoBehaviour
 
     private void Update()
     {
-        _animator.SetBool("isWalking", _agent.velocity.magnitude > 0.1f);
-        _animator.SetBool("isRunning", _agent.velocity.magnitude > 2f);
-
         switch (_currentState)
         {
-            case GuardState.Patrolling: PatrolUpdate(); break;
-            case GuardState.Waiting: WaitingUpdate(); break;
-            case GuardState.Alerted: AlertedUpdate(); break;
-            case GuardState.Chasing: ChasingUpdate(); break;
-            case GuardState.Investigating: InvestigatingUpdate(); break;
-            case GuardState.Returning: ReturningUpdate(); break;
+            case GuardState.Patrolling:       PatrolUpdate(); break;
+            case GuardState.Waiting:          WaitingUpdate(); break;
+            case GuardState.Alerted:          AlertedUpdate(); break;
+            case GuardState.Chasing:          ChasingUpdate(); break;
+            case GuardState.Investigating:    InvestigatingUpdate(); break;
+            case GuardState.Returning:        ReturningUpdate(); break;
         }
 
         HandleVision();
@@ -205,7 +200,6 @@ public class GuardPatrol : MonoBehaviour
 
     private void AlertedUpdate()
     {
-        Debug.Log(_isTargetVisible);
         if (!_isTargetVisible)
         {
             _stateTimer -= Time.deltaTime;
@@ -304,7 +298,7 @@ public class GuardPatrol : MonoBehaviour
     {
         _stateTimer += Time.deltaTime;
 
-        switch (_investigationPhase)
+    switch (_investigationPhase)
         {
             case 0: // Guarda attorno
                 if (_stateTimer >= 3f)
@@ -432,7 +426,7 @@ public class GuardPatrol : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Vector3 origin = transform.position;
-        Vector3 eyePos = transform.position + Vector3.up * 1.25f + transform.forward * 0.2f;
+        Vector3 eyePos = transform.position + Vector3.up * 1.25f  + transform.forward * 0.2f;
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(eyePos, 0.1f);
 
@@ -472,8 +466,4 @@ public class GuardPatrol : MonoBehaviour
         }
     }
 
-    void OnDisable()
-    {
-        HideMark();
-    }
 }

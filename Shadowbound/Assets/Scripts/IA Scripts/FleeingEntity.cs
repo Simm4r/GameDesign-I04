@@ -15,20 +15,15 @@ public class FleeingEntity : MonoBehaviour
     [SerializeField] private float _avoidStrength = 1.5f;
 
     private NavMeshAgent _agent;
-    private Animator _animator;
     private float _lastPathUpdateTime;
 
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
-        _animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
-        _animator.SetBool("isWalking", _agent.velocity.magnitude > 0.1f);
-        _animator.SetBool("isRunning", _agent.velocity.magnitude > 2f);
-
         switch (_currentState)
         {
             case EntityState.Idle:

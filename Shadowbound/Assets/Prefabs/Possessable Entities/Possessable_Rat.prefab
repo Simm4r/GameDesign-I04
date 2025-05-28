@@ -1069,8 +1069,8 @@ GameObject:
   - component: {fileID: 6841851475575924024}
   - component: {fileID: 4612839544542668698}
   - component: {fileID: 9042872949523382587}
-  - component: {fileID: 3564985206292206954}
   - component: {fileID: 4183756938194432999}
+  - component: {fileID: 5998458928245827149}
   - component: {fileID: 1212966343647346706}
   m_Layer: 0
   m_Name: Possessable_Rat
@@ -1227,22 +1227,6 @@ MonoBehaviour:
   _stableMovementSharpness: 15
   _orientationSharpness: 10
   _gravity: {x: 0, y: -30, z: 0}
---- !u!114 &3564985206292206954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5189304672232558380}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a1d9bdb6ed436d4588584335f40963c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animator: {fileID: 0}
-  _motor: {fileID: 0}
-  _walkTreshold: 0.1
-  _sprintTreshold: 2.35
 --- !u!114 &4183756938194432999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1261,6 +1245,22 @@ MonoBehaviour:
   _detectionRange: 3
   _pathRecalculateInterval: 1.2
   _avoidStrength: 1.5
+--- !u!114 &5998458928245827149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5189304672232558380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2f1091ee5526d42904d458bebc2f01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxSpeed: 3
+  _maxMotorSpeed: 5
+  _animationTransitionTime: 0.2
+  _input: {fileID: 0}
 --- !u!114 &1212966343647346706
 MonoBehaviour:
   m_ObjectHideFlags: 0
