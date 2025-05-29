@@ -33,6 +33,18 @@ public class PossessionHandler : MonoBehaviour
     {
         get { return _possessionCooldown; }
     }
+    public float PossessionMaxCooldown
+    {
+        get { return _possessionMaxCooldown; }
+    }
+    public float PossessionTime
+    {
+        get { return _possessionTime; }
+    }
+    public float PossessionMaxTime
+    {
+        get { return _possessionMaxTime; }
+    }
     public bool IsPossessing
     {
         get { return _isPossessing; }
@@ -171,7 +183,7 @@ public class PossessionHandler : MonoBehaviour
 
     private void HandlePossessionEnd()
     {
-        _possessionTime = 0.0f;
+
         _possessedMotor.enabled = false;
         _possessedMotorCollider.enabled = false;
         _possessedController.enabled = false;
@@ -215,9 +227,11 @@ public class PossessionHandler : MonoBehaviour
         }
         _isPossessing = false;
         _input.InPossession = false;
+        
         _possessedEntity.GetComponentInChildren<EyeParticlesHandler>().UnlitEyes();
         UnsetPossessedEntity();
         GetComponent<PlayerStats>().ResetPlayer();
+        _possessionTime = 0.0f;
         _healthbar.SetActive(true);
     }
     // Update is called once per frame

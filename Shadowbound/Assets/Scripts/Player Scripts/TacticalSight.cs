@@ -15,7 +15,15 @@ public class TacticalSight : MonoBehaviour
     private float _heightOffset = 0.15f;
     private HashSet<Collider> _alreadyDetected = new();
     private List<GameObject> _rootObjects = new();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    public float ShadowVisionCooldown {
+        get { return _cooldown; }
+    }
+
+    public float ShadowVisionMaxCooldown
+    {
+        get { return _maxCooldown; }
+    }
     void Awake()
     {
         _effectDuration = _expandingSight.main.startLifetime.constant;

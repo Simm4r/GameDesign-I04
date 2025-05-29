@@ -34,7 +34,6 @@ public class PlayerInput : MonoBehaviour
                 {
                     float thresholdEnter = 0.6f;
                     float thresholdExit = 0.5f;
-                    Debug.Log(_moveInput.magnitude);
                     if (!_isAnalogSprinting && _moveInput.magnitude >= thresholdEnter)
                         _isAnalogSprinting = true;
                     else if (_isAnalogSprinting && _moveInput.magnitude <= thresholdExit)

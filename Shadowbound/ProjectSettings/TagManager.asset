@@ -8,6 +8,9 @@ TagManager:
   - Possessable_Object
   - Possessable_Guard
   - Possessable_Animal
+  - Possession_Icon
+  - ShadowStep_Icon
+  - ShadowVision_Icon
   layers:
   - Default
   - TransparentFX
