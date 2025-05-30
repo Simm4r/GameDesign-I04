@@ -10,7 +10,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] private PossessedController _possessedController;
     public bool showInventory = false;
 
-    public void AddItem(ItemData newItem)
+    public bool AddItem(ItemData newItem)
     {
         InventoryItem existingItem = items.Find(i => i.data == newItem);
 
@@ -18,21 +18,15 @@ public class Inventory : MonoBehaviour
         {
             items.Add(new InventoryItem(newItem));
             Debug.Log($"Aggiunto {newItem.itemName}");
-            // _inventoryUI.UpdateUI();
             _inventoryUI.UpdateSlot(newItem.icon);
-
-            // string inventoryStr = "";
-            // foreach (InventoryItem i in items)
-            // {
-            //     inventoryStr = inventoryStr + " " + i.data.itemName;
-            // }
-            // Debug.Log($"inventario: {inventoryStr}");
+            return true;
 
         }
         else if (existingItem == null && items.Count >= maxItems)
         {
             Debug.Log("Inventory full");
         }
+        return false;
     }
 
     public void RemoveItem(ItemData itemToRemove)
@@ -69,14 +63,14 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
-    public void ExchangeItem(ItemData itemToExchange, ItemData traderItem, Inventory traderInventory)
-    {
-        RemoveItem(itemToExchange);
-        traderInventory.RemoveItem(traderItem);
+    // public void ExchangeItem(ItemData itemToExchange, ItemData traderItem, Inventory traderInventory)
+    // {
+    //     RemoveItem(itemToExchange);
+    //     traderInventory.RemoveItem(traderItem);
 
-        AddItem(traderItem);
-        traderInventory.AddItem(itemToExchange);
-    }
+    //     AddItem(traderItem);
+    //     traderInventory.AddItem(itemToExchange);
+    // }
 
     public void PrintInventory()
     {
@@ -107,5 +101,9 @@ public class Inventory : MonoBehaviour
     void Update()
     {
         showInventory = _possessedController.AlreadyPossessed;
+        if (showInventory)
+        {
+            _inventoryUI.enableInventoryUI();
+        }
     }
 }

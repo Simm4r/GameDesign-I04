@@ -25,10 +25,13 @@ public class PickupItem : MonoBehaviour
             {
                 return;
             }
-            Debug.Log($"Picking Object");
-            entityInventory.AddItem(itemData);
-            Debug.Log($"Inserted {itemData.itemName}, {itemData.description}");
-            Destroy(gameObject);
+            Debug.Log($"Try To pick Object");
+            bool isAdded = entityInventory.AddItem(itemData);
+            if (isAdded)
+            {
+                Debug.Log($"Inserted {itemData.itemName}, {itemData.description}");
+                Destroy(gameObject);
+            }
 
         }
     }
