@@ -288,6 +288,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 827885f9c6f8d734c894e9ee1ed7b6e7, type: 3}
   m_PrefabInstance: {fileID: 7607042}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &12054987 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6275043120392070020, guid: f3fb1271ede9bf8469d8b99637b77b42, type: 3}
+  m_PrefabInstance: {fileID: 1418374180}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &18236642
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6516,7 +6521,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.44
+  m_Radius: 1
   m_Center: {x: 0, y: -0.0000002225861, z: 0.08174535}
 --- !u!1001 &553040420
 PrefabInstance:
@@ -7174,7 +7179,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2865194175071063403, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: _possessionMaxTime
-      value: 100
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4330857223206950753, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: m_Name
@@ -8942,15 +8947,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2048849409555556315, guid: 6e0bde38fc030774cb8444009c09e62c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 26.38
+      value: 33.687
       objectReference: {fileID: 0}
     - target: {fileID: 2048849409555556315, guid: 6e0bde38fc030774cb8444009c09e62c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.837
+      value: 1.123
       objectReference: {fileID: 0}
     - target: {fileID: 2048849409555556315, guid: 6e0bde38fc030774cb8444009c09e62c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.862
+      value: 7.936
       objectReference: {fileID: 0}
     - target: {fileID: 2048849409555556315, guid: 6e0bde38fc030774cb8444009c09e62c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -18260,13 +18265,53 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6275043120392070020, guid: f3fb1271ede9bf8469d8b99637b77b42, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1418374186}
+    - targetCorrespondingSourceObject: {fileID: 6275043120392070020, guid: f3fb1271ede9bf8469d8b99637b77b42, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1418374185}
   m_SourcePrefab: {fileID: 100100000, guid: f3fb1271ede9bf8469d8b99637b77b42, type: 3}
 --- !u!4 &1418374181 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6655967117974321470, guid: f3fb1271ede9bf8469d8b99637b77b42, type: 3}
   m_PrefabInstance: {fileID: 1418374180}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1418374185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 12054987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f01ba28f90a3442caa480bcef0917ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData: {fileID: 11400000, guid: 50c56b223d6d54c33abbdecd44c17e44, type: 2}
+--- !u!135 &1418374186
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 12054987}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1
+  m_Center: {x: 0, y: 0.24644113, z: 0.009841964}
 --- !u!1001 &1418413140
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23195,6 +23240,7 @@ MonoBehaviour:
   - {fileID: 819873018}
   - {fileID: 1403206803}
   - {fileID: 1360489211}
+  _header: 0
 --- !u!4 &1879336982 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 4c4fe4f8da5fdef4eb5aa36563046edc, type: 3}

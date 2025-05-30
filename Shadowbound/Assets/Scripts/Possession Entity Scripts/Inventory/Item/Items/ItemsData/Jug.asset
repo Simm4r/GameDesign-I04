@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067a4384f2b544cf59ee9fdef79704ab, type: 3}
   m_Name: Jug
   m_EditorClassIdentifier: 
-  itemName: 
-  id: 0
-  icon: {fileID: 0}
-  description: 
+  itemName: Jug
+  id: 71
+  icon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  description: Jug for my Wine. Glu Glu Glu
