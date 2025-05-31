@@ -15,4 +15,5 @@ MonoBehaviour:
   itemName: Key Rusty
   id: 47
   icon: {fileID: 21300000, guid: 12740d2188a08954188cf684ac1fc092, type: 3}
+  worldPrefab: {fileID: 322969909244090201, guid: 1a4ce7ed7389af14cbc47a4b3ba8a164, type: 3}
   description: An old key. Maybe it opens some damn port uh?
