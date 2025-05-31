@@ -162,7 +162,7 @@ public class PossessionHandler : MonoBehaviour
         _possessedController.enabled = true;
         _possessedMotor.enabled = true;
 
-        _camera.player = _possessedEntity.transform;
+        _camera.SetTarget(_possessedEntity.transform);
 
         _input.InPossession = true;
         _possessedEntity.GetComponentInChildren<EyeParticlesHandler>().LitEyes();
@@ -206,7 +206,7 @@ public class PossessionHandler : MonoBehaviour
 
         }
         _collider.enabled = true;
-        _camera.player = gameObject.transform;
+        _camera.SetTarget(gameObject.transform);
         _undissolveController.StartUndissolve();
         if (_flameRing != null)
         {
