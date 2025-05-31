@@ -7,6 +7,7 @@ public class EntityInteractionHandler : MonoBehaviour
     [SerializeField] private float _interactionRadius = 2f;
     [SerializeField] private LayerMask _interactableLayer;
     [SerializeField] private KeyCode _interactKey = KeyCode.E;
+    [SerializeField] private KeyCode _dropKey = KeyCode.Q;
     void Start()
     {
 
@@ -18,7 +19,24 @@ public class EntityInteractionHandler : MonoBehaviour
         if (Input.GetKeyDown(_interactKey) && _playerInput.InPossession)
         {
             CheckForInteraction();
-
+        }
+        else if (Input.GetKeyDown(_dropKey) && _playerInput.InPossession)
+        {
+            // Drop Item
+            Inventory inventory = GetComponent<Inventory>();
+            if (inventory == null)
+            {
+                Debug.Log("Not inventory");
+                return;
+            }
+            ItemData itemToDrop = inventory.GetItemDataByPosition(); // item[0] by default
+            if (itemToDrop == null)
+            {
+                Debug.Log("Not item found");
+                return;
+            }
+            Vector3 dropPos = transform.position + transform.forward * 1.5f;
+            inventory.DropItem(itemToDrop, dropPos);
         }
     }
 

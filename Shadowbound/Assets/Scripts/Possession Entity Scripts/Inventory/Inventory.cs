@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
     [SerializeField] private InventoryUI _inventoryUI;
     public List<InventoryItem> items;
-    [SerializeField] int maxItems = 3;
+    [SerializeField] int maxItems = 1;
 
     [SerializeField] private PossessedController _possessedController;
     public bool showInventory = false;
@@ -40,9 +41,9 @@ public class Inventory : MonoBehaviour
         }
 
         items.Remove(item);
+        _inventoryUI.ClearSlot();
         Debug.Log($"Removed Item {item.data.itemName}");
         // _inventoryUI.UpdateUI();
-        _inventoryUI.ClearSlot();
 
         // string inventoryStr = "";
         // foreach (InventoryItem i in items)
@@ -52,6 +53,34 @@ public class Inventory : MonoBehaviour
         // Debug.Log($"inventario: {inventoryStr}");
     }
 
+    public void DropItem(ItemData itemToDrop, Vector3 dropPosition)
+    {
+        InventoryItem item = items.Find(i => i.data == itemToDrop);
+        if (item == null)
+        {
+            Debug.LogError("Item Not Found");
+            return;
+        }
+        if (item.data.worldPrefab != null)
+        {
+            GameObject dropped = Instantiate(item.data.worldPrefab, dropPosition, Quaternion.identity);
+            Rigidbody rb = dropped.GetComponent<Rigidbody>();
+            dropped.isStatic = false;
+            dropped.tag = "Item";
+            dropped.layer = LayerMask.NameToLayer("Interactables");
+            SphereCollider collider = dropped.AddComponent<SphereCollider>();
+            collider.isTrigger = true;
+            collider.radius = 1f;
+            PickupItem pickedProperty = dropped.AddComponent<PickupItem>();
+            pickedProperty.itemData = itemToDrop;
+
+            if (rb != null)
+            {
+                rb.AddForce(Camera.main.transform.forward * 2f, ForceMode.Impulse);
+            }
+        }
+        RemoveItem(item.data);
+    }
     public ItemData Contains(int idItem)
     {
         InventoryItem item = items.Find(i => i.data.id == idItem);
@@ -63,15 +92,16 @@ public class Inventory : MonoBehaviour
         return item.data;
     }
 
-    // public void ExchangeItem(ItemData itemToExchange, ItemData traderItem, Inventory traderInventory)
-    // {
-    //     RemoveItem(itemToExchange);
-    //     traderInventory.RemoveItem(traderItem);
-
-    //     AddItem(traderItem);
-    //     traderInventory.AddItem(itemToExchange);
-    // }
-
+    public ItemData GetItemDataByPosition(int position = 0)
+    {
+        if (position < 0 || position >= items.Count)
+        {
+            Debug.Log("Error, Invalid position");
+            return null;
+        }
+        return items[position].data;
+    }
+    // Just for Debug
     public void PrintInventory()
     {
         string inventoryStr = "";

@@ -34,6 +34,14 @@ public class InventoryUI : MonoBehaviour
         // UpdateUI();
     }
 
+    void Update()
+    {
+        // if (_maxSlots == 1 && _header == 0 && _slots[0].sprite == null)
+        // {
+
+        // }
+    }
+
     // Update is called once per frame
     public void enableInventoryUI()
     {
@@ -49,6 +57,7 @@ public class InventoryUI : MonoBehaviour
         if (_header < _maxSlots)
         {
             _slots[_header].sprite = sprite;
+            _slots[_header].enabled = true;
             _header++;
         }
         else
@@ -81,12 +90,13 @@ public class InventoryUI : MonoBehaviour
         }
         if (_header > 0)
             {
-                _slots[_header] = null;
+                _slots[_header].sprite = null;
                 _header--;
             }
             else if (_header == 0)
             {
-                _slots[_header] = null;
+                _slots[_header].sprite = null;
+                _slots[_header].enabled = false;
             }
             else
             {
