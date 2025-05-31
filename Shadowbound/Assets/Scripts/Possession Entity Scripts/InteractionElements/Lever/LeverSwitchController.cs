@@ -7,7 +7,7 @@ public class LeverSwitchController : MonoBehaviour
     private Vector3 _upAngle = new Vector3(-45, 0, 0);
     private Vector3 _downAngle = new Vector3(45, 0, 0);
 
-    [SerializeField] private PullLeverHandler _lever;
+    // [SerializeField] private PullLeverHandler _lever;
 
     private PortcullisHandler _portcullis;
 
@@ -33,7 +33,8 @@ public class LeverSwitchController : MonoBehaviour
     void Start()
     {
         // Debug.Log($"LeverSwitch initialRotation: {transform.localRotation}");
-        _isDirectionUp = _lever.IsUpLever;
+        // _isDirectionUp = _lever.IsUpLever;
+        _isDirectionUp = _portcullis.IsUp;
         if (_isDirectionUp)
         {
             initialRotation = Quaternion.Euler(_upAngle);
@@ -61,7 +62,7 @@ public class LeverSwitchController : MonoBehaviour
                 time += Time.deltaTime / duration;
                 transform.localRotation = Quaternion.Slerp(initialRotation, finalRotation, time);
 
-                if (transform.localRotation == finalRotation)
+                if (transform.localRotation == finalRotation && !_portcullis.IsActive)
                 {
                     _isActive = false;
                 }
@@ -76,7 +77,8 @@ public class LeverSwitchController : MonoBehaviour
             return;
         }
         // same as portcullis?
-        _isDirectionUp = _lever.IsUpLever;
+        // _isDirectionUp = _lever.IsUpLever;
+        _isDirectionUp = _portcullis.IsUp;
         if (_isDirectionUp)
         {
             initialRotation = Quaternion.Euler(_upAngle);

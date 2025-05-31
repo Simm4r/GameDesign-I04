@@ -8,6 +8,8 @@ TagManager:
   - PossessableEntity
   - PossessableGrabberEntity
   - Possessable_Guard
+  - Item
+  - LockedDoor
   layers:
   - Default
   - TransparentFX
@@ -15,7 +17,7 @@ TagManager:
   - ShadowCaster
   - Water
   - UI
-  - 
+  - Interactables
   - 
   - 
   - 

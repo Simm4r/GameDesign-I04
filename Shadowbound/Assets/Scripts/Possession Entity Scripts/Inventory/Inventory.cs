@@ -52,15 +52,15 @@ public class Inventory : MonoBehaviour
         // Debug.Log($"inventario: {inventoryStr}");
     }
 
-    public bool Contains(ItemData targetItem)
+    public ItemData Contains(int idItem)
     {
-        InventoryItem item = items.Find(i => i.data == targetItem);
+        InventoryItem item = items.Find(i => i.data.id == idItem);
 
         if (item == null)
         {
-            return false;
+            return null;
         }
-        return true;
+        return item.data;
     }
 
     // public void ExchangeItem(ItemData itemToExchange, ItemData traderItem, Inventory traderInventory)

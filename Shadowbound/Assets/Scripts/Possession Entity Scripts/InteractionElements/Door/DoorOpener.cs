@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class DoorOpener : MonoBehaviour
+public class DoorOpener : MonoBehaviour, IInteractable
 {
     [SerializeField] private string _tagTrigger = "Player";
     private bool _isEntityInRange = false;
@@ -35,33 +35,9 @@ public class DoorOpener : MonoBehaviour
 
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        Debug.Log($"[DOOR-enter] TAG: {other.tag}");
-        if (other.CompareTag(_tagTrigger))
-        {
-            _isEntityInRange = true;
-            _entity = other.gameObject;
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        Debug.Log($"[DOOR-exit] TAG: {other.tag}");
-        if (other.CompareTag(_tagTrigger))
-        {
-            _isEntityInRange = false;
-            _entity = null;
-        }
-    }
-
     // Update is called once per frame
     void Update()
     {
-        if (_isEntityInRange && Input.GetKeyDown(KeyCode.E) && !_isAnimationStarted)
-        {
-            StartAnimation();
-        }
         if (_isAnimationStarted)
         {
             time += Time.deltaTime / _duration;
@@ -71,6 +47,16 @@ public class DoorOpener : MonoBehaviour
                 _isOpen = !_isOpen;
                 _isAnimationStarted = false;
             }
+        }
+    }
+
+    public void Interact()
+    {
+        Debug.Log("Door interaction Started");
+        if (!_isAnimationStarted)
+        {
+            Debug.Log("Opening/Closing the door");
+            StartAnimation();
         }
     }
 
@@ -90,4 +76,24 @@ public class DoorOpener : MonoBehaviour
         transform.localRotation = _startRotation;
         _isAnimationStarted = true;
     }
+
+    // void OnTriggerEnter(Collider other)
+    // {
+    //     Debug.Log($"[DOOR-enter] TAG: {other.tag}");
+    //     if (other.CompareTag(_tagTrigger))
+    //     {
+    //         _isEntityInRange = true;
+    //         _entity = other.gameObject;
+    //     }
+    // }
+
+    // void OnTriggerExit(Collider other)
+    // {
+    //     Debug.Log($"[DOOR-exit] TAG: {other.tag}");
+    //     if (other.CompareTag(_tagTrigger))
+    //     {
+    //         _isEntityInRange = false;
+    //         _entity = null;
+    //     }
+    // }
 }

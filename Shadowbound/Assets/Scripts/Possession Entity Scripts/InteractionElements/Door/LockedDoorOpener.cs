@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LockedDoorOpener : MonoBehaviour
+public class LockedDoorOpener : MonoBehaviour, IInteractable
 {
 
     // [SerializeField] private string _tagTrigger = "Possessable_Guard";
@@ -9,11 +9,9 @@ public class LockedDoorOpener : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private bool _isOpen = false;
+    private bool _isContainingKey = false;
     private bool _isAnimationStarted = false;
-    private bool _isUnlocked = false;
-
-    private bool _isEntityInRange = false;
-    private GameObject _entity;
+    [SerializeField] private bool _isUnlocked = false;
 
     [SerializeField] private float _angle = 90f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -21,6 +19,12 @@ public class LockedDoorOpener : MonoBehaviour
     private Quaternion _finalRotation;
     private float time = 0;
     [SerializeField] private float _duration = 1.0f;
+
+    public ItemData Key
+    {
+        get { return _key; }
+        set { _key = value; }
+    }
 
     void Awake()
     {
@@ -36,15 +40,15 @@ public class LockedDoorOpener : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_isEntityInRange && Input.GetKeyDown(KeyCode.E) && !_isAnimationStarted && _targetInventory != null)
-        {
-            // find element
-            bool isContainingKey = _targetInventory.Contains(_key);
-            if (isContainingKey)
-            {
-                StartAnimation();
-            }
-        }
+        // if (_isEntityInRange && Input.GetKeyDown(KeyCode.E) && !_isAnimationStarted && _targetInventory != null)
+        // {
+        //     // find element
+        //     bool isContainingKey = _targetInventory.Contains(_key);
+        //     if (isContainingKey)
+        //     {
+        //         StartAnimation();
+        //     }
+        // }
         if (_isAnimationStarted)
         {
             time += Time.deltaTime / _duration;
@@ -57,29 +61,23 @@ public class LockedDoorOpener : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    public void Interact()
     {
-        Debug.Log($"[LOCKED-DOOR-enter] TAG: {other.tag}");
-        if (other.CompareTag("Possessable_Guard"))
+        if (_isUnlocked)
         {
-            _isEntityInRange = true;
-            _entity = other.gameObject;
-            _targetInventory = other.gameObject.GetComponent<Inventory>();
-
-            _targetInventory.PrintInventory();
+            StartAnimation();
+        }
+        else if (!_isAnimationStarted)
+        {
+            // bool isContainingKey = _targetInventory.Contains(_key);
+            if (_isContainingKey)
+            {
+                _isUnlocked = true;
+                StartAnimation();
+            }
         }
     }
 
-    void OnTriggerExit(Collider other)
-    {
-        Debug.Log($"[LOCKED-DOOR-exit] TAG: {other.tag}");
-        if (other.CompareTag("Possessable_Guard"))
-        {
-            _isEntityInRange = false;
-            _entity = null;
-            _targetInventory = null;
-        }
-    }
 
     public void StartAnimation()
     {
@@ -98,4 +96,11 @@ public class LockedDoorOpener : MonoBehaviour
         _isAnimationStarted = true;
     }
 
+    public void SetIfHasKey(ItemData data)
+    {
+        if (data.id == _key.id)
+        {
+            _isContainingKey = true;
+        }   
+    }
 }
