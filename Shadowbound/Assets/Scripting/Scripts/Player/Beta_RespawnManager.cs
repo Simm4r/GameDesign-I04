@@ -1,11 +1,10 @@
 using KinematicCharacterController;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Beta_RespawnManager : MonoBehaviour
 {
     [SerializeField] private PlayerStats _playerStats;
-    [SerializeField] private Player _player;
-    [SerializeField] private ScreenFadeController _screenFade;
     [SerializeField] private float _respawnDelay = 1f;
     [SerializeField] private KinematicCharacterMotor _motor;
 
@@ -20,19 +19,20 @@ public class Beta_RespawnManager : MonoBehaviour
         var controller = _playerStats.GetComponent<CharacterController>(); 
         if (controller != null) controller.enabled = false;
 
-        _screenFade.FadeToBlack();
+        ScreenFadeController.Instance.FadeToBlack();
         Invoke(nameof(RespawnPlayer), _respawnDelay);
     }
 
     private void RespawnPlayer()
     {
-        _motor.SetPosition(_player.ActualCheckPoint.transform.position);
-
+        _motor.SetPosition(Player.Instance.ActualCheckPoint.position);
+        
         var controller = _playerStats.GetComponent<CharacterController>();
         if (controller != null) controller.enabled = true;
-
-
         _playerStats.ResetPlayer();
-        _screenFade.FadeFromBlack();
+        if (SceneManager.GetActiveScene().name == Player.Instance.ActualCheckPoint.scene)
+            ScreenFadeController.Instance.FadeFromBlack();
+        else
+            SceneManager.LoadScene(Player.Instance.ActualCheckPoint.scene);
     }
 }

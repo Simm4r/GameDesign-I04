@@ -5,10 +5,8 @@ public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; }
     [SerializeField] private CharacterController _characterController;
-    [SerializeField] private PlayerInput _input;
-    [SerializeField] private Transform _camera;
     [SerializeField] private GameObject _dashTrail;
-    [SerializeField] private GameObject _actualCheckpoint;
+    [SerializeField] private RespawnPoint _actualCheckpoint;
     private bool _inDialogue = false;
 
     public bool InDialogue
@@ -17,7 +15,7 @@ public class Player : MonoBehaviour
         set { _inDialogue = value; }
     }
 
-    public GameObject ActualCheckPoint
+    public RespawnPoint ActualCheckPoint
     {
         get { return _actualCheckpoint; }
         set { _actualCheckpoint = value; }
@@ -31,15 +29,15 @@ public class Player : MonoBehaviour
         
         Instance = this;
         Application.targetFrameRate = 500;
-        _input = GetComponent<PlayerInput>();
-        _camera = Camera.main.transform;
         _characterController = GetComponent<CharacterController>();
         _dashTrail.SetActive(false);
     }
 
     private void HandleCharacterInputs()
     {
-        _characterController.SetInputs(ref _input, ref _camera);
+        if (_characterController == null)
+            return;
+        _characterController.SetInputs();
     }
 
     private void Update()

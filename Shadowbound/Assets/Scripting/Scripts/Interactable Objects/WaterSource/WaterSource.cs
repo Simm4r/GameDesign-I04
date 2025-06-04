@@ -5,7 +5,6 @@ public class WaterSource : Interactable
 {
     [SerializeField] private InteractionHandler _caller;
     [SerializeField] private PossessionHandler _possessionHandler;
-    [SerializeField] private PlayerInput _input;
     private GameObject _possessedEntity;
     private bool _canInteract = false;
     public override bool CanInteract
@@ -35,7 +34,7 @@ public class WaterSource : Interactable
 
     void Update()
     {
-        if (!_input.InPossession)
+        if (!PlayerInput.Instance.InPossession)
         {
             if (_canInteract != false)
                 _canInteract = false;

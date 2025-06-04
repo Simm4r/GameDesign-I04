@@ -7,7 +7,6 @@ public class NPCAnimatorController : MonoBehaviour
     [SerializeField] private float _maxSpeed = 2f;
     [SerializeField] private float _maxMotorSpeed = 1.9f;
     [SerializeField] private float _animationTransitionTime = 0.2f;
-    [SerializeField] private PlayerInput _input;
 
     private NavMeshAgent _agent;
     private Animator _animator;
@@ -27,9 +26,9 @@ public class NPCAnimatorController : MonoBehaviour
 
     private void SetAnimationValues()
     {
-        _maxSpeed =_input.InPossession ? _maxMotorSpeed : _maxSpeed;
+        _maxSpeed =PlayerInput.Instance.InPossession ? _maxMotorSpeed : _maxSpeed;
             
-        float currentSpeed = _input.InPossession ? GetComponent<KinematicCharacterMotor>().Velocity.magnitude : new Vector3(_agent.velocity.x, 0, _agent.velocity.z).magnitude;
+        float currentSpeed = PlayerInput.Instance.InPossession ? GetComponent<KinematicCharacterMotor>().Velocity.magnitude : new Vector3(_agent.velocity.x, 0, _agent.velocity.z).magnitude;
         float normalizedSpeed = Mathf.Clamp01(currentSpeed / _maxSpeed); // Valore tra 0 e 1
 
         // State = camminata o corsa, interpolata (usa threshold ~0.8f)

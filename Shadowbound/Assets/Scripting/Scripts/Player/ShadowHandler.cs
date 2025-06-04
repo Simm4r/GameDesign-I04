@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ShadowDamageHandler : MonoBehaviour
 {
@@ -29,6 +30,20 @@ public class ShadowDamageHandler : MonoBehaviour
 
     private void Awake()
     {
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
         _playerTransform = transform;
         _playerStats = GetComponent<PlayerStats>();
 
@@ -48,7 +63,6 @@ public class ShadowDamageHandler : MonoBehaviour
         _possessableObjects.AddRange(possessableAnimals);
         _possessionHandler = GetComponent<PossessionHandler>();
     }
-
     private void Update()
     {
         if (!IsInShadow() && _canTakeDamage)
@@ -142,8 +156,10 @@ public class ShadowDamageHandler : MonoBehaviour
 
         foreach (GameObject obj in _possessableObjects)
         {
-            if ((obj.transform.position - transform.position).magnitude > _inShadowObjectMaxTriggerDistance)
+            if (obj == null)
                 continue;
+            if ((obj.transform.position - transform.position).magnitude > _inShadowObjectMaxTriggerDistance)
+                    continue;
 
             Collider[] gameObjectColliders = obj.GetComponentsInChildren<Collider>().Where(c => c.enabled && c.gameObject.activeInHierarchy).ToArray();
             if (gameObjectColliders.Length == 0)

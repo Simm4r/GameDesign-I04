@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     {
         if (Instance != null)
         {
-            Destroy(gameObject);
+            CleanUpAndDestroy();
             return;
         }
 
@@ -18,6 +18,27 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            MarkPersistentObjects();
         }
+    }
+
+    private void MarkPersistentObjects()
+    {
+        foreach (GameObject obj in _persistentObjects)
+        {
+            if (obj != null)
+            {
+                DontDestroyOnLoad(obj);
+            }
+        }
+    }
+
+    private void CleanUpAndDestroy()
+    {
+        foreach (GameObject obj in _persistentObjects)
+        {
+            Destroy(obj);
+        }
+        Destroy(gameObject);
     }
 }

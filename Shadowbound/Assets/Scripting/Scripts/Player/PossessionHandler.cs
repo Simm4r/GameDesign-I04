@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class PossessionHandler : MonoBehaviour
 {
+    public static PossessionHandler Instance { get; private set; }
+
     [SerializeField] private DissolveController _dissolveController;
     [SerializeField] private UndissolveController _undissolveController;
     [SerializeField] private ParticleSystem _flameRing;
@@ -17,7 +19,6 @@ public class PossessionHandler : MonoBehaviour
     [SerializeField] private float _possessionMaxCooldown = 10f;
     
 
-    [SerializeField] private PlayerInput _input;
     private bool _isPossessing = false;
     private ShadowDamageHandler _shadowHandler;
     private KinematicCharacterMotor _possessedMotor;
@@ -114,7 +115,12 @@ public class PossessionHandler : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        _input = GetComponent<PlayerInput>();
+        if (Instance != null)
+        {
+            return;
+        }
+
+        Instance = this;
         _dissolveController = GetComponent<DissolveController>();
         _undissolveController = GetComponent<UndissolveController>();
         _shadowHandler = GetComponent<ShadowDamageHandler>();      
@@ -129,7 +135,7 @@ public class PossessionHandler : MonoBehaviour
 
         if (_shadowHandler.CurrentPossessable.GetComponentInParent<EntityStats>().EntityLevel > GetComponent<PlayerStats>().PossessionLevel)
             return;
-        if (_input.Possessing)
+        if (PlayerInput.Instance.Possessing)
             {
                 _healthbar.SetActive(false);
                 //Setto la possessable entity target
@@ -235,7 +241,7 @@ private Vector3 ComputeSafeDirection(Vector3 fromPosition)
 
         _camera.player = _possessedEntity.transform;
 
-        _input.InPossession = true;
+        PlayerInput.Instance.InPossession = true;
         _possessedEntity.GetComponentInChildren<EyeParticlesHandler>().LitEyes();
         _possessionCooldown = _possessionMaxCooldown;
     }
@@ -286,7 +292,7 @@ private Vector3 ComputeSafeDirection(Vector3 fromPosition)
             _flameRing.Play();
         }
         _isPossessing = false;
-        _input.InPossession = false;
+        PlayerInput.Instance.InPossession = false;
         
         _possessedEntity.GetComponentInChildren<EyeParticlesHandler>().UnlitEyes();
         UnsetPossessedEntity();
@@ -294,21 +300,24 @@ private Vector3 ComputeSafeDirection(Vector3 fromPosition)
         _possessionTime = 0.0f;
         _healthbar.SetActive(true);
     }
+
+
+
     // Update is called once per frame
     void Update()
     {
         if (!_isPossessing)
             HandlePossessionStart();
 
-        else if (!_dissolveController.IsDissolving && !_input.InPossession)
+        else if (!_dissolveController.IsDissolving && !PlayerInput.Instance.InPossession)
             HandlePossessionTransition();
 
-        if (_possessionTime == _possessionMaxTime || _input.QuitPossession)
+        if (_possessionTime == _possessionMaxTime || PlayerInput.Instance.QuitPossession)
             HandlePossessionEnd();
 
-        if (_input.InPossession)
+        if (PlayerInput.Instance.InPossession)
         {
-            _possessedController.SetInputs(ref _input);
+            _possessedController.SetInputs();
             _possessionTime += Time.deltaTime;
             _possessionTime = Mathf.Clamp(_possessionTime, 0.0f, _possessionMaxTime);
         }

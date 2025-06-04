@@ -8,11 +8,9 @@ public class InteractionHandler : MonoBehaviour
     [SerializeField] private GameObject _player = null;
     private Interactable _object;
     [SerializeField] private float _triggerDistance = 1f;
-    [SerializeField] private PlayerInput _input;
     private string _currentScheme = "None";
     [SerializeField] private Canvas _interactionBar;
     [SerializeField] private Image _uiBindingSprite;
-    [SerializeField] private InputSpritesByKey _keyIcons;
 
     public GameObject Player
     {
@@ -46,17 +44,17 @@ public class InteractionHandler : MonoBehaviour
         HandleSprite();
         if (!_interactionBar.enabled)
             _interactionBar.enabled = true;
-        if (_input.Interact)
+        if (PlayerInput.Instance.Interact)
             _object.Interact();
     }
 
     private void HandleSprite()
     {
-        if (_currentScheme == _input.CurrentScheme || _input.CurrentScheme == "None")
+        if (_currentScheme == PlayerInput.Instance.CurrentScheme || PlayerInput.Instance.CurrentScheme == "None")
             return;
 
-        _currentScheme = _input.CurrentScheme;
-        InputBinding bindingForScheme = _input.Controls.Player.Interact.bindings.FirstOrDefault(b => b.groups.Contains(_currentScheme));
-        _uiBindingSprite.sprite = _keyIcons.GetSpriteFromBindingPath(bindingForScheme.effectivePath);
+        _currentScheme = PlayerInput.Instance.CurrentScheme;
+        InputBinding bindingForScheme = PlayerInput.Instance.Controls.Player.Interact.bindings.FirstOrDefault(b => b.groups.Contains(_currentScheme));
+        _uiBindingSprite.sprite = InputSpritesByKey.Instance.GetSpriteFromBindingPath(bindingForScheme.effectivePath);
     }
 }

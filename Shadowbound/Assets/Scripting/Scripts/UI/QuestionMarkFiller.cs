@@ -11,7 +11,6 @@ public class QuestionMarkFiller : MonoBehaviour
     {
         float t = Mathf.Clamp01(stateTimer / _maxTime);
         _fillImage.fillAmount = t;
-        Debug.Log(t);
     }
 
     public void ResetFill()

@@ -5,7 +5,6 @@ using UnityEngine;
 public class TacticalSight : MonoBehaviour
 {
     [SerializeField] private ParticleSystem _expandingSight;
-    [SerializeField] private PlayerInput _input;
     [SerializeField] private float _maxCooldown = 5f;
 
     private float _maxRadius;
@@ -73,7 +72,7 @@ public class TacticalSight : MonoBehaviour
             return;
         }
 
-        if (_input.ShadowVision && !_expandingSight.IsAlive())
+        if (PlayerInput.Instance.ShadowVision && !_expandingSight.IsAlive())
         {
             _expandingSight.Play();
             _timer = 0.0f;

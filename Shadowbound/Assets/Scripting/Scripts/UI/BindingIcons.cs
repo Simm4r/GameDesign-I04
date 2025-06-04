@@ -4,6 +4,19 @@ using UnityEngine.UI;
 
 public class InputSpritesByKey : MonoBehaviour
 {
+
+    public static InputSpritesByKey Instance { get; private set; }
+
+    void Awake()
+    {
+        if (Instance != null)
+        {
+            return;
+        }
+
+        Instance = this;
+    }
+
     [Header("TASTIERA - LETTERE")]
     [SerializeField] private Sprite spriteA;
     [SerializeField] private Sprite spriteB;

@@ -6,7 +6,6 @@ public class AnimatorController : MonoBehaviour
     [SerializeField] private KinematicCharacterMotor _motor;
     [SerializeField] private Animator _animator;
     [SerializeField] private CharacterController _characterController;
-    [SerializeField] private PlayerInput _input;
     [SerializeField] private float _animationTransitionTime = 0.2f;
     private float _currentState = 0.0f;
     private float _currentVert = 0.0f;
@@ -15,14 +14,14 @@ public class AnimatorController : MonoBehaviour
     {
         _animator = GetComponentInChildren<Animator>();
         _characterController = GetComponent<CharacterController>();
-        _input = GetComponent<PlayerInput>();
+
     }
 
     private void setAnimationValues()
     {
         if (_motor.GroundingStatus.IsStableOnGround)
         {
-            if (_input.MovementInput != Vector3.zero)
+            if (PlayerInput.Instance.MovementInput != Vector3.zero)
             {
                 float newState = Mathf.Clamp01(Mathf.Pow(_motor.Velocity.magnitude / _characterController.SprintSpeed, 2.2f));
                 _currentState = Mathf.Lerp(_currentState, newState, Time.deltaTime / _animationTransitionTime);

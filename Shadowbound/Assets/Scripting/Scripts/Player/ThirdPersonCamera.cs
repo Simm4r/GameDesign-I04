@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class ThirdPersonCamera : MonoBehaviour
 {
-    [SerializeField] private PlayerInput _input;
     public Transform player;
     public float distance = 4f;
     public float height = 1.5f;
@@ -36,8 +35,8 @@ public class ThirdPersonCamera : MonoBehaviour
 
         if (!player) return;
 
-        float mouseX = _input.LookInput.x;
-        float mouseY = _input.LookInput.y;
+        float mouseX = PlayerInput.Instance.LookInput.x;
+        float mouseY = PlayerInput.Instance.LookInput.y;
 
 
         yaw += (invertX ? -1 : 1) * mouseX * horizontalSensitivity;

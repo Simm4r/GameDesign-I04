@@ -4,7 +4,6 @@ public class SingleDialogue : Talkable
 {
     [SerializeField] private DialogueController _dialogueController;
     [SerializeField] private DialogueText _dialogueText;
-    [SerializeField] private PlayerInput _input;
     [SerializeField] private TriggerProximityHandler _handler;
     private bool firstLine = true;
     public override void Talk()
@@ -14,7 +13,7 @@ public class SingleDialogue : Talkable
             _dialogueController.DisplayNextParagraph(_dialogueText);
             firstLine = false;
         }
-        else if (_input.DialogueNext)
+        else if (PlayerInput.Instance.DialogueNext)
         {
             _dialogueController.DisplayNextParagraph(_dialogueText);
 

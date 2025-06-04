@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerInput : MonoBehaviour
 {
+    public static PlayerInput Instance { get; private set; }
     [SerializeField] private bool _sprintWithButton = true;
     private PlayerControls _controls;
     private Vector2 _moveInput;
@@ -56,9 +57,17 @@ public class PlayerInput : MonoBehaviour
     public bool Interact => !Player.Instance.InDialogue && _controls.Player.Interact.ReadValue<float>() > 0;
     public bool QuitPossession => !Player.Instance.InDialogue && _inPossession && _controls.Player.QuitPossession.ReadValue<float>() > 0;
     public bool DialogueNext => Player.Instance.InDialogue && _controls.Player.DialogueNext.triggered;
+    public bool DropItem => !Player.Instance.InDialogue && _inPossession && _controls.Player.DropItem.triggered;
 
     private void Awake()
     {
+        if (Instance != null)
+        {
+            return;
+        }
+
+        Instance = this;
+
         _controls = new PlayerControls();
 
         _controls.Player.Move.performed += ctx =>
@@ -92,7 +101,7 @@ public class PlayerInput : MonoBehaviour
                 _moveInput = Vector2.zero;
                 return;
             }
-                
+
             _moveInput = Vector2.zero;
             UpdateCurrentScheme(ctx.control.device);
         };
@@ -186,6 +195,16 @@ public class PlayerInput : MonoBehaviour
         };
 
         _controls.Player.DialogueNext.canceled += ctx =>
+        {
+            UpdateCurrentScheme(ctx.control.device);
+        };
+        //DropItem Button event register
+        _controls.Player.DropItem.performed += ctx =>
+        {
+            UpdateCurrentScheme(ctx.control.device);
+        };
+
+        _controls.Player.DropItem.canceled += ctx =>
         {
             UpdateCurrentScheme(ctx.control.device);
         };

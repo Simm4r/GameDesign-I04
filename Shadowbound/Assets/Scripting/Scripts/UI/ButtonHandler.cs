@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class ButtonHandler : MonoBehaviour
 {
-    [SerializeField] private PlayerInput _input;
     [SerializeField] private InputSpritesByKey _keyIcons;
     private Image _sprite;
     
@@ -19,26 +18,26 @@ public class ButtonHandler : MonoBehaviour
     }
     void Update()
     {
-        if (_currentScheme == _input.CurrentScheme)
+        if (_currentScheme == PlayerInput.Instance.CurrentScheme)
             return;
        
-        _currentScheme = _input.CurrentScheme;
+        _currentScheme = PlayerInput.Instance.CurrentScheme;
         InputBinding bindingForScheme;
 
         switch (_gameTag)
         {
             case "Possession_Icon":
-                bindingForScheme = _input.Controls.Player.Possession.bindings.FirstOrDefault(b => b.groups.Contains(_currentScheme));
+                bindingForScheme = PlayerInput.Instance.Controls.Player.Possession.bindings.FirstOrDefault(b => b.groups.Contains(_currentScheme));
                 _sprite.sprite = _keyIcons.GetSpriteFromBindingPath(bindingForScheme.effectivePath);
                 break;
 
             case "ShadowStep_Icon":
-                bindingForScheme = _input.Controls.Player.ShadowStep.bindings.FirstOrDefault(b => b.groups.Contains(_currentScheme));
+                bindingForScheme = PlayerInput.Instance.Controls.Player.ShadowStep.bindings.FirstOrDefault(b => b.groups.Contains(_currentScheme));
                 _sprite.sprite = _keyIcons.GetSpriteFromBindingPath(bindingForScheme.effectivePath);
                 break;
 
             case "ShadowVision_Icon":
-                bindingForScheme = _input.Controls.Player.ShadowVision.bindings.FirstOrDefault(b => b.groups.Contains(_currentScheme));
+                bindingForScheme = PlayerInput.Instance.Controls.Player.ShadowVision.bindings.FirstOrDefault(b => b.groups.Contains(_currentScheme));
                 _sprite.sprite = _keyIcons.GetSpriteFromBindingPath(bindingForScheme.effectivePath);
                 break;
         }

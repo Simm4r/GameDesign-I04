@@ -11,6 +11,7 @@ TagManager:
   - Possession_Icon
   - ShadowStep_Icon
   - ShadowVision_Icon
+  - Item
   layers:
   - Default
   - TransparentFX

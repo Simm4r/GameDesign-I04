@@ -1,8 +1,8 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HandleFlameLit : MonoBehaviour
 {
-    [SerializeField] private Player _player;
     [SerializeField] private ParticleSystem _flame;
     [SerializeField] private Material _unlitMaterial; 
     [SerializeField] private Material _litMaterial;
@@ -12,7 +12,11 @@ public class HandleFlameLit : MonoBehaviour
     void Update()
     {
         var emission = _flame.emission;
-        if (_player.ActualCheckPoint != gameObject && emission.rateOverTime.constant > 0)
+        if (
+            (Player.Instance.ActualCheckPoint.position != transform.position 
+            || Player.Instance.ActualCheckPoint.scene != SceneManager.GetActiveScene().name)
+            && emission.rateOverTime.constant > 0
+        )
         {
             emission.rateOverTime = 0f;
             _crystalBall.material = _unlitMaterial;
@@ -20,7 +24,11 @@ public class HandleFlameLit : MonoBehaviour
         }
 
 
-        else if (_player.ActualCheckPoint == gameObject && emission.rateOverTime.constant == 0)
+        else if (
+            Player.Instance.ActualCheckPoint.position == transform.position 
+            || Player.Instance.ActualCheckPoint.scene == SceneManager.GetActiveScene().name
+            && emission.rateOverTime.constant > 0
+        )
         {
             emission.rateOverTime = 40f;
             _crystalBall.material = _litMaterial;

@@ -1,10 +1,16 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
+[System.Serializable]
+public struct RespawnPoint
+{
+    public string scene;
+    public Vector3 position;
+}
 public class CrystalBall : Interactable
 {
     [SerializeField] private GameObject _respawnPosition;
     [SerializeField] private ParticleSystem _flame;
-    [SerializeField] private PlayerInput _input;
     private bool _canInteract = true;
     public override bool CanInteract
     {
@@ -15,12 +21,16 @@ public class CrystalBall : Interactable
     public override void Interact()
     {
         _canInteract = false;
-        Player.Instance.ActualCheckPoint = _respawnPosition;
+        RespawnPoint checkPoint;
+        checkPoint.position = _respawnPosition.transform.position;
+
+        checkPoint.scene = SceneManager.GetActiveScene().name;
+        Player.Instance.ActualCheckPoint = checkPoint;
     }
 
     void Update()
     {
-        if (_input.InPossession)
+        if (PlayerInput.Instance.InPossession)
         {
             if (_canInteract != false)
                 _canInteract = false;

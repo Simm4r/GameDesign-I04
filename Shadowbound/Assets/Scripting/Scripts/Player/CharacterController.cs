@@ -41,21 +41,21 @@ public class CharacterController : MonoBehaviour, ICharacterController
         
     }
 
-    public void SetInputs(ref PlayerInput input, ref Transform camera)
+    public void SetInputs()
     {
-        Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(input.MovementInput.x, 0.0f, input.MovementInput.z), 1.0f);
-        Vector3 cameraPlanarDirection = Vector3.ProjectOnPlane(camera.rotation * Vector3.forward, _motor.CharacterUp).normalized;
+        Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(PlayerInput.Instance.MovementInput.x, 0.0f, PlayerInput.Instance.MovementInput.z), 1.0f);
+        Vector3 cameraPlanarDirection = Vector3.ProjectOnPlane(Camera.main.transform.rotation * Vector3.forward, _motor.CharacterUp).normalized;
 
         if (cameraPlanarDirection.sqrMagnitude == 0.0f)
         {
-            cameraPlanarDirection = Vector3.ProjectOnPlane(camera.rotation * Vector3.up, _motor.CharacterUp).normalized;
+            cameraPlanarDirection = Vector3.ProjectOnPlane(Camera.main.transform.rotation * Vector3.up, _motor.CharacterUp).normalized;
         }
 
         Quaternion cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, _motor.CharacterUp);
         _moveInputVector = cameraPlanarRotation * moveInputVector;
         _lookInputVector = _moveInputVector.normalized;
 
-        if (input.Sprint)
+        if (PlayerInput.Instance.Sprint)
             _stableMoveSpeed = _sprintSpeed;
         else
             _stableMoveSpeed = _walkSpeed;

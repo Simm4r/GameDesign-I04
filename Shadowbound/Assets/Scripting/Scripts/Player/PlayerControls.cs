@@ -171,6 +171,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DropItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""f8c1dda3-4fc3-43b7-8e54-4904e2b78313"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -415,6 +424,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""DialogueNext"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2f795882-ec51-4153-aae8-7f2a832fa71f"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";MouseKeyboard"",
+                    ""action"": ""DropItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""52a811f8-31b0-4ad2-9268-af108aa51644"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""DropItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -460,6 +491,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_QuitPossession = m_Player.FindAction("QuitPossession", throwIfNotFound: true);
         m_Player_DialogueNext = m_Player.FindAction("DialogueNext", throwIfNotFound: true);
+        m_Player_DropItem = m_Player.FindAction("DropItem", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -549,6 +581,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_QuitPossession;
     private readonly InputAction m_Player_DialogueNext;
+    private readonly InputAction m_Player_DropItem;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -596,6 +629,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/DialogueNext".
         /// </summary>
         public InputAction @DialogueNext => m_Wrapper.m_Player_DialogueNext;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/DropItem".
+        /// </summary>
+        public InputAction @DropItem => m_Wrapper.m_Player_DropItem;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -649,6 +686,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DialogueNext.started += instance.OnDialogueNext;
             @DialogueNext.performed += instance.OnDialogueNext;
             @DialogueNext.canceled += instance.OnDialogueNext;
+            @DropItem.started += instance.OnDropItem;
+            @DropItem.performed += instance.OnDropItem;
+            @DropItem.canceled += instance.OnDropItem;
         }
 
         /// <summary>
@@ -687,6 +727,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DialogueNext.started -= instance.OnDialogueNext;
             @DialogueNext.performed -= instance.OnDialogueNext;
             @DialogueNext.canceled -= instance.OnDialogueNext;
+            @DropItem.started -= instance.OnDropItem;
+            @DropItem.performed -= instance.OnDropItem;
+            @DropItem.canceled -= instance.OnDropItem;
         }
 
         /// <summary>
@@ -816,5 +859,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDialogueNext(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "DropItem" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDropItem(InputAction.CallbackContext context);
     }
 }
