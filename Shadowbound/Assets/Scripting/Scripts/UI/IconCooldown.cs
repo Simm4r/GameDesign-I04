@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class IconCooldown : MonoBehaviour
 {
     [SerializeField] private Image _cooldownIcon;
-    [SerializeField] private PossessionHandler _possessionHandler;
-    [SerializeField] private TacticalSight _tacticalSight;
     [SerializeField] private TextMeshProUGUI _timer;
     private float _maxCooldown;
     private float _cooldown;
@@ -22,13 +20,13 @@ public class IconCooldown : MonoBehaviour
         switch (tag)
         {
             case "Possession_Icon":
-                _cooldown = _possessionHandler.PossessionCooldown;
-                _maxCooldown = _possessionHandler.PossessionMaxCooldown;
+                _cooldown = PossessionHandler.Instance.PossessionCooldown;
+                _maxCooldown = PossessionHandler.Instance.PossessionMaxCooldown;
                 break;
 
             case "ShadowVision_Icon":
-                _cooldown = _tacticalSight.ShadowVisionCooldown;
-                _maxCooldown = _tacticalSight.ShadowVisionMaxCooldown;
+                _cooldown = TacticalSight.Instance.ShadowVisionCooldown;
+                _maxCooldown = TacticalSight.Instance.ShadowVisionMaxCooldown;
                 break;
         }
     }

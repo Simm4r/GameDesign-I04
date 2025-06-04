@@ -8,7 +8,6 @@ public class FleeingEntity : MonoBehaviour
     [SerializeField] private EntityState _currentState = EntityState.Idle;
 
     [Header("Settings")]
-    [SerializeField] private Transform _player;
     [SerializeField] private Transform _den;
     [SerializeField] private float _detectionRange = 3f;
     [SerializeField] private float _pathRecalculateInterval = 1.2f;
@@ -37,10 +36,10 @@ public class FleeingEntity : MonoBehaviour
 
     private void CheckPlayerDetection()
     {
-        if (_player == null) return;
+        if (Player.Instance == null) return;
 
-        float dist = Vector3.Distance(transform.position, _player.position);
-        if (dist <= _detectionRange && HasLineOfSightTo(_player))
+        float dist = Vector3.Distance(transform.position, Player.Instance.transform.position);
+        if (dist <= _detectionRange && HasLineOfSightTo(Player.Instance.transform))
         {
             StartFleeing();
         }
@@ -64,7 +63,7 @@ public class FleeingEntity : MonoBehaviour
         float timeSinceUpdate = Time.time - _lastPathUpdateTime;
         if (timeSinceUpdate >= _pathRecalculateInterval)
         {
-            Vector3 fleeDir = (transform.position - _player.position).normalized;
+            Vector3 fleeDir = (transform.position - Player.Instance.transform.position).normalized;
             Vector3 toDenDir = (_den.position - transform.position).normalized;
 
             // Direzione combinata: si allontana ma "scivola" verso la tana

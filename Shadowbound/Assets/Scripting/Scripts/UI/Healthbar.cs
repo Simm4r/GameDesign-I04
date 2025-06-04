@@ -4,6 +4,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Healthbar : MonoBehaviour
 {
+    public static Healthbar Instance { get; private set; }
     [SerializeField] private Transform _follow; // il transform del player
     [SerializeField] private Vector3 _offset = new Vector3(0.3f, 0.5f, 0);
 
@@ -18,9 +19,15 @@ public class Healthbar : MonoBehaviour
 
     private Camera _camera;
 
+    private void Awake()
+    {
+        if (Instance != null)
+            return;
+        Instance = this;
+    }
     private void Start()
     {
-        _camera = Camera.main; 
+        _camera = Camera.main;
     }
 
     public void UpdateHealthbar(float maxHealth, float currentHealth)
@@ -59,5 +66,10 @@ public class Healthbar : MonoBehaviour
     {
         transform.position = _follow.position + _offset;
         transform.rotation = Quaternion.LookRotation(transform.position - _camera.transform.position);
+    }
+
+    public void Hide()
+    {
+        _visibleTimer = 0;
     }
 }

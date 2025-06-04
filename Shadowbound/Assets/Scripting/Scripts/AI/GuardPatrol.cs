@@ -14,7 +14,6 @@ public class GuardPatrol : MonoBehaviour
     [SerializeField] private int[] _waitPoints;
 
     [Header("Alert Settings")]
-    [SerializeField] private Transform _target;
     [SerializeField] private float _alertRange = 8f;
     [SerializeField] private float _alertAngle = 120f;
 
@@ -26,6 +25,7 @@ public class GuardPatrol : MonoBehaviour
     [Header("Investigation Settings")]
     [SerializeField] private float _investigateDistance = 5f;
 
+    private Transform _target;
     private NavMeshAgent _agent;
     private float _walkingSpeed;
     private GameObject _exclamationMark;
@@ -46,6 +46,8 @@ public class GuardPatrol : MonoBehaviour
     private float _nextLookDuration = 0f;
     private Quaternion _lookAroundRotation;
     private bool _isLookingAround = false;
+
+    private bool _firstEnable = true;
 
     private void Awake()
     {
@@ -69,16 +71,32 @@ public class GuardPatrol : MonoBehaviour
         // HideMark();
     }
 
+    private void Start()
+    {
+        _target = Player.Instance.transform;
+    }
+
+    private void OnEnable()
+    {
+        if (_firstEnable)
+        {
+            _firstEnable = false;
+            return;
+        }
+
+        StartInvestigation(2);
+    }
+
     private void Update()
     {
         switch (_currentState)
         {
-            case GuardState.Patrolling:       PatrolUpdate(); break;
-            case GuardState.Waiting:          WaitingUpdate(); break;
-            case GuardState.Alerted:          AlertedUpdate(); break;
-            case GuardState.Chasing:          ChasingUpdate(); break;
-            case GuardState.Investigating:    InvestigatingUpdate(); break;
-            case GuardState.Returning:        ReturningUpdate(); break;
+            case GuardState.Patrolling: PatrolUpdate(); break;
+            case GuardState.Waiting: WaitingUpdate(); break;
+            case GuardState.Alerted: AlertedUpdate(); break;
+            case GuardState.Chasing: ChasingUpdate(); break;
+            case GuardState.Investigating: InvestigatingUpdate(); break;
+            case GuardState.Returning: ReturningUpdate(); break;
         }
 
         HandleVision();
@@ -289,12 +307,12 @@ public class GuardPatrol : MonoBehaviour
     }
 
     // === INVESTIGATING ===
-    private void StartInvestigation()
+    private void StartInvestigation(int phase = 0)
     {
         _currentState = GuardState.Investigating;
         _agent.isStopped = true;
         _stateTimer = 0f;
-        _investigationPhase = 0;
+        _investigationPhase = phase;
         _agent.speed = _walkingSpeed;
         _markFiller.SetMaxFill();
         ShowMark(_questionMark);
@@ -331,7 +349,7 @@ public class GuardPatrol : MonoBehaviour
                 break;
 
             case 2: // Guarda attorno
-                if (_stateTimer >= 3f)
+                if (_stateTimer >= 4f)
                 {
                     _investigationPhase = 3;
                     _markFiller.ResetFill();
@@ -339,7 +357,10 @@ public class GuardPatrol : MonoBehaviour
                 }
                 else
                 {
-                    HandleLookAround();
+                    if (_stateTimer >= 1f)
+                    {
+                        HandleLookAround();
+                    }
                 }
                 break;
         }

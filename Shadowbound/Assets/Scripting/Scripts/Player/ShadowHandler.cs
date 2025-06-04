@@ -3,15 +3,13 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ShadowDamageHandler : MonoBehaviour
+public class ShadowHandler : MonoBehaviour
 {
+    public static ShadowHandler Instance { get; private set; }
     [SerializeField] private LayerMask _shadowCastingLayers;
     [SerializeField] private float _heightOffset = 0.445f;
     [SerializeField] private float _lightThreshold = 0.5f;
     [SerializeField] private float _inShadowObjectMaxTriggerDistance = 1.0f;
-
-    private Transform _playerTransform;
-    private PlayerStats _playerStats;
     private bool _foundGameObjectInPureShadow = false;
 
     private bool _playerInShadow = true;
@@ -20,8 +18,6 @@ public class ShadowDamageHandler : MonoBehaviour
     private List<GameObject> _possessableObjects = new();
 
     private Possessable _currentPossessable;
-
-    private PossessionHandler _possessionHandler;
     public Possessable CurrentPossessable
     {
         get { return _currentPossessable; }
@@ -30,6 +26,9 @@ public class ShadowDamageHandler : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null)
+            return;
+        Instance = this;
     }
 
     private void OnEnable()
@@ -44,9 +43,6 @@ public class ShadowDamageHandler : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        _playerTransform = transform;
-        _playerStats = GetComponent<PlayerStats>();
-
         Light[] allLights = FindObjectsByType<Light>(FindObjectsSortMode.None);
         foreach (Light light in allLights)
         {
@@ -61,24 +57,23 @@ public class ShadowDamageHandler : MonoBehaviour
         _possessableObjects.AddRange(possessableGuards);
         _possessableObjects.AddRange(possessableObjects);
         _possessableObjects.AddRange(possessableAnimals);
-        _possessionHandler = GetComponent<PossessionHandler>();
     }
     private void Update()
     {
         if (!IsInShadow() && _canTakeDamage)
         {
-            _playerStats.TakeDamage();
+            PlayerStats.Instance.TakeDamage();
         }
         else
         {
-            _playerStats.HealDamage();
+            PlayerStats.Instance.HealDamage();
         }
         CheckObjectsInPureShadow();
     }
 
     private bool IsInShadow()
     {
-        Vector3 origin = _playerTransform.position + Vector3.down * _heightOffset;
+        Vector3 origin = Player.Instance.transform.position + Vector3.down * _heightOffset;
         float totalLightIntensity = 0f;
 
         Possessable detectedPossessable = null;
@@ -114,7 +109,7 @@ public class ShadowDamageHandler : MonoBehaviour
         // aggiorno se necessario il _currentPossessable
         if (_currentPossessable != detectedPossessable && !_foundGameObjectInPureShadow)
         {
-            if (_possessionHandler.PossessionCooldown == 0)
+            if (PossessionHandler.Instance.PossessionCooldown == 0)
             {
                 if (_currentPossessable != null)
                     _currentPossessable.HidePossessableCue();
@@ -142,7 +137,7 @@ public class ShadowDamageHandler : MonoBehaviour
         if (_playerInShadow != isInShadow)
         {
             _playerInShadow = isInShadow;
-            _playerStats.ResetTimers();
+            PlayerStats.Instance.ResetTimers();
         }
 
         return isInShadow;
@@ -214,7 +209,7 @@ public class ShadowDamageHandler : MonoBehaviour
                 break;
             }
         }
-        if (_possessionHandler.PossessionCooldown == 0)
+        if (PossessionHandler.Instance.PossessionCooldown == 0)
         {
             if (foundGameObject != null)
             {

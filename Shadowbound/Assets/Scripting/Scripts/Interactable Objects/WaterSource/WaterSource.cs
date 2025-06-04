@@ -4,7 +4,6 @@ using UnityEngine;
 public class WaterSource : Interactable
 {
     [SerializeField] private InteractionHandler _caller;
-    [SerializeField] private PossessionHandler _possessionHandler;
     private GameObject _possessedEntity;
     private bool _canInteract = false;
     public override bool CanInteract
@@ -41,9 +40,9 @@ public class WaterSource : Interactable
             return;
         }
 
-        if (_possessionHandler.PossessedEntity != null && _possessionHandler.PossessedEntity.tag == "Possessable_Guard")
+        if (PossessionHandler.Instance.PossessedEntity != null && PossessionHandler.Instance.PossessedEntity.tag == "Possessable_Guard")
         {
-            _possessedEntity = _possessionHandler.PossessedEntity;
+            _possessedEntity = PossessionHandler.Instance.PossessedEntity;
             GameObject torch = _possessedEntity.GetComponent<GuardStats>().Torch;
             Light torchLight = torch.GetComponentInChildren<Light>();
 
@@ -53,7 +52,7 @@ public class WaterSource : Interactable
                 return;
             }
             
-            _caller.Player = _possessionHandler.PossessedEntity;
+            _caller.Player = PossessionHandler.Instance.PossessedEntity;
             _canInteract = true;
         }
 

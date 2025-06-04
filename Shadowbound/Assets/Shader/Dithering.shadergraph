@@ -17,6 +17,9 @@
         },
         {
             "m_Id": "a774cbd93c6a4fefbea8d98774adf207"
+        },
+        {
+            "m_Id": "517b267c8a8148e1822e58d6f82f1433"
         }
     ],
     "m_Keywords": [],
@@ -631,6 +634,34 @@
 }
 
 {
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "517b267c8a8148e1822e58d6f82f1433",
+    "m_Guid": {
+        "m_GuidSerialized": "58d564ab-f4c3-401f-a2b3-f98f6d20a7ee"
+    },
+    "m_Name": "DitherDensity",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "DitherDensity",
+    "m_DefaultReferenceName": "_DitherDensity",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 100.0,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
+}
+
+{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
     "m_ObjectId": "584768d42c9c499f96b496e37964acd6",
@@ -1167,6 +1198,9 @@
         },
         {
             "m_Id": "a774cbd93c6a4fefbea8d98774adf207"
+        },
+        {
+            "m_Id": "517b267c8a8148e1822e58d6f82f1433"
         }
     ]
 }

@@ -24,7 +24,7 @@ public class InventoryUI : MonoBehaviour
         {
             _slots[i].enabled = false;
         }
-        Image panelImage = GetComponent<Image>();
+        Image panelImage = GetComponentInChildren<Image>();
         panelImage.enabled = false;
 
     }

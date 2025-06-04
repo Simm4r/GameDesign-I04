@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TacticalSight : MonoBehaviour
 {
+    public static TacticalSight Instance { get; private set; }
     [SerializeField] private ParticleSystem _expandingSight;
     [SerializeField] private float _maxCooldown = 5f;
 
@@ -25,6 +26,10 @@ public class TacticalSight : MonoBehaviour
     }
     void Awake()
     {
+        if (Instance != null)
+            return;
+
+        Instance = this;
         _effectDuration = _expandingSight.main.startLifetime.constant;
         _maxRadius = _expandingSight.main.startSize.constant / 2;
     }

@@ -4,7 +4,6 @@ using UnityEngine;
 public class Door : Interactable
 {
     [SerializeField] private DoorOpener _doorOpener;
-    [SerializeField] private PossessionHandler _possessionHandler;
     [SerializeField] private InteractionHandler _caller;
     private bool _canInteract = true;
     public override bool CanInteract
@@ -28,9 +27,9 @@ public class Door : Interactable
             return;
         }
 
-        if (_possessionHandler.PossessedEntity != null && _possessionHandler.PossessedEntity.tag == "Possessable_Guard")
+        if (PossessionHandler.Instance.PossessedEntity != null && PossessionHandler.Instance.PossessedEntity.tag == "Possessable_Guard")
         {
-            _caller.Player = _possessionHandler.PossessedEntity;
+            _caller.Player = PossessionHandler.Instance.PossessedEntity;
             if (_doorOpener.IsAnimationStarted)
             {
                 if(_canInteract)

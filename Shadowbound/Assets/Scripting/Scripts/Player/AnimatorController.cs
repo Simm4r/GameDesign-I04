@@ -3,18 +3,20 @@ using UnityEngine;
 
 public class AnimatorController : MonoBehaviour
 {
+    public static AnimatorController Instance { get; private set; }
     [SerializeField] private KinematicCharacterMotor _motor;
     [SerializeField] private Animator _animator;
-    [SerializeField] private CharacterController _characterController;
     [SerializeField] private float _animationTransitionTime = 0.2f;
     private float _currentState = 0.0f;
     private float _currentVert = 0.0f;
 
     private void Awake()
     {
-        _animator = GetComponentInChildren<Animator>();
-        _characterController = GetComponent<CharacterController>();
+        if (Instance != null)
+            return;
 
+        Instance = this;
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void setAnimationValues()
@@ -23,7 +25,7 @@ public class AnimatorController : MonoBehaviour
         {
             if (PlayerInput.Instance.MovementInput != Vector3.zero)
             {
-                float newState = Mathf.Clamp01(Mathf.Pow(_motor.Velocity.magnitude / _characterController.SprintSpeed, 2.2f));
+                float newState = Mathf.Clamp01(Mathf.Pow(_motor.Velocity.magnitude / CharacterController.Instance.SprintSpeed, 2.2f));
                 _currentState = Mathf.Lerp(_currentState, newState, Time.deltaTime / _animationTransitionTime);
                 float newVert = _motor.Velocity.magnitude > 0.2 ? 1.0f : 0.5f;
                 _currentVert = Mathf.Lerp(_currentVert, newVert, Time.deltaTime / _animationTransitionTime);

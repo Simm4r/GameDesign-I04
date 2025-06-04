@@ -10,17 +10,13 @@ public class PossessionHandler : MonoBehaviour
 {
     public static PossessionHandler Instance { get; private set; }
 
-    [SerializeField] private DissolveController _dissolveController;
-    [SerializeField] private UndissolveController _undissolveController;
     [SerializeField] private ParticleSystem _flameRing;
     [SerializeField] private GameObject _possessedEntity = null;
-    [SerializeField] private GameObject _healthbar;
     [SerializeField] private float _possessionMaxTime = 15f;
     [SerializeField] private float _possessionMaxCooldown = 10f;
     
 
     private bool _isPossessing = false;
-    private ShadowDamageHandler _shadowHandler;
     private KinematicCharacterMotor _possessedMotor;
     private CapsuleCollider _possessedMotorCollider;
     private PossessedController _possessedController;
@@ -60,8 +56,8 @@ public class PossessionHandler : MonoBehaviour
     }
     private void SetPossessedEntity()
     {
-        _possessedEntity = _shadowHandler.CurrentPossessable.gameObject.transform.parent ?
-            _shadowHandler.CurrentPossessable.gameObject.transform.parent.gameObject : _shadowHandler.CurrentPossessable.gameObject;
+        _possessedEntity = ShadowHandler.Instance.CurrentPossessable.gameObject.transform.parent ?
+            ShadowHandler.Instance.CurrentPossessable.gameObject.transform.parent.gameObject : ShadowHandler.Instance.CurrentPossessable.gameObject;
 
         if (_possessedEntity.tag == "Possessable_Guard")
         {
@@ -69,7 +65,7 @@ public class PossessionHandler : MonoBehaviour
             _possessedMotorCollider = _possessedEntity.GetComponent<CapsuleCollider>();
             _possessedController = _possessedEntity.GetComponent<PossessedController>();
             _navMeshAgent = _possessedEntity.GetComponent<NavMeshAgent>();
-            _possessedCollider = _shadowHandler.CurrentPossessable.gameObject.GetComponent<CapsuleCollider>();
+            _possessedCollider = ShadowHandler.Instance.CurrentPossessable.gameObject.GetComponent<CapsuleCollider>();
             _guardPatrol = _possessedEntity.GetComponent<GuardPatrol>();
 
             Canvas[] marks = _possessedEntity.GetComponentsInChildren<Canvas>();
@@ -86,7 +82,7 @@ public class PossessionHandler : MonoBehaviour
             _possessedMotor = _possessedEntity.GetComponent<KinematicCharacterMotor>();
             _possessedMotorCollider = _possessedEntity.GetComponent<CapsuleCollider>();
             _possessedController = _possessedEntity.GetComponent<PossessedController>();
-            _possessedCollider = _shadowHandler.CurrentPossessable.gameObject.GetComponentInChildren<MeshCollider>();
+            _possessedCollider = ShadowHandler.Instance.CurrentPossessable.gameObject.GetComponentInChildren<MeshCollider>();
         }
         else if (_possessedEntity.tag == "Possessable_Animal")
         {
@@ -94,10 +90,10 @@ public class PossessionHandler : MonoBehaviour
             _possessedMotorCollider = _possessedEntity.GetComponent<CapsuleCollider>();
             _possessedController = _possessedEntity.GetComponent<PossessedController>();
             _navMeshAgent = _possessedEntity.GetComponent<NavMeshAgent>();
-            _possessedCollider = _shadowHandler.CurrentPossessable.gameObject.GetComponent<CapsuleCollider>();
+            _possessedCollider = ShadowHandler.Instance.CurrentPossessable.gameObject.GetComponent<CapsuleCollider>();
             _fleeingEntity = _possessedEntity.GetComponent<FleeingEntity>();
         }
-        _currentPossessable = _shadowHandler.CurrentPossessable;
+        _currentPossessable = ShadowHandler.Instance.CurrentPossessable;
 
     }
     private void UnsetPossessedEntity()
@@ -120,30 +116,27 @@ public class PossessionHandler : MonoBehaviour
             return;
         }
 
-        Instance = this;
-        _dissolveController = GetComponent<DissolveController>();
-        _undissolveController = GetComponent<UndissolveController>();
-        _shadowHandler = GetComponent<ShadowDamageHandler>();      
+        Instance = this;     
     }
     private void HandlePossessionStart()
     {
         if (_possessionCooldown > 0.0f)
             return;
 
-        if (!_shadowHandler.CurrentPossessable)
+        if (!ShadowHandler.Instance.CurrentPossessable)
                 return;
 
-        if (_shadowHandler.CurrentPossessable.GetComponentInParent<EntityStats>().EntityLevel > GetComponent<PlayerStats>().PossessionLevel)
+        if (ShadowHandler.Instance.CurrentPossessable.GetComponentInParent<EntityStats>().EntityLevel > GetComponent<PlayerStats>().PossessionLevel)
             return;
         if (PlayerInput.Instance.Possessing)
             {
-                _healthbar.SetActive(false);
+                Healthbar.Instance.gameObject.SetActive(false);
                 //Setto la possessable entity target
                 SetPossessedEntity();
 
                 _isPossessing = true;
-                if (_dissolveController != null)
-                    _dissolveController.StartDissolve();
+                if (DissolveController.Instance != null)
+                    DissolveController.Instance.StartDissolve();
 
                 if (_flameRing != null)
                 {
@@ -154,55 +147,55 @@ public class PossessionHandler : MonoBehaviour
             }
     }
 
-private Vector3 ComputeSafeDirection(Vector3 fromPosition)
-{
-    Vector3[] directions = new Vector3[3];
-    directions[0] = -_possessedEntity.transform.forward;
-    directions[1] = (-_possessedEntity.transform.forward + _possessedEntity.transform.right).normalized;
-    directions[2] = (-_possessedEntity.transform.forward - _possessedEntity.transform.right).normalized;
-
-    float maxDistance = 1.5f;
-    RaycastHit[] hits;
-    Vector3 bestDirection = Vector3.zero;
-    float furthestHit = 0f;
-
-    Collider[] ignoredColliders = new Collider[] {
-        GetComponent<Collider>(),
-        _possessedCollider,
-        _possessedMotorCollider
-    };
-
-    foreach (Vector3 dir in directions)
+    private Vector3 ComputeSafeDirection(Vector3 fromPosition)
     {
-        bool blocked = false;
-        float minHitDistance = maxDistance;
+        Vector3[] directions = new Vector3[3];
+        directions[0] = -_possessedEntity.transform.forward;
+        directions[1] = (-_possessedEntity.transform.forward + _possessedEntity.transform.right).normalized;
+        directions[2] = (-_possessedEntity.transform.forward - _possessedEntity.transform.right).normalized;
 
-        hits = Physics.RaycastAll(fromPosition, dir, maxDistance);
-        foreach (RaycastHit hit in hits)
+        float maxDistance = 1.5f;
+        RaycastHit[] hits;
+        Vector3 bestDirection = Vector3.zero;
+        float furthestHit = 0f;
+
+        Collider[] ignoredColliders = new Collider[] {
+            GetComponent<Collider>(),
+            _possessedCollider,
+            _possessedMotorCollider
+        };
+
+        foreach (Vector3 dir in directions)
         {
-            if (System.Array.Exists(ignoredColliders, col => col == hit.collider))
-                continue;
+            bool blocked = false;
+            float minHitDistance = maxDistance;
+
+            hits = Physics.RaycastAll(fromPosition, dir, maxDistance);
+            foreach (RaycastHit hit in hits)
+            {
+                if (System.Array.Exists(ignoredColliders, col => col == hit.collider))
+                    continue;
 
 
-            blocked = true;
-            if (hit.distance < minHitDistance)
-                minHitDistance = hit.distance;
+                blocked = true;
+                if (hit.distance < minHitDistance)
+                    minHitDistance = hit.distance;
+            }
+
+            if (!blocked)
+            {
+
+                return dir;
+            }
+            else if (minHitDistance > furthestHit)
+            {
+                furthestHit = minHitDistance;
+                bestDirection = dir;
+            }
         }
 
-        if (!blocked)
-        {
-
-            return dir;
-        }
-        else if (minHitDistance > furthestHit)
-        {
-            furthestHit = minHitDistance;
-            bestDirection = dir;
-        }
+        return bestDirection;
     }
-
-    return bestDirection;
-}
 
     private void HandlePossessionTransition()
     {
@@ -285,7 +278,7 @@ private Vector3 ComputeSafeDirection(Vector3 fromPosition)
         }
         _collider.enabled = true;
         _camera.player = gameObject.transform;
-        _undissolveController.StartUndissolve();
+        UndissolveController.Instance.StartUndissolve();
         if (_flameRing != null)
         {
             _flameRing.Clear();
@@ -298,7 +291,7 @@ private Vector3 ComputeSafeDirection(Vector3 fromPosition)
         UnsetPossessedEntity();
         GetComponent<PlayerStats>().ResetPlayer();
         _possessionTime = 0.0f;
-        _healthbar.SetActive(true);
+        Healthbar.Instance.gameObject.SetActive(true);
     }
 
 
@@ -309,7 +302,7 @@ private Vector3 ComputeSafeDirection(Vector3 fromPosition)
         if (!_isPossessing)
             HandlePossessionStart();
 
-        else if (!_dissolveController.IsDissolving && !PlayerInput.Instance.InPossession)
+        else if (!DissolveController.Instance.IsDissolving && !PlayerInput.Instance.InPossession)
             HandlePossessionTransition();
 
         if (_possessionTime == _possessionMaxTime || PlayerInput.Instance.QuitPossession)

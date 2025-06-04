@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour, ICharacterController
 {
+    public static CharacterController Instance { get; private set; }
     [SerializeField] private KinematicCharacterMotor _motor;
 
     private Vector3 _moveInputVector;
@@ -31,6 +32,12 @@ public class CharacterController : MonoBehaviour, ICharacterController
     }
     void Awake()
     {
+        if (Instance != null)
+        {
+            return;
+        }
+        
+        Instance = this;
         _stableMoveSpeed = _walkSpeed;
         _motor = GetComponent<KinematicCharacterMotor>();
         _motor.CharacterController = this;

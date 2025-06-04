@@ -3,11 +3,10 @@ using UnityEngine;
 public class Possessable : MonoBehaviour
 {
     [SerializeField] private PossessableCueParticles _possessableCueParticles;
-    [SerializeField] private PlayerStats _playerStats;
     
     public void ShowPossessableCue()
     {
-        if (GetComponentInParent<EntityStats>().EntityLevel > _playerStats.PossessionLevel)
+        if (GetComponentInParent<EntityStats>().EntityLevel > PlayerStats.Instance.PossessionLevel)
             return;
 
         _possessableCueParticles.ShowPossessableCueParticles();

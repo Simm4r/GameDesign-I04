@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class DissolveController : MonoBehaviour
 {
+    public static DissolveController Instance { get; private set; }
     [SerializeField] private float dissolveSpeed = 1f;
 
     private float dissolveAmount = 0f;
@@ -15,7 +16,6 @@ public class DissolveController : MonoBehaviour
     [SerializeField] private Material fadeMaterial;
 
     private MaterialPropertyBlock propBlock;
-    private UndissolveController _undissolveController;
 
     public bool IsDissolving
     {
@@ -23,11 +23,13 @@ public class DissolveController : MonoBehaviour
     }
     void Awake()
     {
+        if (Instance != null)
+            return;
+        Instance = this;
         propBlock = new MaterialPropertyBlock();
         targetRenderer.GetPropertyBlock(propBlock);
         propBlock.SetFloat("_DissolveAmount", dissolveAmount);
         targetRenderer.SetPropertyBlock(propBlock);
-        _undissolveController = GetComponent<UndissolveController>();
     }
 
     void Update()
@@ -53,7 +55,7 @@ public class DissolveController : MonoBehaviour
         {
             Time.timeScale = 1.0f;
             dissolving = false;
-            _undissolveController.enabled = true;
+            UndissolveController.Instance.enabled = true;
             enabled = false;
         }
     }

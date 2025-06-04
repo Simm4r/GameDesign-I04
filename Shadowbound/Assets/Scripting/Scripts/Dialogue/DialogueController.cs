@@ -5,6 +5,7 @@ using TMPro;
 
 public class DialogueController : MonoBehaviour
 {
+    public static DialogueController Instance { get; private set; }
     [SerializeField] private TextMeshProUGUI dialogueTextMesh;
     [SerializeField] private TextMeshProUGUI speakerNameText;
     [SerializeField] private float typeSpeed = 10;
@@ -21,6 +22,7 @@ public class DialogueController : MonoBehaviour
     public bool CanExit
     {
         get { return _canExit; }
+        set { _canExit = value; }
     }
     public void DisplayNextParagraph(DialogueText dialogueText)
     {
@@ -106,5 +108,13 @@ public class DialogueController : MonoBehaviour
         StopCoroutine(typeDialogueCoroutine);
         dialogueTextMesh.maxVisibleCharacters = p.Length;
         isTyping = false;
+    }
+
+    void Awake()
+    {
+        if (Instance != null)
+            return;
+
+        Instance = this;
     }
 }

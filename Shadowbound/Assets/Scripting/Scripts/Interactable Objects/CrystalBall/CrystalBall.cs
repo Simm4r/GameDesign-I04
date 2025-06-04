@@ -11,6 +11,7 @@ public class CrystalBall : Interactable
 {
     [SerializeField] private GameObject _respawnPosition;
     [SerializeField] private ParticleSystem _flame;
+    [SerializeField] private InteractionHandler _caller;
     private bool _canInteract = true;
     public override bool CanInteract
     {
@@ -34,9 +35,12 @@ public class CrystalBall : Interactable
         {
             if (_canInteract != false)
                 _canInteract = false;
+
+                _caller.Player = null;
             return;
         }
-            
+
+        _caller.Player = Player.Instance.gameObject;
         if (_flame.emission.rateOverTime.constant == 0 && !_canInteract)
             _canInteract = true;
     }

@@ -2,12 +2,16 @@ using UnityEngine;
 
 public class BarHandler : MonoBehaviour
 {
-    [SerializeField]private GameObject _possessionbar;
+    public static BarHandler Instance { get; private set; }
+
+    [SerializeField] private GameObject _possessionbar;
     [SerializeField] private GameObject _icons;
 
     void Awake()
     {
-        
+        if (Instance != null)
+            return;
+        Instance = this;
     }
 
 

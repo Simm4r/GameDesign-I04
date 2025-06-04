@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class LevelSetter : MonoBehaviour
 {
-    [SerializeField] private PlayerStats _stats;
     private TextMeshProUGUI _text;
     private int level;
     void Awake()
@@ -17,11 +16,11 @@ public class LevelSetter : MonoBehaviour
         switch (transform.parent.tag)
         {
             case "Possession_Icon":
-                level = _stats.PossessionLevel;
+                level = PlayerStats.Instance.PossessionLevel;
                 break;
 
             case "ShadowVision_Icon":
-                level = _stats.ShadowVisionLevel;
+                level = PlayerStats.Instance.ShadowVisionLevel;
                 break;
         }
         _text.text = $"lv.\n{level}";

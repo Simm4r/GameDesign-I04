@@ -10,9 +10,15 @@ public class PlayerInput : MonoBehaviour
     private Vector2 _moveInput;
     private bool _inPossession;
     private bool _sprintKeyPressed = false;
+    private bool _dying = false;
     private Vector2 _lookInput;
     public Vector2 LookInput => _lookInput;
     public Vector3 MovementInput => new Vector3(_moveInput.x, 0f, _moveInput.y);
+    public bool Dying
+    {
+        get => _dying;
+        set => _dying = value;
+    }
     public bool InPossession
     {
         get => _inPossession;
@@ -51,10 +57,10 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    public bool ShadowStep => !_inPossession && !Player.Instance.InDialogue && _controls.Player.ShadowStep.ReadValue<float>() > 0;
-    public bool Possessing => !_inPossession && !Player.Instance.InDialogue && _controls.Player.Possession.ReadValue<float>() > 0;
-    public bool ShadowVision => !_inPossession && !Player.Instance.InDialogue && _controls.Player.ShadowVision.ReadValue<float>() > 0;
-    public bool Interact => !Player.Instance.InDialogue && _controls.Player.Interact.ReadValue<float>() > 0;
+    public bool ShadowStep =>!_dying && !_inPossession && !Player.Instance.InDialogue && _controls.Player.ShadowStep.ReadValue<float>() > 0;
+    public bool Possessing => !_dying && !_inPossession && !Player.Instance.InDialogue && _controls.Player.Possession.ReadValue<float>() > 0;
+    public bool ShadowVision =>!_dying && !_inPossession && !Player.Instance.InDialogue && _controls.Player.ShadowVision.ReadValue<float>() > 0;
+    public bool Interact => !_dying && !Player.Instance.InDialogue && _controls.Player.Interact.ReadValue<float>() > 0;
     public bool QuitPossession => !Player.Instance.InDialogue && _inPossession && _controls.Player.QuitPossession.ReadValue<float>() > 0;
     public bool DialogueNext => Player.Instance.InDialogue && _controls.Player.DialogueNext.triggered;
     public bool DropItem => !Player.Instance.InDialogue && _inPossession && _controls.Player.DropItem.triggered;
@@ -72,37 +78,10 @@ public class PlayerInput : MonoBehaviour
 
         _controls.Player.Move.performed += ctx =>
         {
-            if (Player.Instance.InDialogue)
-            {
-                _moveInput = Vector2.zero;
-                return;
-            }
-
-            Vector2 inputValue = ctx.ReadValue<Vector2>();
-
-            if (_sprintWithButton)
-                _moveInput = inputValue;
-
-            else if (_currentScheme == "Gamepad")
-            {
-                float mag = inputValue.magnitude;
-                float smoothedMag = Mathf.Pow(mag, 2);
-                _moveInput = smoothedMag < 0.3f ? inputValue.normalized * 0.3f : inputValue.normalized * smoothedMag;
-            }
-            else
-                _moveInput = inputValue;
-
             UpdateCurrentScheme(ctx.control.device);
         };
         _controls.Player.Move.canceled += ctx =>
         {
-            if (Player.Instance.InDialogue)
-            {
-                _moveInput = Vector2.zero;
-                return;
-            }
-
-            _moveInput = Vector2.zero;
             UpdateCurrentScheme(ctx.control.device);
         };
 
@@ -209,11 +188,41 @@ public class PlayerInput : MonoBehaviour
             UpdateCurrentScheme(ctx.control.device);
         };
     }
+    
+    private void Update()
+    {
+        if (Player.Instance.InDialogue || _dying)
+        {
+            _moveInput = Vector2.zero;
+            return;
+        }
+
+        Vector2 inputValue = _controls.Player.Move.ReadValue<Vector2>();
+        ProcessMoveInput(inputValue);
+    }
+
+    private void ProcessMoveInput(Vector2 inputValue)
+    {
+        if (_sprintWithButton)
+        {
+            _moveInput = inputValue;
+        }
+        else if (_currentScheme == "Gamepad")
+        {
+            float mag = inputValue.magnitude;
+            float smoothedMag = Mathf.Pow(mag, 2);
+            _moveInput = mag < 0.3f ? inputValue.normalized * 0.3f : inputValue.normalized * smoothedMag;
+        }
+        else
+        {
+            _moveInput = inputValue;
+        }
+    }
 
     private void UpdateCurrentScheme(InputDevice device)
     {
         string newScheme;
-        
+
         if (device is Gamepad)
         {
             if (_currentScheme == "Gamepad")

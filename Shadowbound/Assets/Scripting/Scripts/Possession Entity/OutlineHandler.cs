@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class OutlineHandler : MonoBehaviour
 {
-    [SerializeField] private PlayerStats _playerStats;
     [SerializeField] private float _outlineMaxLifetime = 5.0f;
     private Outline _outline;
     private float _outlineLifetime = 0.0f;
@@ -35,7 +34,7 @@ public class OutlineHandler : MonoBehaviour
 
         _outline.OutlineMode = Outline.Mode.OutlineAll;
 
-        if (entity.GetComponent<EntityStats>().EntityLevel > _playerStats.PossessionLevel)
+        if (entity.GetComponent<EntityStats>().EntityLevel > PlayerStats.Instance.PossessionLevel)
             _outline.OutlineColor = Color.red;
         else
             _outline.OutlineColor = new Color(1, 1, 1, 1);

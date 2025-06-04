@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ButtonHandler : MonoBehaviour
 {
-    [SerializeField] private InputSpritesByKey _keyIcons;
+
     private Image _sprite;
     
     private string _currentScheme = "None";
@@ -28,17 +28,17 @@ public class ButtonHandler : MonoBehaviour
         {
             case "Possession_Icon":
                 bindingForScheme = PlayerInput.Instance.Controls.Player.Possession.bindings.FirstOrDefault(b => b.groups.Contains(_currentScheme));
-                _sprite.sprite = _keyIcons.GetSpriteFromBindingPath(bindingForScheme.effectivePath);
+                _sprite.sprite = InputSpritesByKey.Instance.GetSpriteFromBindingPath(bindingForScheme.effectivePath);
                 break;
 
             case "ShadowStep_Icon":
                 bindingForScheme = PlayerInput.Instance.Controls.Player.ShadowStep.bindings.FirstOrDefault(b => b.groups.Contains(_currentScheme));
-                _sprite.sprite = _keyIcons.GetSpriteFromBindingPath(bindingForScheme.effectivePath);
+                _sprite.sprite = InputSpritesByKey.Instance.GetSpriteFromBindingPath(bindingForScheme.effectivePath);
                 break;
 
             case "ShadowVision_Icon":
                 bindingForScheme = PlayerInput.Instance.Controls.Player.ShadowVision.bindings.FirstOrDefault(b => b.groups.Contains(_currentScheme));
-                _sprite.sprite = _keyIcons.GetSpriteFromBindingPath(bindingForScheme.effectivePath);
+                _sprite.sprite = InputSpritesByKey.Instance.GetSpriteFromBindingPath(bindingForScheme.effectivePath);
                 break;
         }
     }

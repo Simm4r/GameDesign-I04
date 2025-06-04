@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 public class PossessionTimeFiller : MonoBehaviour
 {
-    [SerializeField] private PossessionHandler _possessionHandler;
     private Image _bar;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -15,6 +14,6 @@ public class PossessionTimeFiller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _bar.fillAmount = 1 - (_possessionHandler.PossessionTime / _possessionHandler.PossessionMaxTime);
+        _bar.fillAmount = 1 - (PossessionHandler.Instance.PossessionTime / PossessionHandler.Instance.PossessionMaxTime);
     }
 }

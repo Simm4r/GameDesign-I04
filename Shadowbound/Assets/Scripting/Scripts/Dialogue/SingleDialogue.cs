@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class SingleDialogue : Talkable
 {
-    [SerializeField] private DialogueController _dialogueController;
     [SerializeField] private DialogueText _dialogueText;
     [SerializeField] private TriggerProximityHandler _handler;
     private bool firstLine = true;
@@ -10,17 +9,22 @@ public class SingleDialogue : Talkable
     {
         if (firstLine)
         {
-            _dialogueController.DisplayNextParagraph(_dialogueText);
+            DialogueController.Instance.DisplayNextParagraph(_dialogueText);
             firstLine = false;
         }
         else if (PlayerInput.Instance.DialogueNext)
         {
-            _dialogueController.DisplayNextParagraph(_dialogueText);
+            DialogueController.Instance.DisplayNextParagraph(_dialogueText);
 
         }
 
-        if (_dialogueController.CanExit && !_handler.DialogueFinished)
+        if (DialogueController.Instance.CanExit && !_handler.DialogueFinished)
+        {
             _handler.DialogueFinished = true;
+            DialogueController.Instance.CanExit = false;
+        }
+            
+            
     }
 
     

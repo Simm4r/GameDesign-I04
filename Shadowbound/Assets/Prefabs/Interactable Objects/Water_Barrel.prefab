@@ -264,7 +264,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: 218dd31f4c623bf42b57997c3b9f32f8, type: 3}
       propertyPath: m_Name
-      value: Barrel_Closed (3)
+      value: Water_Barrel
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 218dd31f4c623bf42b57997c3b9f32f8, type: 3}
       propertyPath: m_Layer
@@ -322,7 +322,7 @@ PrefabInstance:
       addedObject: {fileID: 3695987607827844698}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 218dd31f4c623bf42b57997c3b9f32f8, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 935885771979947571}
+      addedObject: {fileID: 5070172431211616831}
   m_SourcePrefab: {fileID: 100100000, guid: 218dd31f4c623bf42b57997c3b9f32f8, type: 3}
 --- !u!4 &9011660897337997493 stripped
 Transform:
@@ -348,11 +348,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
   _triggerDistance: 2
-  _input: {fileID: 0}
   _interactionBar: {fileID: 4837026127768596750}
   _uiBindingSprite: {fileID: 5701463497614706041}
-  _keyIcons: {fileID: 0}
---- !u!114 &935885771979947571
+--- !u!114 &5070172431211616831
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -365,5 +363,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _caller: {fileID: 3695987607827844698}
-  _possessionHandler: {fileID: 0}
-  _input: {fileID: 0}

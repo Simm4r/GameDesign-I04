@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-
+    public static PlayerStats Instance { get; private set; }
     [SerializeField] private float _maxHealth = 100f;
     private float _currentHealth;
 
@@ -21,18 +21,28 @@ public class PlayerStats : MonoBehaviour
 
     [SerializeField] private bool _isDead = false;
 
-    [SerializeField] private Healthbar _healthbar;
 
     public event Action OnPlayerDeath;
 
     public int PossessionLevel => _possessionLevel;
 
     public int ShadowVisionLevel => _shadowVisionLevel;
-    
+
+    public float MaxHealth => _maxHealth;
+
+    public float CurrentHealth => _currentHealth;
+
+    private void Awake()
+    {
+        if (Instance != null)
+            return;
+
+        Instance = this;
+    } 
     private void Start()
     {
         _currentHealth = _maxHealth;
-        _healthbar.UpdateHealthbar(_maxHealth, _currentHealth);
+        Healthbar.Instance.UpdateHealthbar(_maxHealth, _currentHealth);
     }
 
     public void TakeDamage()
@@ -52,7 +62,7 @@ public class PlayerStats : MonoBehaviour
 
         _tickDamageTimer = _damageOverTimeInterval;
         _currentHealth -= _baseDamageTaken;
-        _healthbar.UpdateHealthbar(_maxHealth, _currentHealth);
+        Healthbar.Instance.UpdateHealthbar(_maxHealth, _currentHealth);
 
         Debug.Log($"Current health: {_currentHealth}");
     }
@@ -72,7 +82,7 @@ public class PlayerStats : MonoBehaviour
 
         _healTimer = _healOverTimeInterval;
         _currentHealth += _baseDamageHealed;
-        _healthbar.UpdateHealthbar(_maxHealth, _currentHealth);
+        Healthbar.Instance.UpdateHealthbar(_maxHealth, _currentHealth);
 
         Debug.Log($"Current health: {_currentHealth}");
     }
@@ -97,6 +107,6 @@ public class PlayerStats : MonoBehaviour
     {
         _currentHealth = _maxHealth;
         _isDead = false;
-        _healthbar.ResetHealthbar();
+        Healthbar.Instance.ResetHealthbar();
     }
 }

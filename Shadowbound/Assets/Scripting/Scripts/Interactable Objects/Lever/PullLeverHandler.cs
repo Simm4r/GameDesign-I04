@@ -6,7 +6,6 @@ public class PullLeverHandler : Interactable
     [SerializeField] private PortcullisHandler _portcullis;
     [SerializeField] private bool _isUpLever = false;
     [SerializeField] private LeverSwitchController _switchController;
-    [SerializeField] private PossessionHandler _possessionHandler;
     [SerializeField] private InteractionHandler _caller;
 
     private bool _canInteract = true;
@@ -70,9 +69,9 @@ public class PullLeverHandler : Interactable
             return;
         }
 
-        if (_possessionHandler.PossessedEntity != null && _possessionHandler.PossessedEntity.tag == "Possessable_Guard")
+        if (PossessionHandler.Instance.PossessedEntity != null && PossessionHandler.Instance.PossessedEntity.tag == "Possessable_Guard")
         {
-            _caller.Player = _possessionHandler.PossessedEntity;
+            _caller.Player = PossessionHandler.Instance.PossessedEntity;
             if (_portcullis.IsActive)
             {
                 _canInteract = false;
