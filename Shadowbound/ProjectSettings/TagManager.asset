@@ -12,6 +12,7 @@ TagManager:
   - ShadowStep_Icon
   - ShadowVision_Icon
   - Item
+  - Inventory
   layers:
   - Default
   - TransparentFX
