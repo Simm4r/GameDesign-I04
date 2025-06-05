@@ -19,9 +19,20 @@ public class HUDHandler : MonoBehaviour
         {
             if (_textBox.activeSelf)
                 _textBox.SetActive(false);
-            
+
             if (!_cooldownBar.activeSelf)
                 _cooldownBar.SetActive(true);
+        }
+
+        if (PlayerInput.Instance.InPossession)
+        {
+            Inventory inventory = PossessionHandler.Instance?.PossessedEntity.GetComponent<Inventory>();
+            Debug.Log(inventory.name);
+            InventoryHUD.Instance.ShowInventoryHUD(inventory);
+        }
+        else
+        {
+            InventoryHUD.Instance.HideInventoryHUD();
         }
     }
 }

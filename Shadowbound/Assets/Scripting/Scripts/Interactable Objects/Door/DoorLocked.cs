@@ -1,10 +1,13 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class Door : Interactable
+public class DoorLocked : Interactable
 {
     [SerializeField] private DoorOpener _doorOpener;
     [SerializeField] private InteractionHandler _caller;
+    [SerializeField] private ItemData _keyItemToOpen;
+    private GameObject _possessedEntity;
+    private bool _isOpenable = false;
     private bool _canInteract = false;
     public override bool CanInteract
     {
@@ -14,6 +17,10 @@ public class Door : Interactable
 
     public override void Interact()
     {
+        if (!_isOpenable)
+        {
+            return;
+        }
         _canInteract = false;
         _doorOpener.StartAnimation();
     }
@@ -29,10 +36,26 @@ public class Door : Interactable
 
         if (PossessionHandler.Instance.PossessedEntity != null && PossessionHandler.Instance.PossessedEntity.tag == "Possessable_Guard")
         {
-            _caller.Player = PossessionHandler.Instance.PossessedEntity;
+            _possessedEntity = PossessionHandler.Instance.PossessedEntity;
+            _caller.Player = _possessedEntity;
+
+            if (!_isOpenable)
+            {
+                Inventory inventory = _possessedEntity.GetComponent<Inventory>();
+
+                ItemData inventoryItem = inventory.items.Count == 0 ? null : inventory.items[0].data;
+
+                if (inventoryItem == null)
+                {
+                    _isOpenable = false;
+                }
+                else if (inventoryItem == _keyItemToOpen)
+                    _isOpenable = true;
+            }
+            
             if (_doorOpener.IsAnimationStarted)
             {
-                if(_canInteract)
+                if (_canInteract)
                     _canInteract = false;
                 return;
             }

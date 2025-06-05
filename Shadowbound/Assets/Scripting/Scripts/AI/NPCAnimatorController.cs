@@ -26,9 +26,10 @@ public class NPCAnimatorController : MonoBehaviour
 
     private void SetAnimationValues()
     {
-        _maxSpeed =PlayerInput.Instance.InPossession ? _maxMotorSpeed : _maxSpeed;
+        Debug.Log(PossessionHandler.Instance.PossessedEntity);
+        _maxSpeed =(PlayerInput.Instance.InPossession && PossessionHandler.Instance.PossessedEntity == gameObject)  ? _maxMotorSpeed : _maxSpeed;
             
-        float currentSpeed = PlayerInput.Instance.InPossession ? GetComponent<KinematicCharacterMotor>().Velocity.magnitude : new Vector3(_agent.velocity.x, 0, _agent.velocity.z).magnitude;
+        float currentSpeed = (PlayerInput.Instance.InPossession && PossessionHandler.Instance.PossessedEntity == gameObject) ? GetComponent<KinematicCharacterMotor>().Velocity.magnitude : new Vector3(_agent.velocity.x, 0, _agent.velocity.z).magnitude;
         float normalizedSpeed = Mathf.Clamp01(currentSpeed / _maxSpeed); // Valore tra 0 e 1
 
         // State = camminata o corsa, interpolata (usa threshold ~0.8f)

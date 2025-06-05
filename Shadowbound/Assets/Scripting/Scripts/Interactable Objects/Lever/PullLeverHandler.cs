@@ -8,7 +8,7 @@ public class PullLeverHandler : Interactable
     [SerializeField] private LeverSwitchController _switchController;
     [SerializeField] private InteractionHandler _caller;
 
-    private bool _canInteract = true;
+    private bool _canInteract = false;
 
     public bool IsUpLever
     {

@@ -42,6 +42,7 @@ public class Inventory : MonoBehaviour
 
         items.Remove(item);
         _inventoryUI.ClearSlot();
+        InventoryHUD.Instance.ClearSlot();
         Debug.Log($"Removed Item {item.data.itemName}");
         // _inventoryUI.UpdateUI();
 

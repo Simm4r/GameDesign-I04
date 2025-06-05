@@ -12,7 +12,7 @@ public class CrystalBall : Interactable
     [SerializeField] private GameObject _respawnPosition;
     [SerializeField] private ParticleSystem _flame;
     [SerializeField] private InteractionHandler _caller;
-    private bool _canInteract = true;
+    private bool _canInteract = false;
     public override bool CanInteract
     {
         get { return _canInteract; }
