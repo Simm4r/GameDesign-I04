@@ -22,4 +22,14 @@ public class QuestionMarkFiller : MonoBehaviour
     {
         _fillImage.fillAmount = 1f;
     }
+
+    public float GetCurrentFill()
+    {
+        return _fillImage.fillAmount;
+    }
+
+    public bool IsVisible()
+    {
+        return gameObject.activeInHierarchy;
+    }
 }
