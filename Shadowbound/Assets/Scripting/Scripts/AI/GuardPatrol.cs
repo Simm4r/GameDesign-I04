@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using KinematicCharacterController;
 
 public class GuardPatrol : MonoBehaviour
 {
@@ -19,7 +21,7 @@ public class GuardPatrol : MonoBehaviour
 
     [Header("Chase Settings")]
     [SerializeField] private float _chaseSpeed = 2.1f;
-    [SerializeField] private float _chaseDuration = 50f;
+    [SerializeField] private float _chaseDuration = 20f;
     [SerializeField] private float _stopDistance = 2f;
 
     [Header("Investigation Settings")]
@@ -89,6 +91,16 @@ public class GuardPatrol : MonoBehaviour
 
     private void Update()
     {
+        if (PlayerInput.Instance.InPossession && PossessionHandler.Instance.PossessedEntity != gameObject && PossessionHandler.Instance.PossessedEntity.tag == "Possessable_Object" && _target != PossessionHandler.Instance.PossessedEntity.transform)
+        {
+            _target = PossessionHandler.Instance.PossessedEntity.transform;
+        }
+
+        if (!PlayerInput.Instance.InPossession && _target != Player.Instance.transform)
+        {
+            _target = Player.Instance.transform;
+        }
+
         switch (_currentState)
         {
             case GuardState.Patrolling: PatrolUpdate(); break;
@@ -176,6 +188,8 @@ public class GuardPatrol : MonoBehaviour
         Vector3 flatDirToTarget = new Vector3(dirToTarget.x, 0, dirToTarget.z).normalized;
         float angleToTarget = Vector3.Angle(flatForward, flatDirToTarget);
 
+        float objectVelocity;
+
         _isTargetVisible = false;
 
         // Se il target è vicino, allarga leggermente il campo visivo
@@ -193,15 +207,24 @@ public class GuardPatrol : MonoBehaviour
                     _isTargetVisible = true;
                     _lastKnownPosition = _target.position;
 
-                    if (_currentState == GuardState.Investigating)
+                    if (_target != Player.Instance.transform)
                     {
-                        StartChase();
+                        objectVelocity = _target.GetComponent<KinematicCharacterMotor>().Velocity.magnitude;
+                        if (objectVelocity == 0) return;
+                        CheckOddity();
                     }
+                    else
+                    {
+                        if (_markFiller.IsVisible() && Mathf.Approximately(_markFiller.GetCurrentFill(), 1f))
+                        {
+                            StartChase();
+                        }
 
-                    if (_currentState != GuardState.Chasing && _currentState != GuardState.Alerted)
-                    {
-                        StartAlert();
-                    }
+                        if (_currentState != GuardState.Chasing && _currentState != GuardState.Alerted)
+                        {
+                            StartAlert();
+                        }
+                    }      
 
                     FaceTarget();
                 }
@@ -406,6 +429,18 @@ public class GuardPatrol : MonoBehaviour
         {
             _currentState = GuardState.Patrolling;
         }
+    }
+
+    // === CHECK ODDITY ===
+    private void CheckOddity()
+    {
+        _currentState = GuardState.Chasing;
+        _stateTimer = 0f;
+        _agent.stoppingDistance = _stopDistance;
+        _agent.isStopped = false;
+        _agent.speed = _walkingSpeed;
+        _markFiller.SetMaxFill();
+        ShowMark(_questionMark);
     }
 
     // === UTILS === 
