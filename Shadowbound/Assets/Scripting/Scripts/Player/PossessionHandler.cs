@@ -73,9 +73,24 @@ public class PossessionHandler : MonoBehaviour
             foreach (Canvas mark in marks)
             {
                 Debug.Log(mark.gameObject);
-                if (mark.gameObject.activeSelf)
+                if (mark.gameObject.activeSelf && !mark.gameObject.CompareTag("Inventory"))
                     mark.gameObject.SetActive(false);
             }
+
+            // Hide InventoryUI if already possessed, Enable it entity has never been possessed
+            InventoryUI inventoryUI = _possessedEntity.GetComponentInChildren<InventoryUI>();
+            if (inventoryUI != null && !_possessedController.AlreadyPossessed)
+                {
+                    inventoryUI.enableInventoryUI();
+                }
+            if (inventoryUI != null && _possessedController.AlreadyPossessed)
+            {
+                inventoryUI.HideInventoryUI();
+            }
+            // Activate InventoryHUD
+            Inventory inventory = _possessedEntity.GetComponent<Inventory>();
+            InventoryHUD.Instance.ShowInventoryHUD(inventory);
+
         }
         else if (_possessedEntity.tag == "Possessable_Object")
         {
@@ -98,6 +113,13 @@ public class PossessionHandler : MonoBehaviour
     }
     private void UnsetPossessedEntity()
     {
+        // Enable InventoryUI
+        InventoryUI inventory = _possessedEntity.GetComponentInChildren<InventoryUI>();
+        if (inventory != null)
+        {
+            inventory.ShowInventoryUI();
+        }
+
         _possessedEntity = null;
         _possessedMotor = null;
         _possessedMotorCollider = null;
@@ -107,6 +129,11 @@ public class PossessionHandler : MonoBehaviour
         _guardPatrol = null;
         _fleeingEntity = null;
         _currentPossessable = null;
+
+        // Disable InventoryHUD
+        InventoryHUD.Instance.HideInventoryHUD();
+        
+
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()

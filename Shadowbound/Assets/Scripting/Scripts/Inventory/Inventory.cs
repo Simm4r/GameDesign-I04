@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-
 public class Inventory : MonoBehaviour
 {
     [SerializeField] private InventoryUI _inventoryUI;
     public List<InventoryItem> items;
     [SerializeField] int maxItems = 1;
 
-    [SerializeField] private PossessedController _possessedController;
-    public bool showInventory = false;
+    // [SerializeField] private PossessedController _possessedController;
+    // public bool showInventory = false;
 
     public bool AddItem(ItemData newItem)
     {
@@ -20,6 +19,8 @@ public class Inventory : MonoBehaviour
             items.Add(new InventoryItem(newItem));
             Debug.Log($"Aggiunto {newItem.itemName}");
             _inventoryUI.UpdateSlot(newItem.icon);
+            if (PlayerInput.Instance.InPossession)
+                InventoryHUD.Instance.UpdateInventoryHUD(this);
             return true;
 
         }
@@ -124,10 +125,10 @@ public class Inventory : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        showInventory = _possessedController.AlreadyPossessed;
-        if (showInventory)
-        {
-            _inventoryUI.enableInventoryUI();
-        }
+        // showInventory = _possessedController.AlreadyPossessed;
+        // if (showInventory)
+        // {
+        //     _inventoryUI.enableInventoryUI();
+        // }
     }
 }

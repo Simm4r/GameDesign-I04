@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
+    [SerializeField] private bool _isEnabled = false;
     // [SerializeField] private Inventory _entityInventory;
     [SerializeField] private Image[] _slots;
     // [SerializeField] private int maxSlots = 3;
@@ -10,36 +11,23 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private int _header = 0;
     private int _maxSlots;
 
+    private CanvasGroup _canvasGroup;
+
     public int Header
     {
         get { return _header; }
         set { _header = value; }
     }
+
+    public int MaxSlots
+    {
+        get { return _maxSlots; }
+    }
+
     void Awake()
     {
         // _slots = new Image[3];
-        _maxSlots = _slots.Length;
-
-        for (int i = 0; i < _slots.Length; i++)
-        {
-            _slots[i].enabled = false;
-        }
-        Image panelImage = GetComponentInChildren<Image>();
-        panelImage.enabled = false;
-
-    }
-
-    void Start()
-    {
-        // UpdateUI();
-    }
-
-    void Update()
-    {
-        // if (_maxSlots == 1 && _header == 0 && _slots[0].sprite == null)
-        // {
-
-        // }
+        initInventoryUI();
     }
 
     // Update is called once per frame
@@ -51,7 +39,37 @@ public class InventoryUI : MonoBehaviour
         {
             _slots[i].enabled = true;
         }
+        _isEnabled = true;
     }
+
+    public void initInventoryUI()
+    {
+        _canvasGroup = GetComponent<CanvasGroup>();
+        _canvasGroup.interactable = false;
+        _canvasGroup.blocksRaycasts = false;
+        HideInventoryUI();
+
+        _maxSlots = _slots.Length;
+
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            _slots[i].enabled = false;
+        }
+        Image panelImage = GetComponentInChildren<Image>();
+        panelImage.enabled = false;
+        _isEnabled = false;
+    }
+
+    public void ShowInventoryUI()
+    {
+        _canvasGroup.alpha = 1f;
+    }
+
+    public void HideInventoryUI()
+    {
+        _canvasGroup.alpha = 0f;
+    }
+
     public void UpdateSlot(Sprite sprite)
     {
         if (_header < _maxSlots)
@@ -89,21 +107,28 @@ public class InventoryUI : MonoBehaviour
             _header--;
         }
         if (_header > 0)
-            {
-                _slots[_header].sprite = null;
-                _header--;
-            }
-            else if (_header == 0)
-            {
-                _slots[_header].sprite = null;
-                _slots[_header].enabled = false;
-            }
-            else
-            {
-                // You shouldn't arrive here (in theory)
-                // Reset _header pointer
-                _header = 0;
-                Debug.Log("Inventory is empty. Can't remove item");
-            }
+        {
+            _slots[_header].sprite = null;
+            _header--;
+        }
+        else if (_header == 0)
+        {
+            _slots[_header].sprite = null;
+            _slots[_header].enabled = false;
+        }
+        else
+        {
+            // You shouldn't arrive here (in theory)
+            // Reset _header pointer
+            _header = 0;
+            Debug.Log("Inventory is empty. Can't remove item");
+        }
+    }
+
+    public Image getSlot(int position = 0)
+    {
+        if (position < 0 || position > _header)
+            return null;
+        return _slots[position];
     }
 }
