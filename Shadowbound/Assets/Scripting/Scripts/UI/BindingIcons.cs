@@ -137,6 +137,8 @@ public class InputSpritesByKey : MonoBehaviour
     [SerializeField] private Sprite spriteMouseLeft;
     [SerializeField] private Sprite spriteMouseRight;
     [SerializeField] private Sprite spriteMouseMiddle;
+    [SerializeField] private Sprite spriteMouseScrollUp;
+    [SerializeField] private Sprite spriteMouseScrollDown;
 
     [Header("GAMEPAD - BUTTONI PRINCIPALI")]
     [SerializeField] private Sprite spriteGamepadButtonSouth;      // A / Cross
@@ -283,7 +285,8 @@ public class InputSpritesByKey : MonoBehaviour
             case "<Mouse>/leftButton": return spriteMouseLeft;
             case "<Mouse>/rightButton": return spriteMouseRight;
             case "<Mouse>/middleButton": return spriteMouseMiddle;
-
+            case "<Mouse>/scroll/up": return spriteMouseScrollUp;
+            case "<Mouse>/scroll/down": return spriteMouseScrollDown;
             // GAMEPAD
             case "<Gamepad>/buttonSouth": return spriteGamepadButtonSouth;
             case "<Gamepad>/buttonNorth": return spriteGamepadButtonNorth;

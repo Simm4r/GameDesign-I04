@@ -57,13 +57,15 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    public bool ShadowStep =>!_dying && !_inPossession && !Player.Instance.InDialogue && _controls.Player.ShadowStep.ReadValue<float>() > 0;
+    public bool ShadowScreen =>!_dying && !_inPossession && !Player.Instance.InDialogue && _controls.Player.ShadowScreen.ReadValue<float>() > 0;
     public bool Possessing => !_dying && !_inPossession && !Player.Instance.InDialogue && _controls.Player.Possession.ReadValue<float>() > 0;
     public bool ShadowVision =>!_dying && !_inPossession && !Player.Instance.InDialogue && _controls.Player.ShadowVision.ReadValue<float>() > 0;
-    public bool Interact => !_dying && !Player.Instance.InDialogue && _controls.Player.Interact.ReadValue<float>() > 0;
+    public bool Interact => !_dying && !Player.Instance.InDialogue && _controls.Player.Interact.triggered;
     public bool QuitPossession => !Player.Instance.InDialogue && _inPossession && _controls.Player.QuitPossession.ReadValue<float>() > 0;
     public bool DialogueNext => Player.Instance.InDialogue && _controls.Player.DialogueNext.triggered;
     public bool DropItem => !Player.Instance.InDialogue && _inPossession && _controls.Player.DropItem.triggered;
+    public bool InteractUp => !Player.Instance.InDialogue && _controls.Player.InteractUp.triggered;
+    public bool InteractDown => !Player.Instance.InDialogue && _controls.Player.InteractDown.triggered;
 
     private void Awake()
     {
@@ -117,13 +119,13 @@ public class PlayerInput : MonoBehaviour
             _lookInput = Vector2.zero;
             UpdateCurrentScheme(ctx.control.device);
         };
-        //ShadowStep event register
-        _controls.Player.ShadowStep.performed += ctx =>
+        //ShadowScreen event register
+        _controls.Player.ShadowScreen.performed += ctx =>
         {
             UpdateCurrentScheme(ctx.control.device);
         };
 
-        _controls.Player.ShadowStep.canceled += ctx =>
+        _controls.Player.ShadowScreen.canceled += ctx =>
         {
             UpdateCurrentScheme(ctx.control.device);
         };
@@ -184,6 +186,23 @@ public class PlayerInput : MonoBehaviour
         };
 
         _controls.Player.DropItem.canceled += ctx =>
+        {
+            UpdateCurrentScheme(ctx.control.device);
+        };
+
+        _controls.Player.InteractUp.performed += ctx =>
+        {
+            UpdateCurrentScheme(ctx.control.device);
+        };
+        _controls.Player.InteractUp.canceled += ctx =>
+        {
+            UpdateCurrentScheme(ctx.control.device);
+        };
+        _controls.Player.InteractDown.performed += ctx =>
+        {
+            UpdateCurrentScheme(ctx.control.device);
+        };
+        _controls.Player.InteractDown.canceled += ctx =>
         {
             UpdateCurrentScheme(ctx.control.device);
         };

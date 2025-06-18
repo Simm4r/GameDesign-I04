@@ -19,6 +19,8 @@ public class DoorLocked : Interactable
     {
         if (!_isOpenable)
         {
+            NotificationBar.Instance.SetText("The door is locked");
+            NotificationBar.Instance.StartBlink();
             return;
         }
         _canInteract = false;
@@ -27,7 +29,7 @@ public class DoorLocked : Interactable
 
     void Update()
     {
-        if (!PlayerInput.Instance.InPossession)
+        if (!PlayerInput.Instance.InPossession || NotificationBar.Instance.IsBlinking)
         {
             if (_canInteract != false)
                 _canInteract = false;

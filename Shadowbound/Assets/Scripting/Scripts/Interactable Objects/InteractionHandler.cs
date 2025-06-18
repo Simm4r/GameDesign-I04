@@ -8,13 +8,25 @@ public class InteractionHandler : MonoBehaviour
     [SerializeField] private GameObject _player = null;
     private Interactable _object;
     [SerializeField] private float _triggerDistance = 1f;
-    private string _currentScheme = "None";
-    [SerializeField] private Canvas _interactionBar;
-    [SerializeField] private Image _uiBindingSprite;
+    [SerializeField] private string _text;
+    private enum State
+    {
+        Added,
+        Removed,
+        None
+    }
 
+    private State _actualState = State.None;
+
+    public string Text
+    {
+        get => _text;
+        set => _text = value;
+    }
     public GameObject Player
     {
         set { _player = value; }
+        get => _player;
     }
     void Awake()
     {
@@ -23,11 +35,11 @@ public class InteractionHandler : MonoBehaviour
 
     void Update()
     {
-        
+
         if (!_object.CanInteract || _player == null)
         {
-            if (_interactionBar.enabled)
-                _interactionBar.enabled = false;
+            _actualState = State.Removed;
+            InteractionBarHandler.Instance.RemoveInteraction(this);
             return;
         }
 
@@ -36,25 +48,17 @@ public class InteractionHandler : MonoBehaviour
 
         if (distance > _triggerDistance)
         {
-            if (_interactionBar.enabled)
-                _interactionBar.enabled = false;
+            _actualState = State.Removed;
+            InteractionBarHandler.Instance.RemoveInteraction(this);
             return;
         }
 
-        HandleSprite();
-        if (!_interactionBar.enabled)
-            _interactionBar.enabled = true;
-        if (PlayerInput.Instance.Interact)
-            _object.Interact();
+            _actualState = State.Added;
+            InteractionBarHandler.Instance.AddInteraction(this);
     }
 
-    private void HandleSprite()
+    public void Interact()
     {
-        if (_currentScheme == PlayerInput.Instance.CurrentScheme || PlayerInput.Instance.CurrentScheme == "None")
-            return;
-
-        _currentScheme = PlayerInput.Instance.CurrentScheme;
-        InputBinding bindingForScheme = PlayerInput.Instance.Controls.Player.Interact.bindings.FirstOrDefault(b => b.groups.Contains(_currentScheme));
-        _uiBindingSprite.sprite = InputSpritesByKey.Instance.GetSpriteFromBindingPath(bindingForScheme.effectivePath);
+        _object.Interact();
     }
 }

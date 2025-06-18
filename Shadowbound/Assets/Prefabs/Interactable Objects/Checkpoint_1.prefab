@@ -175,7 +175,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 6803756045036382330}
-  playerCamera: {fileID: 0}
   orbitRadius: 0.2
   heightOffset: 0.4
   horizontalOffset: 0.05
@@ -223,7 +222,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de2ccfd788b6ea042a09ac04cd54574e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 0}
   _flame: {fileID: 4952178851169202509}
   _unlitMaterial: {fileID: 2100000, guid: 3b9ecb003edaa9148b279b2acc969243, type: 2}
   _litMaterial: {fileID: 2100000, guid: 2f752e32d586e5f468ee9d4dd2351ebb, type: 2}
@@ -5112,10 +5110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
   _triggerDistance: 1
-  _input: {fileID: 0}
-  _interactionBar: {fileID: 4683213874882262811}
-  _uiBindingSprite: {fileID: 773251646195435299}
-  _keyIcons: {fileID: 0}
+  _text: Bind
 --- !u!114 &2389112773770147214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5130,8 +5125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _respawnPosition: {fileID: 2287808076515688094}
   _flame: {fileID: 4952178851169202509}
-  _player: {fileID: 0}
-  _input: {fileID: 0}
+  _caller: {fileID: 5228623024129609242}
 --- !u!1 &8290117541335169181
 GameObject:
   m_ObjectHideFlags: 0

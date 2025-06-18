@@ -79,6 +79,8 @@ public class CharacterController : MonoBehaviour, ICharacterController
 
     public bool IsColliderValidForCollisions(Collider coll)
     {
+        if (coll.CompareTag("Smoke"))
+            return false;
         return true;
     }
 

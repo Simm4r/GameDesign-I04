@@ -1,0 +1,168 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6848835304593497786
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5824920285136214697}
+  - component: {fileID: 4040536210604790064}
+  m_Layer: 0
+  m_Name: Control Handler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5824920285136214697
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6848835304593497786}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 28.217695, y: 2.10149, z: 12.518186}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4040536210604790064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6848835304593497786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d9bb28f3f8d00b4b9cc33914224ca1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteA: {fileID: 21300000, guid: 88854beb20335964798e17c9a06a349d, type: 3}
+  spriteB: {fileID: 21300000, guid: c1f26d69011f8c047be1ecceb4e5a06e, type: 3}
+  spriteC: {fileID: 21300000, guid: 960973876d7f09a40b1a107d540d3a7d, type: 3}
+  spriteD: {fileID: 21300000, guid: e8c194755ec34514e9293b2e8f310f69, type: 3}
+  spriteE: {fileID: 21300000, guid: 3b60f18d9a1ea8d45b28277d20794055, type: 3}
+  spriteF: {fileID: 21300000, guid: e067a5d3d39fec145a76042bce446cac, type: 3}
+  spriteG: {fileID: 21300000, guid: 59bee6a854e259f498ddea92a8572082, type: 3}
+  spriteH: {fileID: 21300000, guid: ffcbddde870d24e49b59e739294dcb67, type: 3}
+  spriteI: {fileID: 21300000, guid: 505a5e75b8a737c4799db9530d0b5573, type: 3}
+  spriteJ: {fileID: 21300000, guid: 2350601d5d7990440845bf443e2aa54b, type: 3}
+  spriteK: {fileID: 21300000, guid: dca400a85e973004facfda60164b72cc, type: 3}
+  spriteL: {fileID: 21300000, guid: 4c2b3d16ce4ac48499f2aac3ea3722f5, type: 3}
+  spriteM: {fileID: 21300000, guid: d58ccb9328c139549a96c35f44ecbff0, type: 3}
+  spriteN: {fileID: 21300000, guid: 7c43553bb7e84ef45b2cfe8af9aca6f4, type: 3}
+  spriteO: {fileID: 21300000, guid: 75236f9fc60a5f54fa8e5f1eece2c2e4, type: 3}
+  spriteP: {fileID: 21300000, guid: 63600290729cd164f9a7fa4c9e370db2, type: 3}
+  spriteQ: {fileID: 21300000, guid: 56923661d7589504896c73f352fb3bf5, type: 3}
+  spriteR: {fileID: 21300000, guid: 6c935a18a93056f4085248deb618b8f6, type: 3}
+  spriteS: {fileID: 21300000, guid: f85d3c59f791b624db20f8bf484f0d4a, type: 3}
+  spriteT: {fileID: 21300000, guid: fbe371b2243261347b29d4248c05edb2, type: 3}
+  spriteU: {fileID: 21300000, guid: 747331ccc7eea7740a322a612c5b49ff, type: 3}
+  spriteV: {fileID: 21300000, guid: 9e68010da3fdcee48bcaffbe79eab23e, type: 3}
+  spriteW: {fileID: 21300000, guid: 4fd9fe2795c6b8f4696d7ad321e1085b, type: 3}
+  spriteX: {fileID: 21300000, guid: c4191c515b06f8a4d9eb707df329914a, type: 3}
+  spriteY: {fileID: 21300000, guid: 5e84bfcfc0a61084daf9d2ffd0b285af, type: 3}
+  spriteZ: {fileID: 21300000, guid: a0d4840768fec1d4d9055d88c2cff1f4, type: 3}
+  sprite0: {fileID: 21300000, guid: 94b14a867a47bed4d8054e38d8a4dab5, type: 3}
+  sprite1: {fileID: 21300000, guid: 8b68162486696ed4e8fcd2a0a900c68a, type: 3}
+  sprite2: {fileID: 21300000, guid: 744c228d36be14f4082390a3653463ea, type: 3}
+  sprite3: {fileID: 21300000, guid: 669c8c26edd404d408cee7dc89c07e26, type: 3}
+  sprite4: {fileID: 21300000, guid: baccb437db1b5dd4aa86d442afd79729, type: 3}
+  sprite5: {fileID: 21300000, guid: 85747817c953da74096554f834c121f6, type: 3}
+  sprite6: {fileID: 21300000, guid: 4a4d287d142f61f4fa68933e30b98077, type: 3}
+  sprite7: {fileID: 21300000, guid: e921458568a27cc46b160ffeaee076f0, type: 3}
+  sprite8: {fileID: 21300000, guid: 0d5ab259b2ab25d4eb8a70b32d6a0fca, type: 3}
+  sprite9: {fileID: 21300000, guid: 07e9a6d658ae7144c8761b70bd8afdc6, type: 3}
+  spriteNumpad0: {fileID: 21300000, guid: 7f69f75d519dd2942a3b29df2d07278b, type: 3}
+  spriteNumpad1: {fileID: 21300000, guid: c1a5b347c36b8fd48803dcfaf8564384, type: 3}
+  spriteNumpad2: {fileID: 21300000, guid: 02524c5e418fb894d824324433796897, type: 3}
+  spriteNumpad3: {fileID: 21300000, guid: 1991a9c87494ce546a7a67dd4f942555, type: 3}
+  spriteNumpad4: {fileID: 21300000, guid: 220e816207c7c8149943a57f492ae608, type: 3}
+  spriteNumpad5: {fileID: 21300000, guid: 006938e0acc072742b3899b7b0fded7e, type: 3}
+  spriteNumpad6: {fileID: 21300000, guid: a1f3bdadd0f9a3346ba7ccdfe22147e9, type: 3}
+  spriteNumpad7: {fileID: 21300000, guid: 929f1a3e008535545a646f388768a151, type: 3}
+  spriteNumpad8: {fileID: 21300000, guid: 9805af847521be142a69e8a984076bf2, type: 3}
+  spriteNumpad9: {fileID: 21300000, guid: dd2167cbd1af1874b963d2b0e83ab402, type: 3}
+  spriteNumpadPlus: {fileID: 21300000, guid: c2be08693531d354b8da122d9c497091, type: 3}
+  spriteNumpadMinus: {fileID: 21300000, guid: be69a51973e82104bbef37e91559a80d, type: 3}
+  spriteNumpadMultiply: {fileID: 21300000, guid: b183391bc2d53d84aae32e5cb6629d93, type: 3}
+  spriteNumpadDivide: {fileID: 21300000, guid: b435e23908c62b6419b37655ffa8cddd, type: 3}
+  spriteNumpadDot: {fileID: 21300000, guid: 3fd6d0baaa7ac3040a5b9189861cce92, type: 3}
+  spriteNumpadEnter: {fileID: 21300000, guid: f36eeca25fd66fe418561da28c81c65d, type: 3}
+  spriteNumLock: {fileID: 21300000, guid: 2d30f47101a2aba4a949c3001985ccb8, type: 3}
+  spriteUpArrow: {fileID: 21300000, guid: a4ab8a1e38e455d4188672db1934bc03, type: 3}
+  spriteDownArrow: {fileID: 21300000, guid: 3f663eb43873ba54a802f99bbcde8a4b, type: 3}
+  spriteLeftArrow: {fileID: 21300000, guid: 2fb54e5239669fe4f97796beed0dec6b, type: 3}
+  spriteRightArrow: {fileID: 21300000, guid: 4d916c3f948310146a5b98d3a56557d3, type: 3}
+  spriteLeftShift: {fileID: 21300000, guid: 97facab866c1cad4e8f5886c65b76bde, type: 3}
+  spriteRightShift: {fileID: 21300000, guid: 3c8e8212d7e46f74aa8304dcf73a2c32, type: 3}
+  spriteLeftCtrl: {fileID: 21300000, guid: 4526bce4785aa2245baed4357dc6b7ae, type: 3}
+  spriteRightCtrl: {fileID: 21300000, guid: ab0505a08ab8c0a48a085e5e0e201877, type: 3}
+  spriteLeftAlt: {fileID: 21300000, guid: 7874463303dddcf4ba15409a0f698dce, type: 3}
+  spriteRightAlt: {fileID: 21300000, guid: 9564339a3a173b54b89a55d876629b50, type: 3}
+  spriteCapsLock: {fileID: 21300000, guid: ee865349c521c0c42a0792f5e41cae23, type: 3}
+  spriteTab: {fileID: 21300000, guid: 9c84cbf215c6c16408f0699fe018af20, type: 3}
+  spriteSpace: {fileID: 21300000, guid: 9ba63d0ee19b38c44b1b50433736d85d, type: 3}
+  spriteEnter: {fileID: 21300000, guid: 0782913008a8a294a861a7385043d3a5, type: 3}
+  spriteBackspace: {fileID: 21300000, guid: 7e47dc64d3765b747bf77d66e5538469, type: 3}
+  spriteEscape: {fileID: 21300000, guid: 0ada111335a1fe14f9a5f9ed1ee99331, type: 3}
+  spriteInsert: {fileID: 21300000, guid: 62fa01e5519e5934b962ad2fc90cb978, type: 3}
+  spriteDelete: {fileID: 21300000, guid: f1d0989d870794b44bbcd50a06e745ad, type: 3}
+  spriteHome: {fileID: 21300000, guid: 7f6e438dae3fc5e47b189a43a56a5124, type: 3}
+  spriteEnd: {fileID: 21300000, guid: f0e901b75f65b77438ed84fc8787c613, type: 3}
+  spritePageUp: {fileID: 21300000, guid: addbd224da03a0846b4e2c9d5125f787, type: 3}
+  spritePageDown: {fileID: 21300000, guid: 44681c23a9a098b4cbb2ce3a893e8115, type: 3}
+  spritePause: {fileID: 21300000, guid: 58e6df2b9b2952645ac1b856af14cf34, type: 3}
+  spriteScrollLock: {fileID: 21300000, guid: 535db03c0c12833469563d9086ea8a76, type: 3}
+  spritePrintScreen: {fileID: 21300000, guid: 7f5ef4a6129d1cf4e802507063b69ff5, type: 3}
+  spriteMinus: {fileID: 21300000, guid: 9b4f41a46a62ccd4dbe3c0001ce85eb3, type: 3}
+  spriteEquals: {fileID: 21300000, guid: 96c92bf9b6f987a48af7a63ea6ef0137, type: 3}
+  spriteLeftBracket: {fileID: 21300000, guid: 9b659b00781abf04993b7974f8a10990, type: 3}
+  spriteRightBracket: {fileID: 21300000, guid: 796894b29aa9b8144bfdc9806aeeab78, type: 3}
+  spriteBackslash: {fileID: 21300000, guid: c7cc75e25f1dde04bb19283fb55e5304, type: 3}
+  spriteSemicolon: {fileID: 21300000, guid: b04b5f51eb872ae47bdc7033c808ec0b, type: 3}
+  spriteQuote: {fileID: 21300000, guid: ac4dd14595ec60745a91917cca8ca2e2, type: 3}
+  spriteComma: {fileID: 21300000, guid: 1d95cbfb2378c1e40ac2b13b78e9dfc9, type: 3}
+  spritePeriod: {fileID: 21300000, guid: 0bc82130774367f469a7db788d2e993e, type: 3}
+  spriteSlash: {fileID: 21300000, guid: b435e23908c62b6419b37655ffa8cddd, type: 3}
+  spriteF1: {fileID: 21300000, guid: d93231e60722a304696a30213e762c49, type: 3}
+  spriteF2: {fileID: 21300000, guid: 4485a43849630ab42869b716982c4cad, type: 3}
+  spriteF3: {fileID: 21300000, guid: b559ecc24a982df43b2b607a74dd1415, type: 3}
+  spriteF4: {fileID: 21300000, guid: 68cdf2e08a801d749919148cd35e3628, type: 3}
+  spriteF5: {fileID: 21300000, guid: 0bdd7c6800830fb44b42bea94d717527, type: 3}
+  spriteF6: {fileID: 21300000, guid: fd90d0c97751ca743ba350978114389b, type: 3}
+  spriteF7: {fileID: 21300000, guid: 44fa6bfed07266c4cbddeda722f1def8, type: 3}
+  spriteF8: {fileID: 21300000, guid: 2abc7bb25beb7bd40863f0740536a2b0, type: 3}
+  spriteF9: {fileID: 21300000, guid: fe0157bb5428aed4d95b53a9f1d35d3a, type: 3}
+  spriteF10: {fileID: 21300000, guid: 25effb93e23052443bc3729fafcf7857, type: 3}
+  spriteF11: {fileID: 21300000, guid: 9c93634d91737404ba14c0415cd580d5, type: 3}
+  spriteF12: {fileID: 21300000, guid: 647a74e8c2f219841a99ee8c0a023249, type: 3}
+  spriteMouseLeft: {fileID: 21300000, guid: ec6e17922a6f6bd459dbc694feaabfef, type: 3}
+  spriteMouseRight: {fileID: 21300000, guid: 3fdfbdd51ae44fc47b2db7a8b52fd9d4, type: 3}
+  spriteMouseMiddle: {fileID: 21300000, guid: adfa29aaf1439cd4f90aec40384fbf7c, type: 3}
+  spriteMouseScrollUp: {fileID: 21300000, guid: d838ad5365a557a40a78fef346d50378, type: 3}
+  spriteMouseScrollDown: {fileID: 21300000, guid: da92c98611ed3ea428968ead5d0bb24d, type: 3}
+  spriteGamepadButtonSouth: {fileID: 21300000, guid: 11625238419116549bc7c3706c5dec69, type: 3}
+  spriteGamepadButtonNorth: {fileID: 21300000, guid: c0acecbb06ca39d44bb840f3cbb44ad2, type: 3}
+  spriteGamepadButtonWest: {fileID: 21300000, guid: 4ee82a45009705b4d9e5d567010ea69e, type: 3}
+  spriteGamepadButtonEast: {fileID: 21300000, guid: 75bf2a9cfbb9bde4a854e0133f41e2b9, type: 3}
+  spriteGamepadLeftBumper: {fileID: 21300000, guid: 37f08a5c66046a142bc24e1a8b41be74, type: 3}
+  spriteGamepadRightBumper: {fileID: 21300000, guid: 5744b30a7145aa146be98adfb2a3ed9d, type: 3}
+  spriteGamepadLeftTrigger: {fileID: 21300000, guid: bcc235743ede321408d8f08085be507a, type: 3}
+  spriteGamepadRightTrigger: {fileID: 21300000, guid: f497cfad8c4ebb34b8efaa9199257f7c, type: 3}
+  spriteGamepadSelect: {fileID: 21300000, guid: 2b321f41a387f474ea45735b053e6362, type: 3}
+  spriteGamepadStart: {fileID: 21300000, guid: 2b15d44ca88478d49a2236f7cf879fd7, type: 3}
+  spriteGamepadLeftStickClick: {fileID: 21300000, guid: c6ffe4e14e007c248a26dfc292b2e2c4, type: 3}
+  spriteGamepadRightStickClick: {fileID: 21300000, guid: 146a66a2f24b80b4e9444daed648329a, type: 3}
+  spriteGamepadDpadUp: {fileID: 21300000, guid: eeb303d81f2604a4ca877b11ce2b4576, type: 3}
+  spriteGamepadDpadDown: {fileID: 21300000, guid: f60144383fbd90b4985ae10c0ed1e9fe, type: 3}
+  spriteGamepadDpadLeft: {fileID: 21300000, guid: 52f39a497f7cea641ab8847561154c24, type: 3}
+  spriteGamepadDpadRight: {fileID: 21300000, guid: 2818c1c04b3ed484cb27ddc2a7c14b28, type: 3}
+  defaultSprite: {fileID: 21300000, guid: 57b7413d326972049bd20be11b10a7af, type: 3}

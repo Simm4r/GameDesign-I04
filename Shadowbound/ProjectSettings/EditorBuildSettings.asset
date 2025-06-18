@@ -12,5 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/TrailerScene.unity
     guid: 1f62cf068a29cb442946351fa584dc57
   m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 2cb8d56cf40a0de4e8376264ac40e368, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

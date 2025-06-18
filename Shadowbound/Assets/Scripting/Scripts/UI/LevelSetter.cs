@@ -22,6 +22,9 @@ public class LevelSetter : MonoBehaviour
             case "ShadowVision_Icon":
                 level = PlayerStats.Instance.ShadowVisionLevel;
                 break;
+            case "ShadowScreen_Icon":
+                level = PlayerStats.Instance.ShadowScreenLevel;
+                break;
         }
         _text.text = $"lv.\n{level}";
     }

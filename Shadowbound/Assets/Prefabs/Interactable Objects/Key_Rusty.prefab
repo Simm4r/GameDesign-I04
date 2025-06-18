@@ -140,8 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
   _triggerDistance: 2
-  _interactionBar: {fileID: 305797706370774217}
-  _uiBindingSprite: {fileID: 3368888801934368563}
+  _text: Pick up (Rusty Key)
 --- !u!1 &6053589277416614900
 GameObject:
   m_ObjectHideFlags: 0

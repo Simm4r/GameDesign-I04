@@ -36,7 +36,7 @@ public class Door : Interactable
                     _canInteract = false;
                 return;
             }
-
+            _caller.Text = _doorOpener.IsOpen ? "Close" : "Open";
             _canInteract = true;
         }
 

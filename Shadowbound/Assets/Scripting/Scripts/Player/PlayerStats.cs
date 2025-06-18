@@ -18,16 +18,30 @@ public class PlayerStats : MonoBehaviour
 
     [SerializeField] private int _possessionLevel = 1;
     [SerializeField] private int _shadowVisionLevel = 1;
+    [SerializeField] private int _shadowScreenLevel = 1;
 
     [SerializeField] private bool _isDead = false;
 
 
     public event Action OnPlayerDeath;
 
-    public int PossessionLevel => _possessionLevel;
+    public int PossessionLevel
+    {
+        get => _possessionLevel;
+        set => _possessionLevel = value;
+    }
 
-    public int ShadowVisionLevel => _shadowVisionLevel;
+    public int ShadowVisionLevel
+    {
+        get => _shadowVisionLevel;
+        set => _shadowVisionLevel = value;
+    }
 
+    public int ShadowScreenLevel
+    {
+        get => _shadowScreenLevel;
+        set => _shadowScreenLevel = value;
+    }
     public float MaxHealth => _maxHealth;
 
     public float CurrentHealth => _currentHealth;

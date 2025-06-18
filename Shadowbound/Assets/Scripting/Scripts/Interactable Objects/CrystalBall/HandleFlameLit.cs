@@ -13,7 +13,7 @@ public class HandleFlameLit : MonoBehaviour
     {
         var emission = _flame.emission;
         if (
-            (Player.Instance.ActualCheckPoint.position != transform.position 
+            (Player.Instance.ActualCheckPoint.position != transform.position
             || Player.Instance.ActualCheckPoint.scene != SceneManager.GetActiveScene().name)
             && emission.rateOverTime.constant > 0
         )
@@ -25,7 +25,7 @@ public class HandleFlameLit : MonoBehaviour
 
 
         else if (
-            Player.Instance.ActualCheckPoint.position == transform.position 
+            Player.Instance.ActualCheckPoint.position == transform.position
             || Player.Instance.ActualCheckPoint.scene == SceneManager.GetActiveScene().name
             && emission.rateOverTime.constant > 0
         )

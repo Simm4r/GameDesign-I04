@@ -1493,8 +1493,8 @@
     "m_ObjectId": "08e2551f66ca4b66ae470cdefb9ab5ec",
     "m_Title": "Ambient",
     "m_Position": {
-        "x": -183.0,
-        "y": -737.0
+        "x": -182.999755859375,
+        "y": -737.0000610351563
     }
 }
 
@@ -1974,7 +1974,7 @@
     "m_ObjectId": "146345151fa543cf816e8e34b0ec7e72",
     "m_Title": "Apply Light Colour",
     "m_Position": {
-        "x": -799.0,
+        "x": -798.9998779296875,
         "y": -286.0
     }
 }
@@ -2133,8 +2133,8 @@
     "m_ObjectId": "19f30dbdbc684771a63b9422924274a0",
     "m_Title": "Apply Albedo (ambient)",
     "m_Position": {
-        "x": 570.0,
-        "y": -554.0
+        "x": 570.0003051757813,
+        "y": -554.0000610351563
     }
 }
 
@@ -2622,7 +2622,7 @@
     "m_ObjectId": "276717f8744e4cfd98d6d66b1a471d4c",
     "m_Title": "Combine Diffuse + Specular",
     "m_Position": {
-        "x": 991.0,
+        "x": 991.0003662109375,
         "y": 136.0
     }
 }
@@ -2781,8 +2781,8 @@
     "m_ObjectId": "324bad7fde7b4984b08be7faa44d04ae",
     "m_Title": "Light Layer Test",
     "m_Position": {
-        "x": 1248.0,
-        "y": -234.0
+        "x": 1248.000244140625,
+        "y": -234.00006103515626
     }
 }
 
@@ -3022,7 +3022,7 @@
     "m_Title": "Shadows",
     "m_Position": {
         "x": -1971.0,
-        "y": 514.0
+        "y": 513.9998779296875
     }
 }
 
@@ -3131,7 +3131,7 @@
     "m_ObjectId": "45d36482ab444f869f5edb7b25113a27",
     "m_Title": "+ Additional Lights",
     "m_Position": {
-        "x": 1751.0,
+        "x": 1751.0003662109375,
         "y": -97.0
     }
 }
@@ -4327,7 +4327,7 @@
     "m_Title": "Ambient + Main Light",
     "m_Position": {
         "x": 1536.0,
-        "y": -361.0
+        "y": -361.00006103515627
     }
 }
 
@@ -5562,7 +5562,7 @@
     "m_ObjectId": "99647d98b1ec4cffbfc011ee5e4f48ab",
     "m_Title": "Specular",
     "m_Position": {
-        "x": -1154.0,
+        "x": -1153.9998779296875,
         "y": 461.0
     }
 }
@@ -6093,8 +6093,8 @@
     "m_ObjectId": "aea121920567437b89dee070c1b3dc0a",
     "m_Title": "Ambient / Baked",
     "m_Position": {
-        "x": -516.0,
-        "y": -552.0
+        "x": -515.9998168945313,
+        "y": -552.0000610351563
     }
 }
 
@@ -6226,7 +6226,7 @@
     "m_Title": "Diffuse, N Dot L",
     "m_Position": {
         "x": -2688.0,
-        "y": -312.0
+        "y": -312.00006103515627
     }
 }
 
@@ -6671,10 +6671,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1963.0,
-            "y": 195.99996948242188,
-            "width": 157.0,
-            "height": 94.00003051757813
+            "x": 2003.0001220703125,
+            "y": 194.00003051757813,
+            "width": 156.9998779296875,
+            "height": 95.0
         }
     },
     "m_Slots": [
@@ -6810,7 +6810,7 @@
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
     "m_Value": {
-        "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"a1a4108227a8a8b4f9067f80f37c33ec\",\"type\":3}}",
+        "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"9771bd5fbe60f8f42a9c5f5b9caff218\",\"type\":3}}",
         "m_Guid": ""
     },
     "isMainTexture": false,
@@ -7858,7 +7858,7 @@
     "m_Title": "Main Light Cookie",
     "m_Position": {
         "x": -1880.0,
-        "y": -474.0
+        "y": -474.00006103515627
     }
 }
 
@@ -8418,7 +8418,7 @@
     "m_ObjectId": "e55cb56e639245c4b510115fc4273ac8",
     "m_Title": "Specular Colour",
     "m_Position": {
-        "x": 144.0,
+        "x": 144.00033569335938,
         "y": 369.0
     }
 }
@@ -8847,8 +8847,8 @@
     "m_ObjectId": "f8709b9010d045249e88f5948d9a686e",
     "m_Title": "Apply Fog",
     "m_Position": {
-        "x": 1938.0,
-        "y": 137.0
+        "x": 1978.00048828125,
+        "y": 135.0
     }
 }
 

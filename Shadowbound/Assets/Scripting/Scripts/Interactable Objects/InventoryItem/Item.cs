@@ -29,7 +29,11 @@ public class Item : Interactable
 
         bool inserted = inventory.AddItem(_itemData);
         if (inserted)
+        {
+            InteractionBarHandler.Instance.RemoveInteraction(_caller);
             Destroy(gameObject);
+        }
+            
     }
 
     void Update()

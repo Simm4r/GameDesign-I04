@@ -31,8 +31,8 @@ public class ButtonHandler : MonoBehaviour
                 _sprite.sprite = InputSpritesByKey.Instance.GetSpriteFromBindingPath(bindingForScheme.effectivePath);
                 break;
 
-            case "ShadowStep_Icon":
-                bindingForScheme = PlayerInput.Instance.Controls.Player.ShadowStep.bindings.FirstOrDefault(b => b.groups.Contains(_currentScheme));
+            case "ShadowScreen_Icon":
+                bindingForScheme = PlayerInput.Instance.Controls.Player.ShadowScreen.bindings.FirstOrDefault(b => b.groups.Contains(_currentScheme));
                 _sprite.sprite = InputSpritesByKey.Instance.GetSpriteFromBindingPath(bindingForScheme.effectivePath);
                 break;
 

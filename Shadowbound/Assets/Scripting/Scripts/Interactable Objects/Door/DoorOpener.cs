@@ -15,10 +15,14 @@ public class DoorOpener : MonoBehaviour
     private Quaternion _finalRotation;
     private float time = 0;
     [SerializeField] private float _duration = 1.0f;
-    [SerializeField] TextMeshProUGUI _text;
     public bool IsAnimationStarted
     {
         get { return _isAnimationStarted; }
+    }
+
+    public bool IsOpen
+    {
+        get => _isOpen;
     }
     void Awake()
     {
@@ -51,7 +55,6 @@ public class DoorOpener : MonoBehaviour
             if (transform.localRotation == _finalRotation)
             {
                 _isOpen = !_isOpen;
-                _text.text = _isOpen ? "Close" : "Open";
                 _isAnimationStarted = false;
             }
         }

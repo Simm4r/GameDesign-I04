@@ -119,7 +119,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ShadowStep"",
+                    ""name"": ""ShadowScreen"",
                     ""type"": ""Button"",
                     ""id"": ""da488c75-0426-4bf1-a802-54377e49b90e"",
                     ""expectedControlType"": """",
@@ -180,6 +180,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InteractUp"",
+                    ""type"": ""Value"",
+                    ""id"": ""c644ca1e-b08b-4d13-85f8-ed2d0d5464db"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""InteractDown"",
+                    ""type"": ""Value"",
+                    ""id"": ""c2d9d74e-42ae-4ea0-b15e-de04cfc4eb2d"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -296,22 +314,22 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d744816c-db72-4601-874f-f7b63fb31afe"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";MouseKeyboard"",
-                    ""action"": ""ShadowStep"",
+                    ""action"": ""ShadowScreen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""aad5b8a0-f80f-4ba6-82b9-59e06a8a1703"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""ShadowStep"",
+                    ""action"": ""ShadowScreen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -351,7 +369,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""0928bb46-6a7d-4d2f-bc46-6c119e4b74a7"",
-                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -373,7 +391,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""8dd2c2c6-5748-4cc2-9b00-000352927c99"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -446,6 +464,50 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""DropItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d8dc5501-5ae0-4727-8817-8d46d0303edc"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";MouseKeyboard"",
+                    ""action"": ""InteractUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9c529db2-0b1f-4abd-b231-1bdc07bf6581"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""InteractUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5ff3f86c-c613-43fc-8592-92fc5d4e0efc"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";MouseKeyboard"",
+                    ""action"": ""InteractDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ef4f2ff2-25c9-4dbf-9f4c-bf2a8dc71190"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""InteractDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -485,13 +547,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
-        m_Player_ShadowStep = m_Player.FindAction("ShadowStep", throwIfNotFound: true);
+        m_Player_ShadowScreen = m_Player.FindAction("ShadowScreen", throwIfNotFound: true);
         m_Player_Possession = m_Player.FindAction("Possession", throwIfNotFound: true);
         m_Player_ShadowVision = m_Player.FindAction("ShadowVision", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_QuitPossession = m_Player.FindAction("QuitPossession", throwIfNotFound: true);
         m_Player_DialogueNext = m_Player.FindAction("DialogueNext", throwIfNotFound: true);
         m_Player_DropItem = m_Player.FindAction("DropItem", throwIfNotFound: true);
+        m_Player_InteractUp = m_Player.FindAction("InteractUp", throwIfNotFound: true);
+        m_Player_InteractDown = m_Player.FindAction("InteractDown", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -575,13 +639,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Sprint;
-    private readonly InputAction m_Player_ShadowStep;
+    private readonly InputAction m_Player_ShadowScreen;
     private readonly InputAction m_Player_Possession;
     private readonly InputAction m_Player_ShadowVision;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_QuitPossession;
     private readonly InputAction m_Player_DialogueNext;
     private readonly InputAction m_Player_DropItem;
+    private readonly InputAction m_Player_InteractUp;
+    private readonly InputAction m_Player_InteractDown;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -606,9 +672,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         /// <summary>
-        /// Provides access to the underlying input action "Player/ShadowStep".
+        /// Provides access to the underlying input action "Player/ShadowScreen".
         /// </summary>
-        public InputAction @ShadowStep => m_Wrapper.m_Player_ShadowStep;
+        public InputAction @ShadowScreen => m_Wrapper.m_Player_ShadowScreen;
         /// <summary>
         /// Provides access to the underlying input action "Player/Possession".
         /// </summary>
@@ -633,6 +699,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/DropItem".
         /// </summary>
         public InputAction @DropItem => m_Wrapper.m_Player_DropItem;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/InteractUp".
+        /// </summary>
+        public InputAction @InteractUp => m_Wrapper.m_Player_InteractUp;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/InteractDown".
+        /// </summary>
+        public InputAction @InteractDown => m_Wrapper.m_Player_InteractDown;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -668,9 +742,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
-            @ShadowStep.started += instance.OnShadowStep;
-            @ShadowStep.performed += instance.OnShadowStep;
-            @ShadowStep.canceled += instance.OnShadowStep;
+            @ShadowScreen.started += instance.OnShadowScreen;
+            @ShadowScreen.performed += instance.OnShadowScreen;
+            @ShadowScreen.canceled += instance.OnShadowScreen;
             @Possession.started += instance.OnPossession;
             @Possession.performed += instance.OnPossession;
             @Possession.canceled += instance.OnPossession;
@@ -689,6 +763,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DropItem.started += instance.OnDropItem;
             @DropItem.performed += instance.OnDropItem;
             @DropItem.canceled += instance.OnDropItem;
+            @InteractUp.started += instance.OnInteractUp;
+            @InteractUp.performed += instance.OnInteractUp;
+            @InteractUp.canceled += instance.OnInteractUp;
+            @InteractDown.started += instance.OnInteractDown;
+            @InteractDown.performed += instance.OnInteractDown;
+            @InteractDown.canceled += instance.OnInteractDown;
         }
 
         /// <summary>
@@ -709,9 +789,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
-            @ShadowStep.started -= instance.OnShadowStep;
-            @ShadowStep.performed -= instance.OnShadowStep;
-            @ShadowStep.canceled -= instance.OnShadowStep;
+            @ShadowScreen.started -= instance.OnShadowScreen;
+            @ShadowScreen.performed -= instance.OnShadowScreen;
+            @ShadowScreen.canceled -= instance.OnShadowScreen;
             @Possession.started -= instance.OnPossession;
             @Possession.performed -= instance.OnPossession;
             @Possession.canceled -= instance.OnPossession;
@@ -730,6 +810,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DropItem.started -= instance.OnDropItem;
             @DropItem.performed -= instance.OnDropItem;
             @DropItem.canceled -= instance.OnDropItem;
+            @InteractUp.started -= instance.OnInteractUp;
+            @InteractUp.performed -= instance.OnInteractUp;
+            @InteractUp.canceled -= instance.OnInteractUp;
+            @InteractDown.started -= instance.OnInteractDown;
+            @InteractDown.performed -= instance.OnInteractDown;
+            @InteractDown.canceled -= instance.OnInteractDown;
         }
 
         /// <summary>
@@ -818,12 +904,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSprint(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "ShadowStep" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "ShadowScreen" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnShadowStep(InputAction.CallbackContext context);
+        void OnShadowScreen(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Possession" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -866,5 +952,19 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDropItem(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "InteractUp" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnInteractUp(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "InteractDown" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnInteractDown(InputAction.CallbackContext context);
     }
 }

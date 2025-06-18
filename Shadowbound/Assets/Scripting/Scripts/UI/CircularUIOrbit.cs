@@ -12,24 +12,21 @@ public class CircularUIOrbit : MonoBehaviour
         if (target == null || Camera.main == null)
             return;
 
-        Vector3 toPlayerFlat = Camera.main.transform.position - target.position;
-        toPlayerFlat.y = 0;
-        toPlayerFlat.Normalize();
+        // Calcolo il piano orizzontale dove orbitare (ignora l'altezza della camera)
+        Vector3 cameraFlat = new Vector3(Camera.main.transform.position.x, target.position.y, Camera.main.transform.position.z);
+        Vector3 toCameraFlat = (cameraFlat - target.position).normalized;
 
-        Vector3 right = Vector3.Cross(Vector3.up, toPlayerFlat);
-
+        // Calcolo la posizione orbitata
+        Vector3 right = Vector3.Cross(Vector3.up, toCameraFlat);
         Vector3 orbitPosition = target.position
                               + Vector3.up * heightOffset
-                              + toPlayerFlat * orbitRadius
+                              + toCameraFlat * orbitRadius
                               + right * horizontalOffset;
 
         transform.position = orbitPosition;
 
-        Vector3 lookDirection = Camera.main.transform.position - transform.position;
-        lookDirection.y = 0;
-        transform.rotation = Quaternion.LookRotation(lookDirection);
-
-        transform.rotation = Quaternion.LookRotation(lookDirection);
-        transform.Rotate(0, 180f, 0);
+        // Rotazione: guarda direttamente la camera in 3D
+        transform.LookAt(Camera.main.transform.position);
+        transform.Rotate(0f, 180f, 0f); // Solo se necessario
     }
 }

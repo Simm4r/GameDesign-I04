@@ -24,7 +24,7 @@ public class CrystalBall : Interactable
         _canInteract = false;
         RespawnPoint checkPoint;
         checkPoint.position = _respawnPosition.transform.position;
-
+        Debug.Log(checkPoint.position);
         checkPoint.scene = SceneManager.GetActiveScene().name;
         Player.Instance.ActualCheckPoint = checkPoint;
     }
@@ -41,7 +41,5 @@ public class CrystalBall : Interactable
         }
 
         _caller.Player = Player.Instance.gameObject;
-        if (_flame.emission.rateOverTime.constant == 0 && !_canInteract)
-            _canInteract = true;
     }
 }

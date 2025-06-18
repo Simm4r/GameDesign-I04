@@ -33,7 +33,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ShadowStep",
+                    "name": "ShadowScreen",
                     "type": "Button",
                     "id": "da488c75-0426-4bf1-a802-54377e49b90e",
                     "expectedControlType": "",
@@ -94,6 +94,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "InteractUp",
+                    "type": "Value",
+                    "id": "c644ca1e-b08b-4d13-85f8-ed2d0d5464db",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "InteractDown",
+                    "type": "Value",
+                    "id": "c2d9d74e-42ae-4ea0-b15e-de04cfc4eb2d",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -210,22 +228,22 @@
                 {
                     "name": "",
                     "id": "d744816c-db72-4601-874f-f7b63fb31afe",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": ";MouseKeyboard",
-                    "action": "ShadowStep",
+                    "action": "ShadowScreen",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "aad5b8a0-f80f-4ba6-82b9-59e06a8a1703",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "ShadowStep",
+                    "action": "ShadowScreen",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -265,7 +283,7 @@
                 {
                     "name": "",
                     "id": "0928bb46-6a7d-4d2f-bc46-6c119e4b74a7",
-                    "path": "<Gamepad>/rightStickPress",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -287,7 +305,7 @@
                 {
                     "name": "",
                     "id": "8dd2c2c6-5748-4cc2-9b00-000352927c99",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -358,6 +376,50 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "DropItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d8dc5501-5ae0-4727-8817-8d46d0303edc",
+                    "path": "<Mouse>/scroll/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";MouseKeyboard",
+                    "action": "InteractUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9c529db2-0b1f-4abd-b231-1bdc07bf6581",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "InteractUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5ff3f86c-c613-43fc-8592-92fc5d4e0efc",
+                    "path": "<Mouse>/scroll/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";MouseKeyboard",
+                    "action": "InteractDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ef4f2ff2-25c9-4dbf-9f4c-bf2a8dc71190",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "InteractDown",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

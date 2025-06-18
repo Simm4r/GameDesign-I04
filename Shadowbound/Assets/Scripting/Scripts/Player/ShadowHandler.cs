@@ -89,9 +89,15 @@ public class ShadowHandler : MonoBehaviour
             if (distanceToLight > pointLight.range)
                 continue;
 
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 0.01f, _shadowCastingLayers); // controllo se sono dentro lo smokescreen
+
+            if (colliders.Length > 0) // se sono dentro sono in ombra
+                continue;
+
             RaycastHit hit;
             if (Physics.Raycast(origin, directionToLight.normalized, out hit, distanceToLight, _shadowCastingLayers))
             {
+                Debug.Log(hit.collider.name);
                 Possessable possessable = hit.collider.GetComponent<Possessable>();
                 if (possessable != null)
                 {
