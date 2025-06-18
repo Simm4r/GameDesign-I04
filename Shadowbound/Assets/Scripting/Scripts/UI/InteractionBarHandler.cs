@@ -18,6 +18,19 @@ public class InteractionBarHandler : MonoBehaviour
     [SerializeField] private GameObject _higlightBar;
     private bool _canInteract = false;
     private int _actualSlot = 0;
+
+    [SerializeField] private List<string> _debugDictionary = new();
+
+    private void PrintDictionary()
+    {
+        _debugDictionary.Clear();
+        foreach (var kvp in _objectAndInteractions)
+        {
+            string keyName = kvp.Key != null ? kvp.Key.name : "null";
+            string valueName = kvp.Value != null ? kvp.Value.ToString() : "null";
+            _debugDictionary.Add($"{keyName} => {valueName}");
+        }
+    }
     private void Awake()
     {
         if (Instance != null)
@@ -36,7 +49,11 @@ public class InteractionBarHandler : MonoBehaviour
             _interactions.Add(interaction);
             var index = _interactions.IndexOf(interaction);
             if (!_objectAndInteractions.ContainsKey(_slots[index]))
+            {
                 _objectAndInteractions.Add(_slots[index], interaction);
+                PrintDictionary();
+            }
+                
         }
     }
 
@@ -50,6 +67,7 @@ public class InteractionBarHandler : MonoBehaviour
             var index = _interactions.IndexOf(interaction);
             _interactions.Remove(interaction);
             _objectAndInteractions.Remove(_slots[index]);
+            PrintDictionary();
         }
     }
 
@@ -127,23 +145,18 @@ public class InteractionBarHandler : MonoBehaviour
         int i = 0;
         for (i = 0; i < _interactions.Count; i++)
         {
+            var interaction = _interactions[i];
             TextMeshProUGUI text;
             if (!_slots[i].activeSelf)
             {
+                _slots[i].SetActive(true);
                 text = _slots[i].GetComponentInChildren<TextMeshProUGUI>();
                 text.text = _interactions[i].Text;
-                _slots[i].SetActive(true);
             }
-                
-
-            _objectAndInteractions.TryGetValue(_slots[i], out InteractionHandler slotInteraction);
-
-            if (slotInteraction == _interactions[i])
-                continue;
 
             text = _slots[i].GetComponentInChildren<TextMeshProUGUI>();
 
-            text.text = _interactions[i].Text;
+            text.text = interaction.Text;
         }
 
         while (i < _slots.Count())
