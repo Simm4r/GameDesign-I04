@@ -56,6 +56,7 @@ public class UndissolveController : MonoBehaviour
             _targetRenderer.material = _originalMaterial;
             Time.timeScale = 1.0f;
             _undissolving = false;
+            PossessionHandler.Instance.ChoosingPosition = false;
             DissolveController.Instance.enabled = true;
             enabled = false;
         }

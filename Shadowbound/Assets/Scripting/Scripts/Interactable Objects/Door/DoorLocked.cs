@@ -7,8 +7,15 @@ public class DoorLocked : Interactable
     [SerializeField] private InteractionHandler _caller;
     [SerializeField] private ItemData _keyItemToOpen;
     private GameObject _possessedEntity;
-    private bool _isOpenable = false;
+    [SerializeField] private bool _isLocked = false;
+    [SerializeField] private bool _springLock = false;
     private bool _canInteract = false;
+
+    public bool IsLocked
+    {
+        get => _isLocked;
+        set => _isLocked = value;
+    }
     public override bool CanInteract
     {
         get { return _canInteract; }
@@ -17,7 +24,8 @@ public class DoorLocked : Interactable
 
     public override void Interact()
     {
-        if (!_isOpenable)
+        Debug.Log("IsLocked: " + _isLocked + " IsOpen: " + _doorOpener.IsOpen);
+        if (_isLocked && !_doorOpener.IsOpen)
         {
             NotificationBar.Instance.SetText("The door is locked");
             NotificationBar.Instance.StartBlink();
@@ -31,8 +39,7 @@ public class DoorLocked : Interactable
     {
         if (!PlayerInput.Instance.InPossession || NotificationBar.Instance.IsBlinking)
         {
-            if (_canInteract != false)
-                _canInteract = false;
+            _canInteract = false;
             return;
         }
 
@@ -41,19 +48,24 @@ public class DoorLocked : Interactable
             _possessedEntity = PossessionHandler.Instance.PossessedEntity;
             _caller.Player = _possessedEntity;
 
-            if (!_isOpenable)
+            Inventory inventory = _possessedEntity.GetComponent<Inventory>();
+
+            ItemData inventoryItem = inventory.items.Count == 0 ? null : inventory.items[0].data;
+
+            if (inventoryItem == null)
             {
-                Inventory inventory = _possessedEntity.GetComponent<Inventory>();
-
-                ItemData inventoryItem = inventory.items.Count == 0 ? null : inventory.items[0].data;
-
-                if (inventoryItem == null)
-                {
-                    _isOpenable = false;
-                }
-                else if (inventoryItem == _keyItemToOpen)
-                    _isOpenable = true;
+                if (_springLock)
+                    _isLocked = true;
             }
+
+            else if (inventoryItem == _keyItemToOpen)
+                _isLocked = false;
+            else
+            {
+                if (_springLock)
+                    _isLocked = true;
+            }
+                
             
             if (_doorOpener.IsAnimationStarted)
             {
@@ -62,6 +74,7 @@ public class DoorLocked : Interactable
                 return;
             }
 
+            _caller.Text = _doorOpener.IsOpen ? "Close" : "Open";
             _canInteract = true;
         }
 

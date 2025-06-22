@@ -1,9 +1,9 @@
 using KinematicCharacterController;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour, ICharacterController
+public class PlayerController : MonoBehaviour, ICharacterController
 {
-    public static CharacterController Instance { get; private set; }
+    public static PlayerController Instance { get; private set; }
     [SerializeField] private KinematicCharacterMotor _motor;
 
     private Vector3 _moveInputVector;

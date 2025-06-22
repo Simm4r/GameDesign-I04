@@ -111,9 +111,11 @@ public class ShadowHandler : MonoBehaviour
             totalLightIntensity += pointLight.intensity / distanceToLight;
 
         }
-
+        
+        bool isInShadow = totalLightIntensity < _lightThreshold;
+        Debug.Log("InShadow: " + isInShadow);
         // aggiorno se necessario il _currentPossessable
-        if (_currentPossessable != detectedPossessable && !_foundGameObjectInPureShadow)
+        if (isInShadow && _currentPossessable != detectedPossessable && !_foundGameObjectInPureShadow)
         {
             if (PossessionHandler.Instance.PossessionCooldown == 0)
             {
@@ -135,10 +137,14 @@ public class ShadowHandler : MonoBehaviour
                     _currentPossessable = null;
                 }
             }
-            
+        }
+        if (!isInShadow)
+        {
+            _currentPossessable?.HidePossessableCue();
+            _currentPossessable = null;  
         }
 
-        bool isInShadow = totalLightIntensity < _lightThreshold;
+        
 
         if (_playerInShadow != isInShadow)
         {

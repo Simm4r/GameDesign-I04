@@ -57,16 +57,16 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    public bool ShadowScreen =>!_dying && !_inPossession && !Player.Instance.InDialogue && _controls.Player.ShadowScreen.ReadValue<float>() > 0;
-    public bool Possessing => !_dying && !_inPossession && !Player.Instance.InDialogue && _controls.Player.Possession.ReadValue<float>() > 0;
-    public bool ShadowVision =>!_dying && !_inPossession && !Player.Instance.InDialogue && _controls.Player.ShadowVision.ReadValue<float>() > 0;
-    public bool Interact => !_dying && !Player.Instance.InDialogue && _controls.Player.Interact.triggered;
-    public bool QuitPossession => !Player.Instance.InDialogue && _inPossession && _controls.Player.QuitPossession.ReadValue<float>() > 0;
-    public bool DialogueNext => Player.Instance.InDialogue && _controls.Player.DialogueNext.triggered;
-    public bool DropItem => !Player.Instance.InDialogue && _inPossession && _controls.Player.DropItem.triggered;
-    public bool InteractUp => !Player.Instance.InDialogue && _controls.Player.InteractUp.triggered;
-    public bool InteractDown => !Player.Instance.InDialogue && _controls.Player.InteractDown.triggered;
-
+    public bool ShadowScreen =>!_dying && !_inPossession && !Player.Instance.Reading && !Player.Instance.InDialogue && _controls.Player.ShadowScreen.ReadValue<float>() > 0;
+    public bool Possessing => !_dying && !_inPossession && !Player.Instance.Reading && !Player.Instance.InDialogue && _controls.Player.Possession.ReadValue<float>() > 0;
+    public bool ShadowVision =>!_dying && !_inPossession && !Player.Instance.Reading  && !Player.Instance.InDialogue && _controls.Player.ShadowVision.ReadValue<float>() > 0;
+    public bool Interact => !_dying && !PossessionHandler.Instance.ChoosingPosition && !Player.Instance.Reading  && !Player.Instance.InDialogue && _controls.Player.Interact.triggered;
+    public bool QuitPossession => !Player.Instance.Reading && !Player.Instance.InDialogue && _inPossession && _controls.Player.QuitPossession.ReadValue<float>() > 0;
+    public bool DialogueNext => (Player.Instance.InDialogue || Player.Instance.Reading) && _controls.Player.DialogueNext.triggered;
+    public bool DropItem => !Player.Instance.Reading && !Player.Instance.InDialogue && !PossessionHandler.Instance.ChoosingPosition && _inPossession && _controls.Player.DropItem.triggered;
+    public bool InteractUp => !Player.Instance.Reading && !PossessionHandler.Instance.ChoosingPosition && !Player.Instance.InDialogue && _controls.Player.InteractUp.triggered;
+    public bool InteractDown => !Player.Instance.Reading && !PossessionHandler.Instance.ChoosingPosition && !Player.Instance.InDialogue && _controls.Player.InteractDown.triggered;
+    public bool ConfirmPosition => PossessionHandler.Instance.ChoosingPosition && _controls.Player.ConfirmPosition.triggered;
     private void Awake()
     {
         if (Instance != null)
@@ -100,18 +100,18 @@ public class PlayerInput : MonoBehaviour
 
         _controls.Player.Look.performed += ctx =>
         {
-            if (Player.Instance.InDialogue)
+            if (Player.Instance.InDialogue || Player.Instance.Reading)
             {
                 _lookInput = Vector2.zero;
                 return;
             }
-            _lookInput = ctx.ReadValue<Vector2>();
+            _lookInput = _currentScheme == "Gamepad"? ctx.ReadValue<Vector2>() * Time.unscaledDeltaTime : ctx.ReadValue<Vector2>();
             UpdateCurrentScheme(ctx.control.device);
         };
 
         _controls.Player.Look.canceled += ctx =>
         {
-            if (Player.Instance.InDialogue)
+            if (Player.Instance.InDialogue || Player.Instance.Reading)
             {
                 _lookInput = Vector2.zero;
                 return;
@@ -206,11 +206,19 @@ public class PlayerInput : MonoBehaviour
         {
             UpdateCurrentScheme(ctx.control.device);
         };
+        _controls.Player.ConfirmPosition.performed += ctx =>
+        {
+            UpdateCurrentScheme(ctx.control.device);
+        };
+        _controls.Player.ConfirmPosition.canceled += ctx =>
+        {
+            UpdateCurrentScheme(ctx.control.device);
+        };
     }
     
     private void Update()
     {
-        if (Player.Instance.InDialogue || _dying)
+        if (Player.Instance.InDialogue || Player.Instance.Reading || _dying)
         {
             _moveInput = Vector2.zero;
             return;

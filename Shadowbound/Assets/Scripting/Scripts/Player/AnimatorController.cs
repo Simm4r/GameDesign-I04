@@ -25,7 +25,7 @@ public class AnimatorController : MonoBehaviour
         {
             if (PlayerInput.Instance.MovementInput != Vector3.zero)
             {
-                float newState = Mathf.Clamp01(Mathf.Pow(_motor.Velocity.magnitude / CharacterController.Instance.SprintSpeed, 2.2f));
+                float newState = Mathf.Clamp01(Mathf.Pow(_motor.Velocity.magnitude / PlayerController.Instance.SprintSpeed, 2.2f));
                 _currentState = Mathf.Lerp(_currentState, newState, Time.deltaTime / _animationTransitionTime);
                 float newVert = _motor.Velocity.magnitude > 0.2 ? 1.0f : 0.5f;
                 _currentVert = Mathf.Lerp(_currentVert, newVert, Time.deltaTime / _animationTransitionTime);

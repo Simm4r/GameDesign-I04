@@ -29,6 +29,7 @@ public class GuardPatrol : MonoBehaviour
 
     private Transform _target;
     private NavMeshAgent _agent;
+    private KinematicCharacterMotor _targetMotor;
     private float _walkingSpeed;
     private GameObject _exclamationMark;
     private GameObject _questionMark;
@@ -39,12 +40,15 @@ public class GuardPatrol : MonoBehaviour
     private bool _goingForward = true;
 
     private float _stateTimer = 0f;
+    private float _stuckTimer = 0f;
     private Vector3 _lastKnownPosition;
     private bool _isTargetVisible;
 
     private Vector3 _investigationPoint;
     private int _investigationPhase = 0;
     private float _lookAroundTimer = 0f;
+    private bool _firstLook = true;
+    private Vector3? _targetDirection = null;
     private float _nextLookDuration = 0f;
     private Quaternion _lookAroundRotation;
     private bool _isLookingAround = false;
@@ -60,14 +64,18 @@ public class GuardPatrol : MonoBehaviour
         _walkingSpeed = _agent.speed;
         _allGuards = FindObjectsByType<GuardPatrol>(FindObjectsSortMode.None);
 
-        if (_waypoints != null && _waypoints.Length > 0)
-        {
-            _agent.SetDestination(_waypoints[_currentIndex].position);
-        }
-        else
+        if (_waypoints == null || _waypoints.Length == 0)
         {
             _currentState = GuardState.Waiting;
             _agent.isStopped = true;
+        }
+        else if (_waypoints.Length == 1)
+        {
+            TrySetDestination(_waypoints[0].position);
+        }
+        else
+        {
+            TrySetDestination(_waypoints[_currentIndex].position);
         }
 
         // HideMark();
@@ -76,6 +84,7 @@ public class GuardPatrol : MonoBehaviour
     private void Start()
     {
         _target = Player.Instance.transform;
+        _targetMotor = _target.GetComponent<KinematicCharacterMotor>();
     }
 
     private void OnEnable()
@@ -132,11 +141,29 @@ public class GuardPatrol : MonoBehaviour
                 AdvanceToNextWaypoint();
             }
         }
+        else
+        {
+            // Se l'agente si muove molto poco, incrementa il timer
+            if (_agent.velocity.sqrMagnitude < 0.01f)
+            {
+                _stuckTimer += Time.deltaTime;
+                if (_stuckTimer >= 10f)
+                {
+                    // Sembra bloccato, passa al prossimo waypoint
+                    AdvanceToNextWaypoint();
+                    _stuckTimer = 0f;
+                }
+            }
+            else
+            {
+                _stuckTimer = 0f;
+            }
+        }
     }
 
     private void WaitingUpdate()
     {
-        if (_waypoints == null || _waypoints.Length == 0)
+        if (_waypoints == null || _waypoints.Length <= 1)
             return;
 
         _stateTimer += Time.deltaTime;
@@ -152,6 +179,12 @@ public class GuardPatrol : MonoBehaviour
     {
         if (_waypoints == null || _waypoints.Length == 0)
             return;
+
+        if (_waypoints.Length == 1)
+        {
+            TrySetDestination(_waypoints[0].position);
+            return;
+        }
 
         if (_goingForward)
         {
@@ -171,7 +204,7 @@ public class GuardPatrol : MonoBehaviour
         }
 
         _agent.ResetPath();
-        _agent.SetDestination(_waypoints[_currentIndex].position);
+        TrySetDestination(_waypoints[_currentIndex].position);
     }
 
     // === VISION SYSTEM ===
@@ -209,7 +242,7 @@ public class GuardPatrol : MonoBehaviour
 
                     if (_target != Player.Instance.transform)
                     {
-                        objectVelocity = _target.GetComponent<KinematicCharacterMotor>().Velocity.magnitude;
+                        objectVelocity = _targetMotor.Velocity.magnitude;
                         if (objectVelocity == 0) return;
                         CheckOddity();
                     }
@@ -280,19 +313,20 @@ public class GuardPatrol : MonoBehaviour
 
         if (IsClosestGuardToTarget())
         {
-            if (_isTargetVisible)
+            if (_isTargetVisible && _target == Player.Instance.transform)
             {
                 float dist = Vector3.Distance(transform.position, _target.position);
                 if (dist > _stopDistance)
-                    _agent.SetDestination(_target.position);
+                    TrySetDestination(_target.position);
                 else
                     _agent.ResetPath();
 
                 _lastKnownPosition = _target.position;
+                _targetDirection = _targetMotor.Velocity.magnitude > 0.1f ? _targetMotor.Velocity.normalized : null;
             }
             else if (_stateTimer < _chaseDuration)
             {
-                _agent.SetDestination(_lastKnownPosition);
+                TrySetDestination(_lastKnownPosition);
 
                 if (Vector3.Distance(transform.position, _lastKnownPosition) <= _agent.stoppingDistance)
                 {
@@ -311,7 +345,7 @@ public class GuardPatrol : MonoBehaviour
             NavMeshHit hit;
             if (NavMesh.SamplePosition(followPoint, out hit, 1f, NavMesh.AllAreas))
             {
-                _agent.SetDestination(hit.position);
+                TrySetDestination(hit.position);
             }
         }
     }
@@ -339,6 +373,7 @@ public class GuardPatrol : MonoBehaviour
         _agent.speed = _walkingSpeed;
         _markFiller.SetMaxFill();
         ShowMark(_questionMark);
+        _firstLook = true;
     }
 
     private void InvestigatingUpdate()
@@ -351,8 +386,8 @@ public class GuardPatrol : MonoBehaviour
                 if (_stateTimer >= 3f)
                 {
                     _stateTimer = 0f;
-                    _investigationPoint = GetRandomPointNear(_lastKnownPosition, _investigateDistance);
-                    _agent.SetDestination(_investigationPoint);
+                    _investigationPoint = GetRandomPointNear(_lastKnownPosition, _investigateDistance, _targetMotor.Velocity.magnitude > 0.1f ? _targetMotor.Velocity.normalized : null);
+                    TrySetDestination(_investigationPoint);
                     _agent.isStopped = false;
                     _investigationPhase = 1;
                 }
@@ -380,7 +415,7 @@ public class GuardPatrol : MonoBehaviour
                 }
                 else
                 {
-                    if (_stateTimer >= 1f)
+                    if (_stateTimer >= 2f)
                     {
                         HandleLookAround();
                     }
@@ -398,10 +433,24 @@ public class GuardPatrol : MonoBehaviour
             _lookAroundTimer = 0f;
             _nextLookDuration = Random.Range(1f, 2f); // Quanto tempo guarderà in quella direzione
 
-            float[] angles = new float[] { -90f, 90f, 180f, -45f, 45f };
-            float randomYaw = angles[Random.Range(0, angles.Length)];
+            float targetYaw;
 
-            _lookAroundRotation = Quaternion.Euler(0f, transform.eulerAngles.y + randomYaw, 0f);
+            if (_firstLook && _targetDirection.HasValue)
+            {
+                // Guardare nella direzione della velocità del target
+                Vector3 dir = _targetDirection.Value;
+                targetYaw = Quaternion.LookRotation(dir).eulerAngles.y;
+                _firstLook = false;
+            }
+            else
+            {
+                // Scelta casuale
+                float[] angles = new float[] { -90f, 90f, 180f, -45f, 45f };
+                float randomYaw = angles[Random.Range(0, angles.Length)];
+                targetYaw = transform.eulerAngles.y + randomYaw;
+            }
+
+            _lookAroundRotation = Quaternion.Euler(0f, targetYaw, 0f);
             _isLookingAround = true;
         }
 
@@ -418,16 +467,33 @@ public class GuardPatrol : MonoBehaviour
     {
         _stateTimer = 0f;
         _agent.isStopped = false;
+
+        if (_waypoints == null || _waypoints.Length == 0)
+        {
+            _currentState = GuardState.Waiting;
+            _agent.ResetPath();
+            HideMark();
+            return;
+        }
+
         _currentState = GuardState.Returning;
         _agent.ResetPath();
-        _agent.SetDestination(_waypoints[_currentIndex].position);
+        TrySetDestination(_waypoints[_currentIndex].position);
         HideMark();
     }
     private void ReturningUpdate()
     {
         if (!_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance)
         {
-            _currentState = GuardState.Patrolling;
+            if (_waypoints.Length <= 1)
+            {
+                _currentState = GuardState.Waiting;
+                _agent.isStopped = true;
+            }
+            else
+            {
+                _currentState = GuardState.Patrolling;
+            }
         }
     }
 
@@ -472,24 +538,91 @@ public class GuardPatrol : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 2f);
     }
 
-    private Vector3 GetRandomPointNear(Vector3 origin, float radius)
+    private Vector3 GetRandomPointNear(Vector3 origin, float distance, Vector3? direction = null)
     {
-        Vector2 randomCircle = Random.insideUnitCircle * radius;
-        Vector3 point = origin + new Vector3(randomCircle.x, 0, randomCircle.y);
+        Vector3 finalDir = direction ?? Random.insideUnitSphere;
+        finalDir.y = 0f;
 
-        // Verifica che il punto sia sul NavMesh
-        if (NavMesh.SamplePosition(point, out NavMeshHit hit, 2f, NavMesh.AllAreas))
+        // Leggera deviazione casuale
+        Vector2 randomOffset = Random.insideUnitCircle * (distance * 0.3f); // 30% casuale
+        Vector3 offset = new Vector3(randomOffset.x, 0, randomOffset.y);
+
+        Vector3 desiredPoint = origin + finalDir.normalized * distance + offset;
+
+        // Verifica se è sul NavMesh
+        if (NavMesh.SamplePosition(desiredPoint, out NavMeshHit hit, 2f, NavMesh.AllAreas))
         {
             return hit.position;
         }
 
-        return origin;
+        // Fallback
+        return GetRandomPointNear(origin, distance);
+    }
+    
+    private bool TrySetDestination(Vector3 destination)
+    {
+        NavMeshPath path = new NavMeshPath();
+        if (NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, path))
+        {
+            if (path.status == NavMeshPathStatus.PathComplete)
+            {
+                _agent.SetPath(path);
+                return true;
+            }
+            else if (path.status == NavMeshPathStatus.PathPartial)
+            {
+                // Rileva l’ultima posizione raggiungibile
+                Vector3 lastReachable = path.corners[path.corners.Length - 1];
+                Collider[] hits = Physics.OverlapSphere(lastReachable, 2f);
+                Transform targetTransform = null;
+                Debug.Log("Last reachable position: " + lastReachable);
+
+                foreach (var hit in hits)
+                {
+                    if (hit.transform.CompareTag("Interactable") && hit.gameObject.GetComponent<DoorOpener>() != null && !hit.gameObject.GetComponent<DoorLocked>().IsLocked)
+                        targetTransform = hit.transform;
+                    else if (hit.transform.parent != null && hit.transform.parent.CompareTag("Interactable") && hit.transform.parent.gameObject.GetComponent<PullLeverHandler>() != null)
+                        targetTransform = hit.transform.parent;
+
+                    if (targetTransform != null)
+                    {
+                        var obstacle = targetTransform.GetComponent<Interactable>();
+                        if (obstacle != null)
+                        {
+                            StartCoroutine(GoInteractWithObstacle(obstacle, destination));
+                            return false; // Interrotto, non impostare il path per ora
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private IEnumerator GoInteractWithObstacle(Interactable obstacle, Vector3 originalDestination)
+    {
+        Vector3 direction = (_agent.transform.position - obstacle.transform.position).normalized;
+        float offsetDistance = 1f;
+
+        _agent.SetDestination(obstacle.transform.position + direction * offsetDistance);
+
+        while (_agent.pathPending || _agent.remainingDistance > 1f)
+            yield return null;
+
+        obstacle.Interact();
+
+        // Aspetta che la porta/saracinesca sia effettivamente aperta
+        yield return new WaitForSeconds(2f); // o evento callback
+
+        // Riprova a raggiungere la destinazione iniziale
+        TrySetDestination(originalDestination);
     }
 
     private void OnDrawGizmosSelected()
     {
         Vector3 origin = transform.position;
-        Vector3 eyePos = transform.position + Vector3.up * 1.25f  + transform.forward * 0.2f;
+        Vector3 eyePos = transform.position + Vector3.up * 1.25f + transform.forward * 0.2f;
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(eyePos, 0.1f);
 

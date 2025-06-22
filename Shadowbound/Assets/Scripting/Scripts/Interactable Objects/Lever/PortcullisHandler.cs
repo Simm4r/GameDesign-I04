@@ -35,8 +35,7 @@ public class PortcullisHandler : MonoBehaviour
     {
         // _isOpen = 
         Vector3 startPosition = transform.position;
-        startPosition.y = 0;
-        transform.position = startPosition;
+
         if (_isUp)
         {
             transform.position += (Vector3.up * _targetHeight);
@@ -79,12 +78,8 @@ public class PortcullisHandler : MonoBehaviour
         }
 
         // Set up for the animation
-        Vector3 startPosition = transform.position;
-        startPosition.y = 0;
-        transform.position = startPosition;
         if (_isUp)
         {
-            transform.position += (Vector3.up * _targetHeight);
             targetPosition = transform.position + (Vector3.up * (-_targetHeight));
         }
         else

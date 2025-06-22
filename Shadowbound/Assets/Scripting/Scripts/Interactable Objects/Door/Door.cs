@@ -14,6 +14,7 @@ public class Door : Interactable
 
     public override void Interact()
     {
+        _caller.Player = null;
         _canInteract = false;
         _doorOpener.StartAnimation();
     }
@@ -32,7 +33,7 @@ public class Door : Interactable
             _caller.Player = PossessionHandler.Instance.PossessedEntity;
             if (_doorOpener.IsAnimationStarted)
             {
-                if(_canInteract)
+                    _caller.Player = null;
                     _canInteract = false;
                 return;
             }

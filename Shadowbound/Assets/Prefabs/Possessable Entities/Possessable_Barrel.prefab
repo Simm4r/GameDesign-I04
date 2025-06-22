@@ -126,7 +126,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _possessableCueParticles: {fileID: 8741811684840218591}
-  _playerStats: {fileID: 0}
 --- !u!114 &5988607522787500264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1877,7 +1876,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c0e8ce51dd145b47bb61f4d802335bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerStats: {fileID: 0}
   _outlineMaxLifetime: 5
 --- !u!1 &1330247676915544612
 GameObject:
@@ -6763,7 +6761,7 @@ ParticleSystem:
   looping: 1
   prewarm: 0
   playOnAwake: 1
-  useUnscaledTime: 1
+  useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
     serializedVersion: 2
@@ -11645,7 +11643,7 @@ ParticleSystem:
   looping: 1
   prewarm: 0
   playOnAwake: 1
-  useUnscaledTime: 1
+  useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
     serializedVersion: 2

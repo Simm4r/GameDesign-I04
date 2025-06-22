@@ -40,7 +40,7 @@ public class Item : Interactable
     {
         if (!PlayerInput.Instance.InPossession)
         {
-            if (_canInteract != false)
+                _caller.Player = null;
                 _canInteract = false;
             return;
         }

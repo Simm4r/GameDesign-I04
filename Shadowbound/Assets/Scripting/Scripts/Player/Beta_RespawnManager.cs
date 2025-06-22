@@ -29,7 +29,7 @@ public class Beta_RespawnManager : MonoBehaviour
     private void HandleDeath()
     {
         PlayerInput.Instance.Dying = true;
-
+        Camera.main.GetComponent<ThirdPersonCamera>().enabled = false;
         var emissionL = _eyeLeft.emission;
         var emissionR = _eyeRight.emission;
         emissionL.rateOverTime = 0.0f;
@@ -40,16 +40,17 @@ public class Beta_RespawnManager : MonoBehaviour
 
     private void RespawnPlayer()
     {
-        _motor.SetPosition(Player.Instance.ActualCheckPoint.position);
-
+        _motor.SetPositionAndRotation(Player.Instance.ActualCheckPoint.position, Quaternion.LookRotation(Player.Instance.ActualCheckPoint.rotation * Vector3.forward));
+        Camera.main.GetComponent<ThirdPersonCamera>()?.ForceSetCamera(Player.Instance.transform.position, -Player.Instance.transform.forward);
         PlayerInput.Instance.Dying = false;
-        _motor.SetPosition(transform.position);
         Healthbar.Instance.gameObject.SetActive(true);
         PlayerStats.Instance.ResetPlayer();
         if (SceneManager.GetActiveScene().name == Player.Instance.ActualCheckPoint.scene)
             ScreenFadeController.Instance.FadeFromBlack();
         else
             SceneManager.LoadScene(Player.Instance.ActualCheckPoint.scene);
+
+        Camera.main.GetComponent<ThirdPersonCamera>().enabled = true;
         StartCoroutine(EyesLitDelay());
     }
 

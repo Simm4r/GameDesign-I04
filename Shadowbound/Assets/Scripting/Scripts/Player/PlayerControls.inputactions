@@ -112,6 +112,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ConfirmPosition",
+                    "type": "Button",
+                    "id": "de74b353-f0b2-42bf-8ba5-1dd83d42f6a2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -184,7 +193,7 @@
                 {
                     "name": "",
                     "id": "7fc8695d-e5f8-40e9-a873-2761b6269f83",
-                    "path": "<Pointer>/delta",
+                    "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "ScaleVector2(x=0.05,y=0.05)",
                     "groups": ";MouseKeyboard",
@@ -197,7 +206,7 @@
                     "id": "86bb7d0c-1945-4736-90bb-a90f2cc316d4",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
-                    "processors": "ScaleVector2(x=0.7,y=0.7)",
+                    "processors": "ScaleVector2(x=100,y=100)",
                     "groups": ";Gamepad",
                     "action": "Look",
                     "isComposite": false,
@@ -420,6 +429,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "InteractDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d3662b44-8fa1-49c3-99de-610404b2043d",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";MouseKeyboard",
+                    "action": "ConfirmPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "97a47b17-e75c-4842-b523-e48929d1d9ee",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ConfirmPosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

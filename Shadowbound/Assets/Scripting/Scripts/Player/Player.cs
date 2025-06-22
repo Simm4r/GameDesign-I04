@@ -7,6 +7,13 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _dashTrail;
     [SerializeField] private RespawnPoint _actualCheckpoint;
     private bool _inDialogue = false;
+    private bool _reading = false;
+
+    public bool Reading
+    {
+        get => _reading;
+        set => _reading = value;
+    }
 
     public bool InDialogue
     {
@@ -33,9 +40,9 @@ public class Player : MonoBehaviour
 
     private void HandleCharacterInputs()
     {
-        if (CharacterController.Instance == null)
+        if (PlayerController.Instance == null)
             return;
-        CharacterController.Instance.SetInputs();
+        PlayerController.Instance.SetInputs();
     }
 
     private void Update()

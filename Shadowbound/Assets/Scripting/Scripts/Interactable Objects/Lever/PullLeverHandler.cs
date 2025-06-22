@@ -31,6 +31,7 @@ public class PullLeverHandler : Interactable
 
     public override void Interact()
     {
+        _caller.Player = null;
         _canInteract = false;
         Debug.Log("Lever Interaction started");
         _isUpLever = _portcullis.IsUp;
@@ -64,22 +65,29 @@ public class PullLeverHandler : Interactable
     {
         if (!PlayerInput.Instance.InPossession)
         {
-            if (_canInteract != false)
+                _caller.Player = null;
                 _canInteract = false;
             return;
         }
 
-        if (PossessionHandler.Instance.PossessedEntity != null && PossessionHandler.Instance.PossessedEntity.tag == "Possessable_Guard")
+        if (_portcullis.IsUp != _isUpLever)
         {
-            _caller.Player = PossessionHandler.Instance.PossessedEntity;
-            if (_portcullis.IsActive)
-            {
-                _canInteract = false;
-                return;
-            }
-
-            _canInteract = true;
+            _isUpLever = _portcullis.IsUp;
+            _caller.Text = _isUpLever ? "Pull down" : "Pull up";
         }
+            
+        if (PossessionHandler.Instance.PossessedEntity != null && PossessionHandler.Instance.PossessedEntity.tag == "Possessable_Guard")
+            {
+                _caller.Player = PossessionHandler.Instance.PossessedEntity;
+                if (_portcullis.IsActive)
+                {
+                    _caller.Player = null;
+                    _canInteract = false;
+                    return;
+                }
+
+                _canInteract = true;
+            }
 
     }
 }

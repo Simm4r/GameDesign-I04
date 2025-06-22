@@ -198,6 +198,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ConfirmPosition"",
+                    ""type"": ""Button"",
+                    ""id"": ""de74b353-f0b2-42bf-8ba5-1dd83d42f6a2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -270,7 +279,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""7fc8695d-e5f8-40e9-a873-2761b6269f83"",
-                    ""path"": ""<Pointer>/delta"",
+                    ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": ""ScaleVector2(x=0.05,y=0.05)"",
                     ""groups"": "";MouseKeyboard"",
@@ -283,7 +292,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""86bb7d0c-1945-4736-90bb-a90f2cc316d4"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
-                    ""processors"": ""ScaleVector2(x=0.7,y=0.7)"",
+                    ""processors"": ""ScaleVector2(x=100,y=100)"",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Look"",
                     ""isComposite"": false,
@@ -508,6 +517,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""InteractDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3662b44-8fa1-49c3-99de-610404b2043d"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";MouseKeyboard"",
+                    ""action"": ""ConfirmPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""97a47b17-e75c-4842-b523-e48929d1d9ee"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ConfirmPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -556,6 +587,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_DropItem = m_Player.FindAction("DropItem", throwIfNotFound: true);
         m_Player_InteractUp = m_Player.FindAction("InteractUp", throwIfNotFound: true);
         m_Player_InteractDown = m_Player.FindAction("InteractDown", throwIfNotFound: true);
+        m_Player_ConfirmPosition = m_Player.FindAction("ConfirmPosition", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -648,6 +680,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_DropItem;
     private readonly InputAction m_Player_InteractUp;
     private readonly InputAction m_Player_InteractDown;
+    private readonly InputAction m_Player_ConfirmPosition;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -707,6 +740,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/InteractDown".
         /// </summary>
         public InputAction @InteractDown => m_Wrapper.m_Player_InteractDown;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/ConfirmPosition".
+        /// </summary>
+        public InputAction @ConfirmPosition => m_Wrapper.m_Player_ConfirmPosition;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -769,6 +806,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @InteractDown.started += instance.OnInteractDown;
             @InteractDown.performed += instance.OnInteractDown;
             @InteractDown.canceled += instance.OnInteractDown;
+            @ConfirmPosition.started += instance.OnConfirmPosition;
+            @ConfirmPosition.performed += instance.OnConfirmPosition;
+            @ConfirmPosition.canceled += instance.OnConfirmPosition;
         }
 
         /// <summary>
@@ -816,6 +856,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @InteractDown.started -= instance.OnInteractDown;
             @InteractDown.performed -= instance.OnInteractDown;
             @InteractDown.canceled -= instance.OnInteractDown;
+            @ConfirmPosition.started -= instance.OnConfirmPosition;
+            @ConfirmPosition.performed -= instance.OnConfirmPosition;
+            @ConfirmPosition.canceled -= instance.OnConfirmPosition;
         }
 
         /// <summary>
@@ -966,5 +1009,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnInteractDown(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ConfirmPosition" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnConfirmPosition(InputAction.CallbackContext context);
     }
 }

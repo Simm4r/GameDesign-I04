@@ -15,8 +15,10 @@ public class RatDen : Interactable
 
     public override void Interact()
     {
+        _caller.Player = null;
         _canInteract = false;
         ScreenFadeController.Instance.FadeToBlack();
+        Camera.main.GetComponent<ThirdPersonCamera>().enabled = false;
         StartCoroutine(waitForFade());
     }
 
@@ -24,8 +26,10 @@ public class RatDen : Interactable
     IEnumerator waitForFade()
     {
         yield return new WaitForSeconds(1.5f);
-        Player.Instance.GetComponent<KinematicCharacterMotor>().SetPosition(_exitPoint.position);
+        Player.Instance.GetComponent<KinematicCharacterMotor>().SetPositionAndRotation(_exitPoint.position, Quaternion.LookRotation(_exitPoint.forward));
+        Camera.main.GetComponent<ThirdPersonCamera>()?.ForceSetCamera(Player.Instance.transform.position, -Player.Instance.transform.forward);
         ScreenFadeController.Instance.FadeFromBlack();
+        Camera.main.GetComponent<ThirdPersonCamera>().enabled = true;
     }
 
     void Update()
@@ -41,6 +45,9 @@ public class RatDen : Interactable
 
         _caller.Player = Player.Instance.gameObject;
         if (!ScreenFadeController.Instance.IsFading && !_canInteract)
+        {
             _canInteract = true;
+        }
+            
     }
 }

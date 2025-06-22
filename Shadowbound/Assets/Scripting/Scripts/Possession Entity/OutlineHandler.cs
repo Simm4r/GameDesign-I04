@@ -33,11 +33,15 @@ public class OutlineHandler : MonoBehaviour
             return;
 
         _outline.OutlineMode = Outline.Mode.OutlineAll;
-
-        if (entity.GetComponent<EntityStats>().EntityLevel > PlayerStats.Instance.PossessionLevel)
-            _outline.OutlineColor = Color.red;
-        else
-            _outline.OutlineColor = new Color(1, 1, 1, 1);
+        if (entity.tag.StartsWith("Possessable_"))
+        {
+            if (entity.GetComponent<EntityStats>().EntityLevel > PlayerStats.Instance.PossessionLevel)
+                _outline.OutlineColor = Color.red;
+            else
+                _outline.OutlineColor = new Color(1, 1, 1, 1);
+        }
+        else if(entity.CompareTag("Interactable"))
+            _outline.OutlineColor = new Color(1f, 0.843f, 0f, 1f);
 
         _outline.OutlineWidth = 2.0f;
         _outlineLifetime = 0.0f;

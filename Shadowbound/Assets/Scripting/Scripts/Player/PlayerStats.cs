@@ -78,7 +78,6 @@ public class PlayerStats : MonoBehaviour
         _currentHealth -= _baseDamageTaken;
         Healthbar.Instance.UpdateHealthbar(_maxHealth, _currentHealth);
 
-        Debug.Log($"Current health: {_currentHealth}");
     }
 
     public void HealDamage()
@@ -98,7 +97,6 @@ public class PlayerStats : MonoBehaviour
         _currentHealth += _baseDamageHealed;
         Healthbar.Instance.UpdateHealthbar(_maxHealth, _currentHealth);
 
-        Debug.Log($"Current health: {_currentHealth}");
     }
 
     public void ResetTimers()
@@ -112,7 +110,7 @@ public class PlayerStats : MonoBehaviour
         if (_isDead) return;
 
         _isDead = true;
-        Debug.Log("Player morto");
+
 
         OnPlayerDeath?.Invoke(); // Notifica esterna
     }

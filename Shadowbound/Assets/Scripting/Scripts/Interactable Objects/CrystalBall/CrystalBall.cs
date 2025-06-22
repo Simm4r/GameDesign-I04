@@ -6,6 +6,7 @@ public struct RespawnPoint
 {
     public string scene;
     public Vector3 position;
+    public Quaternion rotation;
 }
 public class CrystalBall : Interactable
 {
@@ -21,9 +22,11 @@ public class CrystalBall : Interactable
 
     public override void Interact()
     {
+        _caller.Player = null;
         _canInteract = false;
         RespawnPoint checkPoint;
         checkPoint.position = _respawnPosition.transform.position;
+        checkPoint.rotation = _respawnPosition.transform.rotation;
         Debug.Log(checkPoint.position);
         checkPoint.scene = SceneManager.GetActiveScene().name;
         Player.Instance.ActualCheckPoint = checkPoint;

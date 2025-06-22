@@ -115,7 +115,7 @@ public class InteractionBarHandler : MonoBehaviour
             _upSprite.SetActive(true);
             _downSprite.SetActive(true);
         }
-        else if (_interactions.Count < 1 && (_upSprite.activeSelf || _downSprite.activeSelf))
+        else if (_interactions.Count <= 1 && (_upSprite.activeSelf || _downSprite.activeSelf))
         {
             _upSprite.SetActive(false);
             _downSprite.SetActive(false);

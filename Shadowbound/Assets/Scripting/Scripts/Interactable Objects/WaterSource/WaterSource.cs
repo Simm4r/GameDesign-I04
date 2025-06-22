@@ -20,6 +20,7 @@ public class WaterSource : Interactable
         if (!torchLight.enabled)
             return;
 
+        _caller.Player = null;
         _canInteract = false;
         torchLight.enabled = false;
 
@@ -35,8 +36,8 @@ public class WaterSource : Interactable
     {
         if (!PlayerInput.Instance.InPossession)
         {
-            if (_canInteract != false)
-                _canInteract = false;
+            _caller.Player = null;
+            _canInteract = false;
             return;
         }
 
