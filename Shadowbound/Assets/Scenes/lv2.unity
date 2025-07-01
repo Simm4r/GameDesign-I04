@@ -3112,6 +3112,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7432622557476287136, guid: cb9bc6b96d830b64293c9fdff99b1743, type: 3}
   m_PrefabInstance: {fileID: 175067246}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &175240114 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8929589423702217963, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
+  m_PrefabInstance: {fileID: 1340963049}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &179358095
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15977,6 +15982,36 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8cda7687928e5174ea2627e48a3c6d69, type: 3}
+--- !u!1 &376144609 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1370477546784653858, guid: 2f470ca84a218124aa0d6e46b74f323e, type: 3}
+  m_PrefabInstance: {fileID: 3555010744185012023}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &376144611 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2928180678845220591, guid: 2f470ca84a218124aa0d6e46b74f323e, type: 3}
+  m_PrefabInstance: {fileID: 3555010744185012023}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 376144609}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 279e8f2e1abd0e14b86121470d107b12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &376144613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 376144609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc5d2d682d1f4eb4c99beaff64002989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _chest: {fileID: 1340963054}
+  _stone: {fileID: 376144611}
 --- !u!1 &383002698
 GameObject:
   m_ObjectHideFlags: 0
@@ -18243,6 +18278,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8385242052075323531, guid: dfa07040f3b61f648bc8ad1291f6cbdb, type: 3}
   m_PrefabInstance: {fileID: 534120345}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &534120347 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8385242052075035819, guid: dfa07040f3b61f648bc8ad1291f6cbdb, type: 3}
+  m_PrefabInstance: {fileID: 534120345}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &535317538
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18656,6 +18696,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7516147023265246560, guid: 9122802f90381f84d8b8a93daaf9717a, type: 3}
   m_PrefabInstance: {fileID: 560121782}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &560121784 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7516147023265018176, guid: 9122802f90381f84d8b8a93daaf9717a, type: 3}
+  m_PrefabInstance: {fileID: 560121782}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &573048017
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18969,6 +19014,11 @@ PrefabInstance:
 --- !u!4 &584168884 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7200927917085622770, guid: a84a636a35a83fe408bd4b3d8c2b8058, type: 3}
+  m_PrefabInstance: {fileID: 584168883}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &584168885 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7200927917085466066, guid: a84a636a35a83fe408bd4b3d8c2b8058, type: 3}
   m_PrefabInstance: {fileID: 584168883}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &588497566 stripped
@@ -19456,9 +19506,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 622302637}
+  - component: {fileID: 622302641}
+  - component: {fileID: 622302640}
+  - component: {fileID: 622302639}
+  - component: {fileID: 622302638}
   m_Layer: 0
   m_Name: RedPotionDepot
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19480,6 +19534,69 @@ Transform:
   - {fileID: 1606170334}
   m_Father: {fileID: 416896607}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &622302638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622302636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 5
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 0
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &622302639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622302636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c0e8ce51dd145b47bb61f4d802335bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _outlineMaxLifetime: 5
+--- !u!114 &622302640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622302636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e53b738acc14234ebe6def52a82cd9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: 0
+  _potions:
+  - {fileID: 1606170335}
+  - {fileID: 584168885}
+  _caller: {fileID: 622302641}
+--- !u!114 &622302641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622302636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cea20bbbbfc45554d9135b98c76d6bdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 0}
+  _triggerDistance: 1.5
+  _text: Drink Potion (Red)
 --- !u!1 &623494642 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7535266119704928820, guid: f394a5fdb2d205349b4101dd79bf0c8d, type: 3}
@@ -33406,6 +33523,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8385242052075323531, guid: dfa07040f3b61f648bc8ad1291f6cbdb, type: 3}
   m_PrefabInstance: {fileID: 805656061}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &805656063 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8385242052075035819, guid: dfa07040f3b61f648bc8ad1291f6cbdb, type: 3}
+  m_PrefabInstance: {fileID: 805656061}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &807075322
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33994,6 +34116,11 @@ PrefabInstance:
 Animator:
   m_CorrespondingSourceObject: {fileID: 7640174651460513442, guid: 0ffe00e2e7235bf44b1a5bf029b49599, type: 3}
   m_PrefabInstance: {fileID: 826088016}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &826697636 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1001736962617091174, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
+  m_PrefabInstance: {fileID: 1340963049}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &830622330
 PrefabInstance:
@@ -45790,9 +45917,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1139024117}
   - component: {fileID: 1139024118}
+  - component: {fileID: 1139024119}
+  - component: {fileID: 1139024121}
+  - component: {fileID: 1139024120}
   m_Layer: 0
   m_Name: BluePotionDepot
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45826,7 +45956,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e53b738acc14234ebe6def52a82cd9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _type: 0
+  _type: 1
+  _potions:
+  - {fileID: 534120347}
+  - {fileID: 805656063}
+  _caller: {fileID: 1139024119}
+--- !u!114 &1139024119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139024116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cea20bbbbfc45554d9135b98c76d6bdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 0}
+  _triggerDistance: 1.5
+  _text: Drink Potion (Blue)
+--- !u!114 &1139024120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139024116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c0e8ce51dd145b47bb61f4d802335bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _outlineMaxLifetime: 5
+--- !u!114 &1139024121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139024116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 5
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 0
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!4 &1139611476 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8710600888970763131, guid: 97a4b078c0091b947acd8736a2f47884, type: 3}
@@ -55117,9 +55297,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 481096644358307548, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 481096644358307548, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1001736962617091174, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1001736962617091174, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1002039313208531687, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
       propertyPath: m_LocalPosition.x
@@ -55165,6 +55357,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2274782617849589634, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8929589423702217963, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
       propertyPath: m_Name
       value: ChestSmall
@@ -55173,16 +55369,120 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8929589423702217963, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929589423702217963, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
+      propertyPath: m_TagString
+      value: Interactable
+      objectReference: {fileID: 0}
+    - target: {fileID: 8929589423702217963, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8929589423702217963, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1340963051}
+    - targetCorrespondingSourceObject: {fileID: 8929589423702217963, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1340963052}
+    - targetCorrespondingSourceObject: {fileID: 8929589423702217963, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1340963053}
+    - targetCorrespondingSourceObject: {fileID: 8929589423702217963, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1340963054}
+    - targetCorrespondingSourceObject: {fileID: 8929589423702217963, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1340963055}
   m_SourcePrefab: {fileID: 100100000, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
 --- !u!4 &1340963050 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1002039313208531687, guid: e30cba1a921baf34084ac60b89ad0979, type: 3}
   m_PrefabInstance: {fileID: 1340963049}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1340963051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175240114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cea20bbbbfc45554d9135b98c76d6bdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 0}
+  _triggerDistance: 1.5
+  _text: Open
+--- !u!114 &1340963052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175240114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 5
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 0
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &1340963053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175240114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c0e8ce51dd145b47bb61f4d802335bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _outlineMaxLifetime: 5
+--- !u!114 &1340963054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175240114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a578746ed91d6ce42b2dfb98ca255b94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetRotation: {x: -0.601815, y: 0, z: 0, w: 0.79863554}
+  _speed: 1
+  _startAnimation: 0
+  _lid: {fileID: 826697636}
+--- !u!114 &1340963055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175240114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a60e2bcdc8bd124ab298e2f90d4feea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _key: {fileID: 11400000, guid: 348f93204562aaa4787e4edb2ef39a38, type: 2}
+  _caller: {fileID: 1340963051}
+  _chest: {fileID: 1340963054}
 --- !u!4 &1341797693 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8710600888970763131, guid: 97a4b078c0091b947acd8736a2f47884, type: 3}
@@ -55590,9 +55890,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1370274644}
+  - component: {fileID: 1370274648}
+  - component: {fileID: 1370274647}
+  - component: {fileID: 1370274646}
+  - component: {fileID: 1370274645}
   m_Layer: 0
   m_Name: GreenPotionDepot
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -55614,6 +55918,69 @@ Transform:
   - {fileID: 1801433278}
   m_Father: {fileID: 416896607}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1370274645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370274643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 5
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 0
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &1370274646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370274643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c0e8ce51dd145b47bb61f4d802335bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _outlineMaxLifetime: 5
+--- !u!114 &1370274647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370274643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e53b738acc14234ebe6def52a82cd9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: 2
+  _potions:
+  - {fileID: 1801433279}
+  - {fileID: 560121784}
+  _caller: {fileID: 1370274648}
+--- !u!114 &1370274648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370274643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cea20bbbbfc45554d9135b98c76d6bdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 0}
+  _triggerDistance: 1.5
+  _text: Drink Potion (Green)
 --- !u!1 &1376267510
 GameObject:
   m_ObjectHideFlags: 0
@@ -73354,6 +73721,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7200927917085622770, guid: a84a636a35a83fe408bd4b3d8c2b8058, type: 3}
   m_PrefabInstance: {fileID: 1606170333}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1606170335 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7200927917085466066, guid: a84a636a35a83fe408bd4b3d8c2b8058, type: 3}
+  m_PrefabInstance: {fileID: 1606170333}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1608229027
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -90117,6 +90489,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7516147023265246560, guid: 9122802f90381f84d8b8a93daaf9717a, type: 3}
   m_PrefabInstance: {fileID: 1801433277}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1801433279 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7516147023265018176, guid: 9122802f90381f84d8b8a93daaf9717a, type: 3}
+  m_PrefabInstance: {fileID: 1801433277}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1804158293
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -102112,6 +102489,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Purple_crystal
       objectReference: {fileID: 0}
+    - target: {fileID: 1370477546784653858, guid: 2f470ca84a218124aa0d6e46b74f323e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2928180678845220591, guid: 2f470ca84a218124aa0d6e46b74f323e, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -102119,7 +102500,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1370477546784653858, guid: 2f470ca84a218124aa0d6e46b74f323e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 376144613}
   m_SourcePrefab: {fileID: 100100000, guid: 2f470ca84a218124aa0d6e46b74f323e, type: 3}
 --- !u!65 &3830411337224576513
 BoxCollider:
