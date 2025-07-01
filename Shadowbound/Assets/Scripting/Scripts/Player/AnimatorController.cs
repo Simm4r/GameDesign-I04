@@ -13,7 +13,10 @@ public class AnimatorController : MonoBehaviour
     private void Awake()
     {
         if (Instance != null)
+        {
+            Destroy(this);
             return;
+        }
 
         Instance = this;
         _animator = GetComponentInChildren<Animator>();

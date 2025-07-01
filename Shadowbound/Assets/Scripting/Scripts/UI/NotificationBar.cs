@@ -20,7 +20,10 @@ public class NotificationBar : MonoBehaviour
     void Awake()
     {
         if (Instance != null)
+        {
+            Destroy(this);
             return;
+        }
         Instance = this;
         _canvasGroup = GetComponent<CanvasGroup>();
         _text = GetComponentInChildren<TextMeshProUGUI>();

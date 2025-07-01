@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba6c9eafc3c82464dbfe6d71d84680d7, type: 3}
+  m_Name: Key_Silver_Lab
+  m_EditorClassIdentifier: 
+  itemName: Key_Silver_Lab
+  id: 18
+  icon: {fileID: 21300000, guid: ce23f34f2dadbb54c922c97032d2c2dc, type: 3}
+  worldPrefab: {fileID: 3707735130553130310, guid: e54efda016713804bb271f4ef60a10c1, type: 3}
+  description: fghfgh

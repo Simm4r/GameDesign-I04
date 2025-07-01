@@ -56,6 +56,7 @@ public class InventoryHUD : MonoBehaviour
 
     public void HideInventoryHUD()
     {
+        Debug.Log("Hide inventory");
         // ClearSlot();
         _canvasGroup.alpha = 0f;
     }
@@ -84,7 +85,10 @@ public class InventoryHUD : MonoBehaviour
     void Awake()
     {
         if (Instance != null)
+        {
+            Destroy(this);
             return;
+        }
 
         Instance = this;
         InitInventoryHUD();

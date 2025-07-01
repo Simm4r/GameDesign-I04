@@ -1,3 +1,4 @@
+using KinematicCharacterController;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -19,6 +20,8 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             MarkPersistentObjects();
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 
@@ -40,5 +43,12 @@ public class GameManager : MonoBehaviour
             Destroy(obj);
         }
         Destroy(gameObject);
+    }
+
+    public void DestroyForScene()
+    {
+        var kccSystem = FindFirstObjectByType<KinematicCharacterSystem>();
+        Destroy(kccSystem);
+        CleanUpAndDestroy();
     }
 }

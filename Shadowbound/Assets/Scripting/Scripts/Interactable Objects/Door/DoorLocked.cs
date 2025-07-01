@@ -9,6 +9,7 @@ public class DoorLocked : Interactable
     private GameObject _possessedEntity;
     [SerializeField] private bool _isLocked = false;
     [SerializeField] private bool _springLock = false;
+    private bool _hasKey = false;
     private bool _canInteract = false;
 
     public bool IsLocked
@@ -25,12 +26,13 @@ public class DoorLocked : Interactable
     public override void Interact()
     {
         Debug.Log("IsLocked: " + _isLocked + " IsOpen: " + _doorOpener.IsOpen);
-        if (_isLocked && !_doorOpener.IsOpen)
+        if (_isLocked && !_doorOpener.IsOpen && !_hasKey)
         {
             NotificationBar.Instance.SetText("The door is locked");
             NotificationBar.Instance.StartBlink();
             return;
         }
+        _isLocked = false;
         _canInteract = false;
         _doorOpener.StartAnimation();
     }
@@ -54,25 +56,25 @@ public class DoorLocked : Interactable
 
             if (inventoryItem == null)
             {
-                if (_springLock)
-                    _isLocked = true;
+                _hasKey = false;
             }
 
             else if (inventoryItem == _keyItemToOpen)
-                _isLocked = false;
+                _hasKey = true;
             else
             {
-                if (_springLock)
-                    _isLocked = true;
+                _hasKey = false;
             }
-                
+
+            if (!_doorOpener.IsOpen && _springLock)
+                _isLocked = true;
             
             if (_doorOpener.IsAnimationStarted)
-            {
-                if (_canInteract)
-                    _canInteract = false;
-                return;
-            }
+                {
+                    if (_canInteract)
+                        _canInteract = false;
+                    return;
+                }
 
             _caller.Text = _doorOpener.IsOpen ? "Close" : "Open";
             _canInteract = true;

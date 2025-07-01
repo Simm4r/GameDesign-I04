@@ -37,6 +37,7 @@ public class DialogueController : MonoBehaviour
                 _canExit = true;
                 EndConversation();
                 Player.Instance.InDialogue = false;
+
                 return;
             }
         }
@@ -113,7 +114,10 @@ public class DialogueController : MonoBehaviour
     void Awake()
     {
         if (Instance != null)
+        {
+            Destroy(this);
             return;
+        }
 
         Instance = this;
     }

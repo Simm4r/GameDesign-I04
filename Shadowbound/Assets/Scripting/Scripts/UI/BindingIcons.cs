@@ -11,6 +11,7 @@ public class InputSpritesByKey : MonoBehaviour
     {
         if (Instance != null)
         {
+            Destroy(this);
             return;
         }
 

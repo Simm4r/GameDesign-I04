@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -75,5 +76,17 @@ public class DoorOpener : MonoBehaviour
         time = 0;
         transform.localRotation = _startRotation;
         _isAnimationStarted = true;
+    }
+
+    public void SetOpen()
+    {
+        StartCoroutine(WaitFade());
+    }
+
+    IEnumerator WaitFade()
+    {
+        yield return new WaitForSeconds(2.0f);
+        transform.localRotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
+        _isOpen = true;
     }
 }

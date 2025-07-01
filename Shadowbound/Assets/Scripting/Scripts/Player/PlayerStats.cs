@@ -21,7 +21,14 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private int _shadowScreenLevel = 1;
 
     [SerializeField] private bool _isDead = false;
+    private bool _hitByLaser = false;
+    public bool HitByLaser
+    {
+        get => _hitByLaser;
+        set => _hitByLaser = value;
+    }
 
+    public bool CanBeHit = true;
 
     public event Action OnPlayerDeath;
 
@@ -44,12 +51,19 @@ public class PlayerStats : MonoBehaviour
     }
     public float MaxHealth => _maxHealth;
 
-    public float CurrentHealth => _currentHealth;
+    public float CurrentHealth
+    {
+        get => _currentHealth;
+        set => _currentHealth = value;
+    } 
 
     private void Awake()
     {
         if (Instance != null)
+        {
+            Destroy(this);
             return;
+        }
 
         Instance = this;
     } 
@@ -105,10 +119,9 @@ public class PlayerStats : MonoBehaviour
         _healTimer = 0f;
     }
 
-    private void Die()
+    public void Die()
     {
         if (_isDead) return;
-
         _isDead = true;
 
 

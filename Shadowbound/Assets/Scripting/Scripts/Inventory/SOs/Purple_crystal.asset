@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba6c9eafc3c82464dbfe6d71d84680d7, type: 3}
+  m_Name: Purple_crystal
+  m_EditorClassIdentifier: 
+  itemName: Purple Crystal
+  id: 19
+  icon: {fileID: 21300000, guid: 66b4029db40629046a052a6d8b4a6e07, type: 3}
+  worldPrefab: {fileID: 1370477546784653858, guid: 2f470ca84a218124aa0d6e46b74f323e, type: 3}
+  description: fgdfgdf

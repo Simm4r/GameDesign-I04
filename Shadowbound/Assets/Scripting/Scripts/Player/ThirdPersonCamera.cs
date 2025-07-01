@@ -17,22 +17,23 @@ public class ThirdPersonCamera : MonoBehaviour
     public LayerMask collisionLayers;
     public float cameraRadius = 0.2f;
     public float minDistance = 0.5f;
+    private Collider smokeCollider;
 
 
     private float yaw = 0f;
     private float pitch = 0f;
-
     void Start()
     {
+
         Vector3 angles = transform.eulerAngles;
         yaw = angles.y + 180f;
         pitch = pitchAngle;
         Cursor.lockState = CursorLockMode.Locked;
+        smokeCollider = SmokeScreen.Instance.gameObject.GetComponentInChildren<SphereCollider>();
     }
 
     void LateUpdate()
     {
-
         if (!player) return;
 
         float mouseX = PlayerInput.Instance.LookInput.x;
@@ -51,15 +52,26 @@ public class ThirdPersonCamera : MonoBehaviour
         Vector3 direction = (desiredCameraPos - rayOrigin).normalized;
         float targetDistance = distance;
 
-        if (Physics.SphereCast(rayOrigin, cameraRadius, direction, out RaycastHit hit, distance, collisionLayers))
+        RaycastHit[] hits = Physics.SphereCastAll(rayOrigin, cameraRadius, direction, distance, collisionLayers);
+        System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+        foreach (var hit in hits)
         {
-            targetDistance = Mathf.Clamp(hit.distance - cameraRadius, minDistance, distance);
+            string rootTag = hit.collider.transform.root.tag;
+            if (hit.collider == smokeCollider)
+                continue;
+            if (rootTag.StartsWith("Possessable") && PlayerInput.Instance.InPossession && hit.collider.transform.root.gameObject == PossessionHandler.Instance.PossessedEntity)
+                continue;
+
+                targetDistance = Mathf.Clamp(hit.distance - cameraRadius, minDistance, distance);
+                break;
+
         }
 
         Vector3 correctedOffset = rotation * new Vector3(0, 0, -targetDistance);
         Vector3 finalPosition = player.position + correctedOffset + Vector3.up * height;
 
-        transform.position = Vector3.Lerp(transform.position, finalPosition, Time.unscaledDeltaTime * 10f);
+        transform.position = Vector3.Lerp(transform.position, finalPosition, Time.unscaledDeltaTime * rotationSpeed);
         transform.LookAt(player.position + Vector3.up * 0.8f);
 
     }

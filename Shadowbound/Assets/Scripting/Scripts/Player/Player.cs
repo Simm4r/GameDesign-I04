@@ -8,6 +8,20 @@ public class Player : MonoBehaviour
     [SerializeField] private RespawnPoint _actualCheckpoint;
     private bool _inDialogue = false;
     private bool _reading = false;
+    private bool _tutorial = false;
+    private bool _inCutscene = false;
+
+    public bool InCutscene
+    {
+        get => _inCutscene;
+        set => _inCutscene = value;
+    }
+
+    public bool Tutorial
+    {
+        get => _tutorial;
+        set => _tutorial = value;
+    }
 
     public bool Reading
     {
@@ -30,6 +44,7 @@ public class Player : MonoBehaviour
     {
         if (Instance != null)
         {
+            Destroy(this);
             return;
         }
         

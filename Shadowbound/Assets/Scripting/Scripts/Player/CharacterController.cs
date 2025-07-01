@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour, ICharacterController
     {
         if (Instance != null)
         {
+            Destroy(this);
             return;
         }
         
@@ -80,6 +81,8 @@ public class PlayerController : MonoBehaviour, ICharacterController
     public bool IsColliderValidForCollisions(Collider coll)
     {
         if (coll.CompareTag("Smoke"))
+            return false;
+        if (coll.CompareTag("NextAreaWall"))
             return false;
         return true;
     }

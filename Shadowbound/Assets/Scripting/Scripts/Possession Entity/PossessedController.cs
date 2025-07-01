@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using KinematicCharacterController;
 using UnityEngine;
 
@@ -14,8 +15,16 @@ public class PossessedController : MonoBehaviour, ICharacterController
     [SerializeField] private float _orientationSharpness = 10f;
     [SerializeField] private Vector3 _gravity = new Vector3(0f, -30f, 0f);
     private bool _alreadyPossessed = false;
+    private bool _rotationOnly = false;
+    public bool RotationOnly
+    {
+        get => _rotationOnly;
+        set => _rotationOnly = value;
+    }
+    private List<Collider> _cachedColliders = new();
 
-    public bool AlreadyPossessed {
+    public bool AlreadyPossessed
+    {
         get { return _alreadyPossessed; }
     }
 
@@ -27,8 +36,18 @@ public class PossessedController : MonoBehaviour, ICharacterController
     {
 
     }
+
+    void OnEnable()
+    {
+        _rotationOnly = false;    
+    }
     public void SetInputs()
     {
+        if (Camera.main == null || Player.Instance.InCutscene)
+        {
+            _moveInputVector = Vector3.zero;
+            return;
+        } 
         Transform camera = Camera.main.transform;
         Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(PlayerInput.Instance.MovementInput.x, 0.0f, PlayerInput.Instance.MovementInput.z), 1.0f);
         Vector3 cameraPlanarDirection = Vector3.ProjectOnPlane(camera.rotation * Vector3.forward, _motor.CharacterUp).normalized;
@@ -55,6 +74,10 @@ public class PossessedController : MonoBehaviour, ICharacterController
         _motor.enabled = false;
         _entityCollider.enabled = false;
         enabled = false;
+        Transform root = transform.root;
+        Collider[] colliders = root.GetComponentsInChildren<Collider>(includeInactive: true);
+
+        _cachedColliders.AddRange(colliders);
     }
 
     public void Update()
@@ -70,6 +93,13 @@ public class PossessedController : MonoBehaviour, ICharacterController
     public bool IsColliderValidForCollisions(Collider coll)
     {
         if (coll.CompareTag("Smoke"))
+            return false;
+        if (coll.CompareTag("NextAreaWall") && !NotificationBar.Instance.IsBlinking)
+        {
+            NotificationBar.Instance.SetText("Only Momo can proceed...");
+            NotificationBar.Instance.StartBlink();
+        }
+        if (_cachedColliders.Contains(coll))
             return false;
         return true;
     }
@@ -101,6 +131,24 @@ public class PossessedController : MonoBehaviour, ICharacterController
 
     public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
     {
+        if (Player.Instance.InCutscene)
+            return;
+        if (_rotationOnly)
+        {
+            // Rotazione sul posto in base all'input orizzontale (A/D)
+            float horizontalInput = PlayerInput.Instance.MovementInput.x;
+
+            if (Mathf.Abs(horizontalInput) > 0.01f)
+            {
+                // Calcola angolo di rotazione
+                float rotationSpeed = 120f; // gradi al secondo (modificabile)
+                float rotationAmount = horizontalInput * rotationSpeed * deltaTime;
+
+                // Applica la rotazione attorno all’asse Y
+                currentRotation *= Quaternion.Euler(0f, rotationAmount, 0f);
+            }
+            return;
+        }
         if (_lookInputVector.sqrMagnitude > 0f && _orientationSharpness > 0.0f)
         {
             Vector3 smoothedLookInputDirection = Vector3.Slerp(_motor.CharacterForward, _lookInputVector, 1 - Mathf.Exp(-_orientationSharpness * deltaTime)).normalized;
@@ -110,6 +158,17 @@ public class PossessedController : MonoBehaviour, ICharacterController
 
     public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
     {
+        if (_rotationOnly)
+        {
+            currentVelocity = Vector3.zero;
+            return;
+        }
+        if (Player.Instance.InCutscene)
+        {
+            currentVelocity = Vector3.zero;
+            return;
+        }
+            
         if (_motor.GroundingStatus.IsStableOnGround)
         {
             float currentVelocityMagnitude = currentVelocity.magnitude;

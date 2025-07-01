@@ -986,6 +986,7 @@ GameObject:
   - component: {fileID: 7978635065749436910}
   - component: {fileID: 366418802057887070}
   - component: {fileID: 5640889127128603124}
+  - component: {fileID: 7203277033938147129}
   m_Layer: 3
   m_Name: Guard_3
   m_TagString: Possessable_Guard
@@ -1049,7 +1050,7 @@ NavMeshAgent:
   m_Radius: 0.5
   m_Speed: 1
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 5
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
@@ -1102,8 +1103,8 @@ MonoBehaviour:
   - {fileID: 0}
   _waitTime: 2
   _waitPoints: 
-  _alertRange: 8
-  _alertAngle: 120
+  _alertRange: 6
+  _alertAngle: 90
   _chaseSpeed: 2
   _chaseDuration: 50
   _stopDistance: 2
@@ -1225,6 +1226,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dcb7c7b07bb6ac646b1d9e5074d26ff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7203277033938147129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3857898243154144184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b3e2803f73ab241b2a6a5d549008f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4072064822688295622

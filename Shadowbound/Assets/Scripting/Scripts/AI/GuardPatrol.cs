@@ -54,6 +54,13 @@ public class GuardPatrol : MonoBehaviour
     private bool _isLookingAround = false;
 
     private bool _firstEnable = true;
+    private bool _enableAfterDialogue = false;
+
+    public bool EnableAfterDialogue
+    {
+        get => _enableAfterDialogue;
+        set => _enableAfterDialogue = value;
+    }
 
     private void Awake()
     {
@@ -94,12 +101,20 @@ public class GuardPatrol : MonoBehaviour
             _firstEnable = false;
             return;
         }
-
+        if (_enableAfterDialogue)
+        {
+            _enableAfterDialogue = false;
+            return;
+        }
         StartInvestigation(2);
     }
 
     private void Update()
     {
+        if (Player.Instance.InDialogue)
+        {
+            
+        }
         if (PlayerInput.Instance.InPossession && PossessionHandler.Instance.PossessedEntity != gameObject && PossessionHandler.Instance.PossessedEntity.tag == "Possessable_Object" && _target != PossessionHandler.Instance.PossessedEntity.transform)
         {
             _target = PossessionHandler.Instance.PossessedEntity.transform;
@@ -617,6 +632,16 @@ public class GuardPatrol : MonoBehaviour
 
         // Riprova a raggiungere la destinazione iniziale
         TrySetDestination(originalDestination);
+    }
+
+    public void ResetAgent()
+    {
+        _agent.ResetPath();
+        _currentIndex = 0;
+        _currentState = GuardState.Patrolling;
+        HideMark();
+        _agent.speed = _walkingSpeed;
+        _agent.isStopped = false;
     }
 
     private void OnDrawGizmosSelected()

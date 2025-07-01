@@ -15,23 +15,12 @@ public class SmokeScreen : MonoBehaviour
     void Awake()
     {
         if (Instance != null)
+        {
+            Destroy(this);
             return;
+        }
 
         Instance = this;
-    }
-        private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        SmokeScreenAnimator.Instance.StopAnimation();
     }
 
     void Update()

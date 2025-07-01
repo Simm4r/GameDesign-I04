@@ -7,6 +7,7 @@ public class ScrollHUDHandler : MonoBehaviour
     private CanvasGroup _canvasGroup;
     [SerializeField] private TextMeshProUGUI _text;
     private float _alpha = 0;
+    private float _oldScaleTime = 1.0f;
     private enum State
     {
         Idle,
@@ -19,7 +20,10 @@ public class ScrollHUDHandler : MonoBehaviour
     void Awake()
     {
         if (Instance != null)
+        {
+            Destroy(this);
             return;
+        }
         Instance = this;
         _canvasGroup = GetComponent<CanvasGroup>();
         _canvasGroup.alpha = _alpha;
@@ -27,21 +31,28 @@ public class ScrollHUDHandler : MonoBehaviour
 
     void Update()
     {
+        if (PauseHandler.Instance.InPause || Player.Instance.Tutorial)
+            return;
+            
         switch (_state)
         {
             case State.Showing:
-                _alpha += 2 * Time.deltaTime;
+                _alpha += 2 * Time.unscaledDeltaTime;
                 _alpha = Mathf.Clamp01(_alpha);
                 _canvasGroup.alpha = _alpha;
                 if (_alpha == 1)
                     _state = State.OnScreen;
                 break;
             case State.Fading:
-                _alpha -= 2 * Time.deltaTime;
+                _alpha -= 2 * Time.unscaledDeltaTime;
                 _alpha = Mathf.Clamp01(_alpha);
                 _canvasGroup.alpha = _alpha;
                 if (_alpha == 0)
+                {
+                    Time.timeScale = _oldScaleTime;
                     _state = State.Idle;
+                }
+
                 break;
             case State.OnScreen:
                 if (PlayerInput.Instance.DialogueNext)
@@ -54,6 +65,8 @@ public class ScrollHUDHandler : MonoBehaviour
 
     public void Show()
     {
+        _oldScaleTime = Time.timeScale;
+        Time.timeScale = 0;
         _state = State.Showing;
     }
 

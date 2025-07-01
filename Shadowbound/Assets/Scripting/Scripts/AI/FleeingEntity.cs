@@ -31,6 +31,8 @@ public class FleeingEntity : MonoBehaviour
             case EntityState.Fleeing:
                 FleeingUpdate();
                 break;
+            case EntityState.Safe:
+                break;
         }
     }
 
@@ -84,7 +86,8 @@ public class FleeingEntity : MonoBehaviour
     {
         _currentState = EntityState.Safe;
         _agent.isStopped = true;
-        gameObject.SetActive(false);
+        transform.Find("Capsule").gameObject.SetActive(false);
+        transform.Find("Rat").gameObject.SetActive(false);
     }
 
     private bool HasLineOfSightTo(Transform target)
@@ -96,5 +99,12 @@ public class FleeingEntity : MonoBehaviour
             return hit.transform == target || hit.transform.IsChildOf(target);
         }
         return false;
+    }
+
+    public void ResetAgent()
+    {
+        _agent.ResetPath();
+        _currentState = EntityState.Idle;
+        _agent.isStopped = false;
     }
 }

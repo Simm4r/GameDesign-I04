@@ -17,6 +17,10 @@ TagManager:
   - ShadowScreen_Icon
   - Interactable
   - Position_Sphere
+  - NextAreaWall
+  - Mirror
+  - GemStone
+  - Magic
   layers:
   - Default
   - TransparentFX

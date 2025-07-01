@@ -19,7 +19,7 @@ public class TriggerProximityHandler : MonoBehaviour
 
         float distance = Vector3.Distance(Player.Instance.transform.position, transform.position);
 
-        if (distance > _triggerDistance)
+        if (distance > _triggerDistance || ScreenFadeController.Instance.IsFading)
             return;
 
         if (!Player.Instance.InDialogue)

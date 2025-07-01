@@ -14,7 +14,10 @@ public class Beta_RespawnManager : MonoBehaviour
     private void Awake()
     {
         if (Instance != null)
+        {
+            Destroy(this);
             return;
+        }
 
         Instance = this;
 
@@ -42,14 +45,16 @@ public class Beta_RespawnManager : MonoBehaviour
     {
         _motor.SetPositionAndRotation(Player.Instance.ActualCheckPoint.position, Quaternion.LookRotation(Player.Instance.ActualCheckPoint.rotation * Vector3.forward));
         Camera.main.GetComponent<ThirdPersonCamera>()?.ForceSetCamera(Player.Instance.transform.position, -Player.Instance.transform.forward);
-        PlayerInput.Instance.Dying = false;
+        SmokeScreen.Instance.HasCharge = true;
+        PlayerStats.Instance.HitByLaser = false;
+        SmokeScreenAnimator.Instance.StopAnimation();
         Healthbar.Instance.gameObject.SetActive(true);
         PlayerStats.Instance.ResetPlayer();
         if (SceneManager.GetActiveScene().name == Player.Instance.ActualCheckPoint.scene)
             ScreenFadeController.Instance.FadeFromBlack();
         else
             SceneManager.LoadScene(Player.Instance.ActualCheckPoint.scene);
-
+        PlayerInput.Instance.Dying = false;
         Camera.main.GetComponent<ThirdPersonCamera>().enabled = true;
         StartCoroutine(EyesLitDelay());
     }
@@ -68,5 +73,6 @@ public class Beta_RespawnManager : MonoBehaviour
         var emissionR = _eyeRight.emission;
         emissionL.rateOverTime = 40f;
         emissionR.rateOverTime = 40f;
+        PlayerStats.Instance.CanBeHit = true;
     }
 }

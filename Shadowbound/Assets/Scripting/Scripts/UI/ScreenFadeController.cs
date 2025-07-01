@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class ScreenFadeController : MonoBehaviour
@@ -5,6 +6,10 @@ public class ScreenFadeController : MonoBehaviour
     public static ScreenFadeController Instance { get; private set; }
 
     [SerializeField] private Animator _animator;
+    public Animator Animator
+    {
+        get => _animator;
+    }
     private bool _isFading = false;
 
     public bool IsFading
@@ -20,7 +25,14 @@ public class ScreenFadeController : MonoBehaviour
             return;
         }
         Instance = this;
+        StartCoroutine(SetUnscaledDeltaTime());
     }
+
+    IEnumerator SetUnscaledDeltaTime()
+    {
+        yield return new WaitForSeconds(1.5f);
+        _animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+    } 
 
     private string currentStateName = "";
 
@@ -34,6 +46,7 @@ public class ScreenFadeController : MonoBehaviour
     public void FadeFromBlack()
     {
         _animator.Play("FadeOut");
+        _isFading = true;
         currentStateName = "FadeOut";
     }
 

@@ -7,6 +7,15 @@ public class ChargeHandler : MonoBehaviour
     [SerializeField] private Image _cooldownIcon;
     private bool _hasCharge;
 
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(this);
+            return;
+        }
+        Instance = this;
+    }
     void Start()
     {
         _hasCharge = SmokeScreen.Instance.HasCharge;    

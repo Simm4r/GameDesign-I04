@@ -24,6 +24,8 @@ public class CrystalBall : Interactable
     {
         _caller.Player = null;
         _canInteract = false;
+        SmokeScreen.Instance.HasCharge = true;
+        SmokeScreenAnimator.Instance.StopAnimation();
         RespawnPoint checkPoint;
         checkPoint.position = _respawnPosition.transform.position;
         checkPoint.rotation = _respawnPosition.transform.rotation;
@@ -42,7 +44,10 @@ public class CrystalBall : Interactable
                 _caller.Player = null;
             return;
         }
-
+        if (_flame.emission.rateOverTime.constant == 0.0f)
+            _canInteract = true;
+        else
+            _canInteract = false;
         _caller.Player = Player.Instance.gameObject;
     }
 }

@@ -29,7 +29,10 @@ public class TacticalSight : MonoBehaviour
     void Awake()
     {
         if (Instance != null)
+        {
+            Destroy(this);
             return;
+        }
 
         Instance = this;
         _effectDuration = _expandingSight.main.startLifetime.constant;
@@ -160,7 +163,7 @@ public class TacticalSight : MonoBehaviour
 
             if (Physics.Raycast(cam.transform.position, direction, out RaycastHit hit, distance))
             {
-                if (hit.transform.root.gameObject != target)
+                if (hit.collider != target.GetComponentInChildren<Collider>())
                     continue;
             }
             Debug.Log("true");

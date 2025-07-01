@@ -27,7 +27,10 @@ public class ShadowHandler : MonoBehaviour
     private void Awake()
     {
         if (Instance != null)
+        {
+            Destroy(this);
             return;
+        }
         Instance = this;
     }
 
@@ -60,14 +63,24 @@ public class ShadowHandler : MonoBehaviour
     }
     private void Update()
     {
-        if (!IsInShadow() && _canTakeDamage)
+        if (!Player.Instance.InDialogue)
         {
-            PlayerStats.Instance.TakeDamage();
+            if (PlayerStats.Instance.HitByLaser && !PlayerInput.Instance.Dying)
+            {
+                PlayerStats.Instance.CurrentHealth = 0.0f;
+                PlayerStats.Instance.Die();
+                return;
+            }
+            if (!IsInShadow() && _canTakeDamage)
+            {
+                PlayerStats.Instance.TakeDamage();
+            }
+            else
+            {
+                PlayerStats.Instance.HealDamage();
+            }
         }
-        else
-        {
-            PlayerStats.Instance.HealDamage();
-        }
+
         CheckObjectsInPureShadow();
     }
 
@@ -98,7 +111,8 @@ public class ShadowHandler : MonoBehaviour
             if (Physics.Raycast(origin, directionToLight.normalized, out hit, distanceToLight, _shadowCastingLayers))
             {
                 Debug.Log(hit.collider.name);
-                Possessable possessable = hit.collider.GetComponent<Possessable>();
+                Possessable possessable = hit.collider.GetComponentsInChildren<Possessable>(true)
+                .FirstOrDefault(c => c.enabled);
                 if (possessable != null)
                 {
                     detectedPossessable = possessable;
@@ -230,8 +244,9 @@ public class ShadowHandler : MonoBehaviour
                 {
                     _currentPossessable.HidePossessableCue();
                 }
-                _currentPossessable = foundGameObject.GetComponentInChildren<Possessable>();
-                _currentPossessable.ShowPossessableCue();
+                _currentPossessable = foundGameObject.GetComponentsInChildren<Possessable>(true)
+                .FirstOrDefault(c => c.enabled);
+                _currentPossessable?.ShowPossessableCue();
             }
             else
                 _foundGameObjectInPureShadow = false;

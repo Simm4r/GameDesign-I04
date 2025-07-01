@@ -12,9 +12,11 @@ public class SmokeScreenAnimator : MonoBehaviour
     void Awake()
     {
         if (Instance != null)
+        {
+            Destroy(this);
             return;
+        }
         Instance = this;
-
         _smoke = GetComponent<ParticleSystem>();
         _smokeCollider = GetComponentInChildren<SphereCollider>();
         _renderer = GetComponentInChildren<MeshRenderer>();

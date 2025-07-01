@@ -24,7 +24,10 @@ public class DissolveController : MonoBehaviour
     void Awake()
     {
         if (Instance != null)
+        {
+            Destroy(this);
             return;
+        }
         Instance = this;
         propBlock = new MaterialPropertyBlock();
         targetRenderer.GetPropertyBlock(propBlock);
@@ -34,23 +37,25 @@ public class DissolveController : MonoBehaviour
 
     void Update()
     {
+        if (PauseHandler.Instance.InPause)
+            return;
         if (dissolving)
-        {
-            dissolveAmount += Time.unscaledDeltaTime * dissolveSpeed;
-            dissolveAmount = Mathf.Clamp01(dissolveAmount);
-
-            foreach (var renderer in targetRenderer.GetComponentsInChildren<Renderer>())
             {
-                renderer.GetPropertyBlock(propBlock);
-                propBlock.SetFloat("_DissolveAmount", dissolveAmount);
-                renderer.SetPropertyBlock(propBlock);
-            }
-            var leftEmission = leftEye.emission;
-            leftEmission.rateOverTime = 0;
+                dissolveAmount += Time.unscaledDeltaTime * dissolveSpeed;
+                dissolveAmount = Mathf.Clamp01(dissolveAmount);
 
-            var rightEmission = rightEye.emission;
-            rightEmission.rateOverTime = 0;
-        }
+                foreach (var renderer in targetRenderer.GetComponentsInChildren<Renderer>())
+                {
+                    renderer.GetPropertyBlock(propBlock);
+                    propBlock.SetFloat("_DissolveAmount", dissolveAmount);
+                    renderer.SetPropertyBlock(propBlock);
+                }
+                var leftEmission = leftEye.emission;
+                leftEmission.rateOverTime = 0;
+
+                var rightEmission = rightEye.emission;
+                rightEmission.rateOverTime = 0;
+            }
         if (dissolveAmount == 1 && dissolving)
         {
             Time.timeScale = 1.0f;

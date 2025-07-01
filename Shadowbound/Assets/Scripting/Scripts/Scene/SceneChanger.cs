@@ -12,7 +12,6 @@ public class SceneChanger : MonoBehaviour
     [SerializeField] private float _fadeTime;
     [SerializeField] private float _minCheckDistance = 2.0f;
     [SerializeField] private Vector3 _boxExtents;
-    [SerializeField] private Vector3 _newPlayerposition;
 
     void Update()
     {
@@ -32,8 +31,6 @@ public class SceneChanger : MonoBehaviour
     IEnumerator DelayFade()
     {
         yield return new WaitForSeconds(_fadeTime);
-        KinematicCharacterMotor motor = Player.Instance.GetComponent<KinematicCharacterMotor>();
-        motor.SetPosition(_newPlayerposition);
         SceneManager.LoadScene(_sceneToLoad);
     }
 }

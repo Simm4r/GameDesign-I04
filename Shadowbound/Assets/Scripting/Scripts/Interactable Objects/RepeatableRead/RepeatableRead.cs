@@ -7,6 +7,11 @@ public class RepeatableRead : Interactable
     [TextArea(5, 10)]
     [SerializeField] private string _content;
     private bool _readingThis = false;
+
+    public bool ReadingThis
+    {
+        get => _readingThis;
+    } 
     public override bool CanInteract
     {
         get => _canInteract;

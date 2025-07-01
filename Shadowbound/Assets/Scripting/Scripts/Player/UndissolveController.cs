@@ -24,7 +24,10 @@ public class UndissolveController : MonoBehaviour
     void Awake()
     {
         if (Instance != null)
+        {
+            Destroy(this);
             return;
+        }
 
         Instance = this;
         _propBlock = new MaterialPropertyBlock();
@@ -34,6 +37,8 @@ public class UndissolveController : MonoBehaviour
 
     void Update()
     {
+        if (PauseHandler.Instance.InPause)
+            return;
         if (_undissolving)
         {
             _undissolveAmount -= Time.unscaledDeltaTime * _undissolveSpeed;

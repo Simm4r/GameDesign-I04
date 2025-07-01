@@ -29,6 +29,13 @@ public class PossessionHandler : MonoBehaviour
     private float _possessionTime = 0f;
     private float _possessionCooldown = 0f;
     private bool _choosingPosition = false;
+    private bool _quitImmediate = false;
+
+    public bool QuitImmediate
+    {
+        get => _quitImmediate;
+        set => _quitImmediate = value;
+    }
 
     public bool ChoosingPosition
     {
@@ -65,7 +72,7 @@ public class PossessionHandler : MonoBehaviour
     private void SetPossessedEntity()
     {
         _possessedEntity = ShadowHandler.Instance.CurrentPossessable.gameObject.transform.parent ?
-            ShadowHandler.Instance.CurrentPossessable.gameObject.transform.parent.gameObject : ShadowHandler.Instance.CurrentPossessable.gameObject;
+            ShadowHandler.Instance.CurrentPossessable.gameObject.transform.root.gameObject : ShadowHandler.Instance.CurrentPossessable.gameObject;
 
         if (_possessedEntity.tag == "Possessable_Guard")
         {
@@ -136,6 +143,7 @@ public class PossessionHandler : MonoBehaviour
     {
         if (Instance != null)
         {
+            Destroy(this);
             return;
         }
 
@@ -232,7 +240,6 @@ public class PossessionHandler : MonoBehaviour
     {
 
         _currentPossessable.HidePossessableCue();
-        _possessedCollider.enabled = false;
 
         MonoBehaviour[] scripts = GetComponents<MonoBehaviour>();
         CapsuleCollider _collider = GetComponent<CapsuleCollider>();
@@ -272,11 +279,10 @@ public class PossessionHandler : MonoBehaviour
 
     private void HandlePossessionEnd()
     {
-
+        _quitImmediate = false;
         _possessedMotor.enabled = false;
         _possessedMotorCollider.enabled = false;
         _possessedController.enabled = false;
-        _possessedCollider.enabled = true;
 
         if (_possessedEntity.tag == "Possessable_Guard")
         {
@@ -337,6 +343,8 @@ public class PossessionHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (PauseHandler.Instance.InPause || Player.Instance.InCutscene)
+            return;
         if (_choosingPosition)
         {
             HandleExitPosition();
@@ -348,14 +356,22 @@ public class PossessionHandler : MonoBehaviour
         else if (!DissolveController.Instance.IsDissolving && !PlayerInput.Instance.InPossession)
             HandlePossessionTransition();
 
-        if (_possessionTime == _possessionMaxTime || PlayerInput.Instance.QuitPossession)
+        if (_possessionTime == _possessionMaxTime || PlayerInput.Instance.QuitPossession || _quitImmediate)
             HandlePossessionEnd();
 
-        if (PlayerInput.Instance.InPossession)
+        if (PlayerInput.Instance.InPossession && !_choosingPosition)
         {
+            
             _possessedController.SetInputs();
-            _possessionTime += Time.deltaTime;
-            _possessionTime = Mathf.Clamp(_possessionTime, 0.0f, _possessionMaxTime);
+            if (PlayerInput.Instance.Interact && _possessedEntity.GetComponent<MultiTag>()?.HasTag("Mirror") == true)
+            {
+                _possessedController.RotationOnly = !_possessedController.RotationOnly;
+            }
+            if (!(PlayerStats.Instance.PossessionLevel >= 3 && _possessedMotor.Velocity == Vector3.zero))
+            {
+                _possessionTime += Time.deltaTime;
+                _possessionTime = Mathf.Clamp(_possessionTime, 0.0f, _possessionMaxTime);
+            }
         }
         else if (Time.timeScale == 1.0f && _possessionCooldown > 0.0f)
         {
@@ -367,7 +383,7 @@ public class PossessionHandler : MonoBehaviour
     private void HandleExitPosition()
     {
 
-        if (!PlayerInput.Instance.ConfirmPosition)
+        if (!PlayerInput.Instance.ConfirmPosition || UndissolveController.Instance.IsUndissolving)
             return;
 
         Vector3 correctedPosition = _choosingSphere.transform.position;
