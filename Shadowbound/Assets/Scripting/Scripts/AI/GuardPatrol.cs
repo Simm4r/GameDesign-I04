@@ -40,7 +40,6 @@ public class GuardPatrol : MonoBehaviour
     private bool _goingForward = true;
 
     private float _stateTimer = 0f;
-    private float _stuckTimer = 0f;
     private Vector3 _lastKnownPosition;
     private bool _isTargetVisible;
 
@@ -111,10 +110,6 @@ public class GuardPatrol : MonoBehaviour
 
     private void Update()
     {
-        if (Player.Instance.InDialogue)
-        {
-            
-        }
         if (PlayerInput.Instance.InPossession && PossessionHandler.Instance.PossessedEntity != gameObject && PossessionHandler.Instance.PossessedEntity.tag == "Possessable_Object" && _target != PossessionHandler.Instance.PossessedEntity.transform)
         {
             _target = PossessionHandler.Instance.PossessedEntity.transform;
@@ -154,24 +149,6 @@ public class GuardPatrol : MonoBehaviour
             else
             {
                 AdvanceToNextWaypoint();
-            }
-        }
-        else
-        {
-            // Se l'agente si muove molto poco, incrementa il timer
-            if (_agent.velocity.sqrMagnitude < 0.01f)
-            {
-                _stuckTimer += Time.deltaTime;
-                if (_stuckTimer >= 10f)
-                {
-                    // Sembra bloccato, passa al prossimo waypoint
-                    AdvanceToNextWaypoint();
-                    _stuckTimer = 0f;
-                }
-            }
-            else
-            {
-                _stuckTimer = 0f;
             }
         }
     }
@@ -332,7 +309,14 @@ public class GuardPatrol : MonoBehaviour
             {
                 float dist = Vector3.Distance(transform.position, _target.position);
                 if (dist > _stopDistance)
+                {
+                    if (!NavMesh.SamplePosition(_target.position, out _, 1f, NavMesh.AllAreas))
+                    {
+                        StartInvestigation();
+                    }
+
                     TrySetDestination(_target.position);
+                }
                 else
                     _agent.ResetPath();
 
@@ -341,12 +325,12 @@ public class GuardPatrol : MonoBehaviour
             }
             else if (_stateTimer < _chaseDuration)
             {
-                TrySetDestination(_lastKnownPosition);
-
-                if (Vector3.Distance(transform.position, _lastKnownPosition) <= _agent.stoppingDistance)
+                if (!NavMesh.SamplePosition(_lastKnownPosition, out _, 1f, NavMesh.AllAreas) || Vector3.Distance(transform.position, _lastKnownPosition) <= _agent.stoppingDistance)
                 {
                     StartInvestigation();
                 }
+
+                TrySetDestination(_lastKnownPosition);
             }
             else
             {
@@ -357,11 +341,13 @@ public class GuardPatrol : MonoBehaviour
         {
             Vector3 toLeader = _target.position - transform.position;
             Vector3 followPoint = _target.position - toLeader.normalized * 1f;
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(followPoint, out hit, 1f, NavMesh.AllAreas))
+            
+            if (!NavMesh.SamplePosition(followPoint, out _, 1f, NavMesh.AllAreas))
             {
-                TrySetDestination(hit.position);
+                StartInvestigation();
             }
+
+            TrySetDestination(followPoint);
         }
     }
 
@@ -565,7 +551,7 @@ public class GuardPatrol : MonoBehaviour
         Vector3 desiredPoint = origin + finalDir.normalized * distance + offset;
 
         // Verifica se è sul NavMesh
-        if (NavMesh.SamplePosition(desiredPoint, out NavMeshHit hit, 2f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(desiredPoint, out NavMeshHit hit, 1f, NavMesh.AllAreas))
         {
             return hit.position;
         }
@@ -622,13 +608,13 @@ public class GuardPatrol : MonoBehaviour
 
         _agent.SetDestination(obstacle.transform.position + direction * offsetDistance);
 
-        while (_agent.pathPending || _agent.remainingDistance > 1f)
+        while (_agent.pathPending || _agent.remainingDistance > _agent.stoppingDistance)
             yield return null;
 
         obstacle.Interact();
 
         // Aspetta che la porta/saracinesca sia effettivamente aperta
-        yield return new WaitForSeconds(2f); // o evento callback
+        yield return new WaitForSeconds(1f);
 
         // Riprova a raggiungere la destinazione iniziale
         TrySetDestination(originalDestination);
