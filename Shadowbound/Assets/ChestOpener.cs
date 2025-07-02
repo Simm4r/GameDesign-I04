@@ -16,7 +16,7 @@ public class ChestOpener : Interactable
 
     public override void Interact()
     {
-        if (_inventory && _inventory.items.Count > 0 && _inventory.items[0].data == _key)
+        if (_key == null || (_inventory && _inventory.items.Count > 0 && _inventory.items[0].data == _key))
         {
             _chest.StartAnimation();
             return;

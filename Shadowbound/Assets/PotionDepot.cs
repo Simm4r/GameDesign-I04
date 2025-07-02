@@ -54,6 +54,7 @@ public class PotionDepot : Interactable
         {
             _caller.Player = null;
             _canInteract = false;
+            return;
         }
         if (!PlayerInput.Instance.InPossession)
         {
