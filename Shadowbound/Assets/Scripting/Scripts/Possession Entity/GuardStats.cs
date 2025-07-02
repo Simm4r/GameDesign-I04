@@ -8,6 +8,8 @@ public class GuardStats : EntityStats
     [SerializeField] private GameObject _torch;
     [SerializeField] private ParticleSystem _sleepAura;
     [SerializeField] private ParticleSystem _scareAura;
+    [SerializeField] private ParticleSystem _speedAura;
+    public event Action<GuardStatus> OnStatusChanged;
     public enum GuardStatus
     {
         Sleepy,
@@ -33,8 +35,12 @@ public class GuardStats : EntityStats
                 case GuardStatus.Scared:
                     _scareAura.Play(true);
                     break;
+                case GuardStatus.Fastened:
+                    _speedAura.Play(true);
+                    break;
             }
             _status = value;
+            OnStatusChanged?.Invoke(_status);
         }
     }
 
@@ -65,6 +71,9 @@ public class GuardStats : EntityStats
                         break;
                     case GuardStatus.Scared:
                         _scareAura.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+                        break;
+                    case GuardStatus.Fastened:
+                        _speedAura.Stop(true, ParticleSystemStopBehavior.StopEmitting);
                         break;
                 }
                 _status = GuardStatus.None;
