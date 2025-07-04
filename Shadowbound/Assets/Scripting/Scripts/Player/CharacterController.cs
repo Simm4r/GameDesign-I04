@@ -51,6 +51,11 @@ public class PlayerController : MonoBehaviour, ICharacterController
 
     public void SetInputs()
     {
+        if (Camera.main == null || Player.Instance.InCutscene)
+        {
+            _moveInputVector = Vector3.zero;
+            return;
+        } 
         Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(PlayerInput.Instance.MovementInput.x, 0.0f, PlayerInput.Instance.MovementInput.z), 1.0f);
         Vector3 cameraPlanarDirection = Vector3.ProjectOnPlane(Camera.main.transform.rotation * Vector3.forward, _motor.CharacterUp).normalized;
 

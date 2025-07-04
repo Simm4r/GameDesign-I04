@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using KinematicCharacterController;
 using UnityEngine;
@@ -6,6 +7,13 @@ public class RatDen : Interactable
 {
     [SerializeField] private Transform _exitPoint;
     [SerializeField] private InteractionHandler _caller;
+    private enum Direction
+    {
+        Left,
+        right,
+    };
+
+    [SerializeField] private Direction _direction;
     private bool _canInteract = false;
     public override bool CanInteract
     {
@@ -27,7 +35,7 @@ public class RatDen : Interactable
     {
         yield return new WaitForSeconds(1.5f);
         Player.Instance.GetComponent<KinematicCharacterMotor>().SetPositionAndRotation(_exitPoint.position, Quaternion.LookRotation(_exitPoint.forward));
-        Camera.main.GetComponent<ThirdPersonCamera>()?.ForceSetCamera(Player.Instance.transform.position, -Player.Instance.transform.forward);
+        Camera.main.GetComponent<ThirdPersonCamera>()?.ForceSetCamera(Player.Instance.transform.position, _direction == Direction.Left ? Player.Instance.transform.right : -Player.Instance.transform.right);
         ScreenFadeController.Instance.FadeFromBlack();
         Camera.main.GetComponent<ThirdPersonCamera>().enabled = true;
     }

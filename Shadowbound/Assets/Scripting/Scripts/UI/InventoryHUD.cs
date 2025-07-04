@@ -56,7 +56,6 @@ public class InventoryHUD : MonoBehaviour
 
     public void HideInventoryHUD()
     {
-        Debug.Log("Hide inventory");
         // ClearSlot();
         _canvasGroup.alpha = 0f;
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using KinematicCharacterController;
 using UnityEngine;
@@ -16,6 +17,32 @@ public class PossessedController : MonoBehaviour, ICharacterController
     [SerializeField] private Vector3 _gravity = new Vector3(0f, -30f, 0f);
     private bool _alreadyPossessed = false;
     private bool _rotationOnly = false;
+    private bool _enhanced = false;
+    public bool Enhanced
+    {
+        get => _enhanced;
+    }
+    private GuardStats _guardStats;
+    private void OnEnable() {
+        _rotationOnly = false;
+        if (gameObject.CompareTag("Possessable_Guard"))
+        {
+            _guardStats = GetComponent<GuardStats>();
+            _guardStats.OnStatusChanged += HandleStateChange;
+        }
+    }
+
+    private void HandleStateChange(GuardStats.GuardStatus status)
+    {
+        Debug.Log(status);
+        if (status == GuardStats.GuardStatus.Fastened)
+        {
+            _enhanced = true;
+            return;
+        }
+        _enhanced = false;
+    }
+
     public bool RotationOnly
     {
         get => _rotationOnly;
@@ -34,16 +61,11 @@ public class PossessedController : MonoBehaviour, ICharacterController
     }
     public void AfterCharacterUpdate(float deltaTime)
     {
-
-    }
-
-    void OnEnable()
-    {
-        _rotationOnly = false;    
+        
     }
     public void SetInputs()
     {
-        if (Camera.main == null || Player.Instance.InCutscene)
+        if (Camera.main == null || Player.Instance.InCutscene || (PossessionHandler.Instance.PossessedEntity.CompareTag("Possessable_Guard") && GetComponent<GuardStats>().Status == GuardStats.GuardStatus.Scared))
         {
             _moveInputVector = Vector3.zero;
             return;
@@ -60,7 +82,12 @@ public class PossessedController : MonoBehaviour, ICharacterController
         Quaternion cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, _motor.CharacterUp);
         _moveInputVector = cameraPlanarRotation * moveInputVector;
         _lookInputVector = _moveInputVector.normalized;
-
+        if (_enhanced)
+        {
+            _moveInputVector.Normalize();
+            _stableMoveSpeed = _sprintSpeed * 2;
+            return;
+        }
         if (PlayerInput.Instance.Sprint)
             _stableMoveSpeed = _sprintSpeed;
         else

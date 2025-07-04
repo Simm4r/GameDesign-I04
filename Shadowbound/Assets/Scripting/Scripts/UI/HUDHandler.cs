@@ -66,6 +66,15 @@ public class HUDHandler : MonoBehaviour
         if (PlayerInput.Instance.InPossession && PossessionHandler.Instance.PossessedEntity.CompareTag("Possessable_Guard") && !PossessionHandler.Instance.ChoosingPosition)
         {
             Inventory inventory = PossessionHandler.Instance?.PossessedEntity.GetComponent<Inventory>();
+            if (inventory.items.Count > 0)
+            {
+                AuxiliaryBarHandler.Instance.SetText("Drop Item");
+                var key = AuxiliaryBarHandler.Instance.gameObject.GetComponentInChildren<InteractKeyHandler>();
+                if(key.KeyType != InteractKeyHandler.Key.DropItem)
+                    key.KeyType = InteractKeyHandler.Key.DropItem;
+            }
+            else
+                AuxiliaryBarHandler.Instance.HideBar();
             Debug.Log(inventory);
             InventoryHUD.Instance.ShowInventoryHUD(inventory);
         }
@@ -74,18 +83,22 @@ public class HUDHandler : MonoBehaviour
             if (PossessionHandler.Instance.PossessedEntity.GetComponentInChildren<MultiTag>()?.HasTag("Mirror") == true)
             {
                 PossessedController _controller = PossessionHandler.Instance.PossessedEntity.GetComponent<PossessedController>();
-                if (_isRotating != _controller.RotationOnly)
+                var key = AuxiliaryBarHandler.Instance.gameObject.GetComponentInChildren<InteractKeyHandler>();
+                if (_isRotating != _controller.RotationOnly || key.KeyType != InteractKeyHandler.Key.Interact)
                 {
                     _isRotating = _controller.RotationOnly;
                     AuxiliaryBarHandler.Instance.SetText(_isRotating ? "Switch to move" : "Switch to rotate");
+                    key.KeyType = InteractKeyHandler.Key.Interact;
                 }
-                AuxiliaryBarHandler.Instance.ShowBar();
             }
-            else
-                AuxiliaryBarHandler.Instance.HideBar();
             InteractionKeySpritehandler.Instance.setKey(InteractionKeySpritehandler.KeyType.QuitPossession);
             SmallNotificationBarHandler.Instance.SetText("Unpossess entity");
             SmallNotificationBarHandler.Instance.ShowBar();
+
+            if ((PossessionHandler.Instance.PossessedEntity.CompareTag("Possessable_Guard") && PossessionHandler.Instance.PossessedEntity.GetComponent<Inventory>().items.Count > 0) || PossessionHandler.Instance.PossessedEntity.GetComponentInChildren<MultiTag>()?.HasTag("Mirror") == true)
+            {
+                AuxiliaryBarHandler.Instance.ShowBar();
+            }
         }
         else if (PossessionHandler.Instance.ChoosingPosition)
         {

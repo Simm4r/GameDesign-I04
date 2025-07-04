@@ -1,26 +1,50 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class EventDialogue : Talkable
 {
-    [SerializeField] private EventTriggerer _trigger;
+    [SerializeField] private EventTriggerer _triggerE;
     [SerializeField] private DialogueText _dialogueText;
     private bool firstLine = true;
     private bool _triggered = false;
     private bool _dialogueFinished = false;
+    public bool DialogueFinished
+    {
+        get => _dialogueFinished;
+    }
 
     void OnEnable()
     {
-        _trigger.OnReadFinished += triggerDialogue;
+        if (_triggerE)
+            _triggerE.OnReadFinished += TriggerDialogue;
+        else
+        {
+            StartCoroutine(WaitForSub());
+        }
+    }
+ 
+    IEnumerator WaitForSub()
+    {
+        yield return new WaitUntil(() => StartCuscene.Instance != null);
+        Debug.Log("Subscribed to cutscene end");
+        StartCuscene.Instance.OnCutsceneEnd += TriggerDialogue;
     }
 
     void OnDisable()
     {
-        _trigger.OnReadFinished -= triggerDialogue;
+        if (_triggerE)
+            _triggerE.OnReadFinished -= TriggerDialogue;
+        else
+        {
+            Debug.Log("Unsubscribed to cutscene end");
+            StartCuscene.Instance.OnCutsceneEnd -= TriggerDialogue;
+        }
     }
 
-    private void triggerDialogue()
+    private void TriggerDialogue()
     {
+        Debug.Log("DialogueStart");
         Player.Instance.InDialogue = true;
         _triggered = true;
         Talk();

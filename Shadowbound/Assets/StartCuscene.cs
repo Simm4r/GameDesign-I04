@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +7,7 @@ public class StartCuscene : MonoBehaviour
 {
     public static StartCuscene Instance { get; private set; }
     private DialogueRepeatable _dialogue;
+    public event Action OnCutsceneEnd;
     private bool _cutsceneStarted = false;
     private bool _startedFinalCorutine = false;
     private bool _dialogueFinished = false;
@@ -78,5 +80,7 @@ public class StartCuscene : MonoBehaviour
         ScreenFadeController.Instance.FadeFromBlack();
         yield return new WaitForSecondsRealtime(1.0f);
         Player.Instance.InCutscene = false;
+        OnCutsceneEnd?.Invoke();
+        Debug.Log("Invoco il metodo");
     }
 }

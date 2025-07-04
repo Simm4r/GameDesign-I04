@@ -1,41 +1,92 @@
-using UnityEngine;
 using UnityEditor;
-using System.IO;
+using UnityEngine;
+using System.Collections.Generic;
 
-public class MeshReadWriteCleaner : EditorWindow
+public class MeshReadWriteEditor : EditorWindow
 {
-    [MenuItem("Tools/Mesh Read/Write Cleaner")]
+    private List<Object> meshAssets = new List<Object>();
+    private Vector2 scrollPos;
+
+    [MenuItem("Tools/Mesh/Manual Read/Write Toggle")]
     public static void ShowWindow()
     {
-        if (EditorUtility.DisplayDialog(
-            "Disabilita Read/Write",
-            "Vuoi davvero disabilitare il flag Read/Write su tutte le mesh del progetto? (solo file .fbx, .obj, ecc.)",
-            "Sì, procedi",
-            "Annulla"))
-        {
-            ProcessAllMeshes();
-        }
+        GetWindow<MeshReadWriteEditor>("Mesh Read/Write Toggle");
     }
 
-    private static void ProcessAllMeshes()
+    private void OnGUI()
     {
-        string[] meshGuids = AssetDatabase.FindAssets("t:Model"); // Cerca tutti i modelli
-        int changedCount = 0;
+        EditorGUILayout.LabelField("Trascina qui i tuoi asset mesh o FBX", EditorStyles.boldLabel);
+        EditorGUILayout.Space();
 
-        foreach (string guid in meshGuids)
+        // Area di trascinamento
+        var dropArea = GUILayoutUtility.GetRect(0.0f, 50.0f, GUILayout.ExpandWidth(true));
+        GUI.Box(dropArea, "Trascina qui gli asset");
+
+        Event evt = Event.current;
+        if (evt.type == EventType.DragUpdated || evt.type == EventType.DragPerform)
         {
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            ModelImporter importer = AssetImporter.GetAtPath(path) as ModelImporter;
-
-            if (importer != null && importer.isReadable)
+            if (dropArea.Contains(evt.mousePosition))
             {
-                importer.isReadable = false;
-                importer.SaveAndReimport();
-                changedCount++;
+                DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+
+                if (evt.type == EventType.DragPerform)
+                {
+                    DragAndDrop.AcceptDrag();
+                    foreach (var dragged in DragAndDrop.objectReferences)
+                    {
+                        if (!meshAssets.Contains(dragged) && IsMeshAsset(dragged))
+                            meshAssets.Add(dragged);
+                    }
+                    evt.Use();
+                }
             }
         }
 
-        EditorUtility.DisplayDialog("Completato",
-            $"✅ Disabilitato Read/Write su {changedCount} mesh!", "OK");
+        // Lista degli asset
+        EditorGUILayout.Space();
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+        foreach (var asset in meshAssets)
+        {
+            DrawMeshToggle(asset);
+        }
+        EditorGUILayout.EndScrollView();
+
+        EditorGUILayout.Space();
+        if (GUILayout.Button("Svuota lista"))
+        {
+            meshAssets.Clear();
+        }
+    }
+
+    private void DrawMeshToggle(Object asset)
+    {
+        string path = AssetDatabase.GetAssetPath(asset);
+        ModelImporter importer = AssetImporter.GetAtPath(path) as ModelImporter;
+
+        if (importer == null)
+        {
+            EditorGUILayout.LabelField($"{asset.name} - ⚠️ Non è un asset importabile");
+            return;
+        }
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField(asset.name, GUILayout.Width(200));
+        bool newReadable = EditorGUILayout.Toggle("Read/Write", importer.isReadable);
+
+        if (newReadable != importer.isReadable)
+        {
+            importer.isReadable = newReadable;
+            EditorUtility.SetDirty(importer);
+            importer.SaveAndReimport();
+            Debug.Log($"🔁 {(newReadable ? "Abilitato" : "Disabilitato")} Read/Write su {asset.name}");
+        }
+
+        EditorGUILayout.EndHorizontal();
+    }
+
+    private bool IsMeshAsset(Object obj)
+    {
+        string path = AssetDatabase.GetAssetPath(obj);
+        return path.EndsWith(".fbx") || path.EndsWith(".obj") || path.EndsWith(".blend");
     }
 }

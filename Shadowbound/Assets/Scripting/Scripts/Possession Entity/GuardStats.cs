@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,17 +32,25 @@ public class GuardStats : EntityStats
             {
                 case GuardStatus.Sleepy:
                     _sleepAura.Play(true);
+
                     break;
                 case GuardStatus.Scared:
                     _scareAura.Play(true);
+                    StartCoroutine(WaitForScare());
                     break;
                 case GuardStatus.Fastened:
                     _speedAura.Play(true);
                     break;
             }
             _status = value;
-            OnStatusChanged?.Invoke(_status);
+            OnStatusChanged?.Invoke(value);
         }
+    }
+
+    IEnumerator WaitForScare()
+    {
+        yield return new WaitForSeconds(1.0f);
+        PossessionHandler.Instance.QuitImmediate = true;
     }
 
     public override int EntityLevel
@@ -76,6 +85,7 @@ public class GuardStats : EntityStats
                         _speedAura.Stop(true, ParticleSystemStopBehavior.StopEmitting);
                         break;
                 }
+                OnStatusChanged?.Invoke(GuardStatus.None);
                 _status = GuardStatus.None;
             }
         }

@@ -15,7 +15,7 @@ public class ThirdPersonCamera : MonoBehaviour
     public float verticalSensitivity = 2f;
     [Header("Collision")]
     public LayerMask collisionLayers;
-    public float cameraRadius = 0.2f;
+    public float cameraRadius = 0.05f;
     public float minDistance = 0.5f;
     private Collider smokeCollider;
 
@@ -79,15 +79,18 @@ public class ThirdPersonCamera : MonoBehaviour
     public void ForceSetCamera(Vector3 focusPoint, Vector3 direction)
     {
         Vector3 dir = direction.normalized;
+        if (dir == Vector3.zero)
+            dir = Vector3.forward;
+
         Vector3 cameraPos = focusPoint + (dir * distance) + Vector3.up * height;
         transform.position = cameraPos;
 
-        // Guardare nella stessa direzione del player
-        transform.rotation = Quaternion.LookRotation(-dir); // verso il player
+        // Guarda verso focusPoint
+        transform.rotation = Quaternion.LookRotation(-dir, Vector3.up);
 
-        // Aggiorna yaw/pitch per la camera orbitante
+        // Aggiorna yaw e pitch (utile se usi rotazioni orbitanti dopo)
         Vector3 euler = transform.rotation.eulerAngles;
         yaw = euler.y;
         pitch = euler.x;
-}
+    }
 }

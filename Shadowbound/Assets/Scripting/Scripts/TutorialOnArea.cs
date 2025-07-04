@@ -49,7 +49,11 @@ public class TutorialOnArea : MonoBehaviour
             case TutorialHandler.TutorialPage.SS:
                 TutorialHandler.Instance.Hide();
                 enabled = false;
-                break; 
+                break;
+            case TutorialHandler.TutorialPage.CP:
+                TutorialHandler.Instance.Hide();
+                enabled = false;
+                break;
         }
     }
         
@@ -65,6 +69,9 @@ public class TutorialOnArea : MonoBehaviour
                 break;
             case TutorialHandler.TutorialPage.SS:
                 TutorialHandler.Instance.SetActualTutorial(TutorialHandler.TutorialPage.SS);
+                break;
+            case TutorialHandler.TutorialPage.CP:
+                TutorialHandler.Instance.SetActualTutorial(TutorialHandler.TutorialPage.CP);
                 break;
         }
         TutorialHandler.Instance.Show();

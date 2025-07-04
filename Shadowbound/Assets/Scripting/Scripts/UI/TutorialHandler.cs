@@ -8,12 +8,16 @@ public class TutorialHandler : MonoBehaviour
     [SerializeField] private GameObject[] _possession;
     [SerializeField] private GameObject _shadowVision;
     [SerializeField] private GameObject _shadowScreen;
+    [SerializeField] private GameObject _possessionEnhancement2 = null;
+    [SerializeField] private GameObject _checkpoint;
     public enum TutorialPage
     {
         Pos1,
         Pos2,
         SV,
-        SS
+        SS,
+        PosEn2,
+        CP
     }
     private float _alpha = 0;
     private float _oldScaleTime = 1.0f;
@@ -106,27 +110,51 @@ public class TutorialHandler : MonoBehaviour
         {
             case TutorialPage.Pos1:
                 _possession[1].SetActive(false);
+                _checkpoint.SetActive(false);
+                _possessionEnhancement2?.SetActive(false);
                 _shadowScreen.SetActive(false);
                 _shadowVision.SetActive(false);
                 _possession[0].SetActive(true);
                 break;
             case TutorialPage.Pos2:
                 _shadowScreen.SetActive(false);
+                _checkpoint.SetActive(false);
+                _possessionEnhancement2?.SetActive(false);
                 _shadowVision.SetActive(false);
                 _possession[0].SetActive(false);
                 _possession[1].SetActive(true);
                 break;
             case TutorialPage.SV:
                 _possession[1].SetActive(false);
+                _checkpoint.SetActive(false);
+                _possessionEnhancement2?.SetActive(false);
                 _shadowScreen.SetActive(false);
                 _possession[0].SetActive(false);
                 _shadowVision.SetActive(true);
                 break;
             case TutorialPage.SS:
                 _possession[1].SetActive(false);
+                _checkpoint.SetActive(false);
+                _possessionEnhancement2?.SetActive(false);
                 _possession[0].SetActive(false);
                 _shadowVision.SetActive(false);
                 _shadowScreen.SetActive(true);
+                break;
+            case TutorialPage.PosEn2:
+                _possession[1].SetActive(false);
+                _checkpoint.SetActive(false);
+                _possession[0].SetActive(false);
+                _shadowVision.SetActive(false);
+                _shadowScreen.SetActive(false);
+                _possessionEnhancement2.SetActive(true);
+                break;
+            case TutorialPage.CP:
+                _possession[1].SetActive(false);  
+                _possession[0].SetActive(false);
+                _shadowVision.SetActive(false);
+                _shadowScreen.SetActive(false);
+                _possessionEnhancement2.SetActive(false);
+                _checkpoint.SetActive(true);
                 break;
         }
     }

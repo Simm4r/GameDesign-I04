@@ -50,6 +50,7 @@ public class PossessionHandler : MonoBehaviour
     public float PossessionMaxCooldown
     {
         get { return _possessionMaxCooldown; }
+        set => _possessionMaxCooldown = value;
     }
     public float PossessionTime
     {
@@ -58,6 +59,7 @@ public class PossessionHandler : MonoBehaviour
     public float PossessionMaxTime
     {
         get { return _possessionMaxTime; }
+        set => _possessionMaxTime = value;
     }
     public bool IsPossessing
     {
@@ -369,7 +371,8 @@ public class PossessionHandler : MonoBehaviour
             }
             if (!(PlayerStats.Instance.PossessionLevel >= 3 && _possessedMotor.Velocity == Vector3.zero))
             {
-                _possessionTime += Time.deltaTime;
+                _possessionTime += (PossessedEntity.CompareTag("Possessable_Guard") && PossessedEntity.GetComponent<GuardStats>().Status == GuardStats.GuardStatus.Sleepy)?
+                 Time.deltaTime / 2.5f : Time.deltaTime;
                 _possessionTime = Mathf.Clamp(_possessionTime, 0.0f, _possessionMaxTime);
             }
         }

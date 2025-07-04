@@ -44,6 +44,7 @@ public class Beta_RespawnManager : MonoBehaviour
     private void RespawnPlayer()
     {
         _motor.SetPositionAndRotation(Player.Instance.ActualCheckPoint.position, Quaternion.LookRotation(Player.Instance.ActualCheckPoint.rotation * Vector3.forward));
+        Camera.main.GetComponent<ThirdPersonCamera>().rotationSpeed = 1000f;
         Camera.main.GetComponent<ThirdPersonCamera>()?.ForceSetCamera(Player.Instance.transform.position, -Player.Instance.transform.forward);
         SmokeScreen.Instance.HasCharge = true;
         PlayerStats.Instance.HitByLaser = false;
@@ -68,6 +69,7 @@ public class Beta_RespawnManager : MonoBehaviour
 
     IEnumerator EyesLitDelay()
     {
+        Camera.main.GetComponent<ThirdPersonCamera>().rotationSpeed = 10f;
         yield return new WaitForSeconds(1f);
         var emissionL = _eyeLeft.emission;
         var emissionR = _eyeRight.emission;
