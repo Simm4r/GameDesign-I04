@@ -11,6 +11,10 @@ public class HiddenWallLift : MonoBehaviour
     }
 
     private WallState _state = WallState.Down;
+    public WallState State
+    {
+        get => _state;
+    }
     private Vector3 _currentPos;
     private Vector3 _minPos;
     [SerializeField] private Vector3 _maxPos;

@@ -35,7 +35,7 @@ public class FlameSphereMover : MonoBehaviour
     {
         yield return new WaitUntil(() => Player.Instance != null);
         Player.Instance.InCutscene = true;
-        yield return new WaitForSecondsRealtime(2.2f);
+        yield return new WaitForSecondsRealtime(2.0f);
         StartMoving();
     }
 
@@ -79,7 +79,6 @@ public class FlameSphereMover : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(0.5f);
         Player.Instance.InCutscene = false;
-        yield return new WaitForSecondsRealtime(0.5f);
         gameObject.SetActive(false);
     }
 

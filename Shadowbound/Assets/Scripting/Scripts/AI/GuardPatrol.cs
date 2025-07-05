@@ -27,10 +27,18 @@ public class GuardPatrol : MonoBehaviour
     [Header("Investigation Settings")]
     [SerializeField] private float _investigateDistance = 5f;
 
+    [Header("Status Scared")]
+    [SerializeField] private Transform _secretRoom;
+    [SerializeField] private Book _book;
+    [SerializeField] private HiddenWallLift _secretRoomWall;
+
     private Transform _target;
     private NavMeshAgent _agent;
+    private GuardStats _stats;
+    private GuardStats.GuardStatus _currentStatus = GuardStats.GuardStatus.None;
     private KinematicCharacterMotor _targetMotor;
     private float _walkingSpeed;
+    private bool _isHandlingObstacle = false;
     private GameObject _exclamationMark;
     private GameObject _questionMark;
     private QuestionMarkFiller _markFiller;
@@ -77,11 +85,11 @@ public class GuardPatrol : MonoBehaviour
         }
         else if (_waypoints.Length == 1)
         {
-            TrySetDestination(_waypoints[0].position);
+            _agent.SetDestination(_waypoints[0].position);
         }
         else
         {
-            TrySetDestination(_waypoints[_currentIndex].position);
+            _agent.SetDestination(_waypoints[_currentIndex].position);
         }
 
         // HideMark();
@@ -95,21 +103,62 @@ public class GuardPatrol : MonoBehaviour
 
     private void OnEnable()
     {
-        if (_firstEnable)
+        _stats = GetComponent<GuardStats>();
+        _stats.OnStatusChanged += HandleStatusChange;
+
+        HandleStatusChange(_stats.Status);
+
+        if (_currentStatus != GuardStats.GuardStatus.Scared && _currentStatus != GuardStats.GuardStatus.Sleepy)
         {
-            _firstEnable = false;
-            return;
+            if (_firstEnable)
+            {
+                _firstEnable = false;
+                return;
+            }
+            if (_enableAfterDialogue)
+            {
+                _enableAfterDialogue = false;
+                return;
+            }
+            StartInvestigation(2);
         }
-        if (_enableAfterDialogue)
+    }
+
+    private void OnDisable()
+    {
+        _stats.OnStatusChanged -= HandleStatusChange;          
+    }
+
+    private void HandleStatusChange(GuardStats.GuardStatus status)
+    {
+        _currentStatus = status;
+
+        switch (status)
         {
-            _enableAfterDialogue = false;
-            return;
+            case GuardStats.GuardStatus.Sleepy:
+                _agent.isStopped = true;
+                break;
+
+            case GuardStats.GuardStatus.Fastened:
+                _walkingSpeed *= 2f;
+                _chaseSpeed *= 2f;
+                break;
+
+            case GuardStats.GuardStatus.Scared:
+                StartCoroutine(HandleScaredSequence());
+                break;
+            case GuardStats.GuardStatus.None:
+                _walkingSpeed = 1f;
+                _chaseSpeed = 2f;
+                _agent.isStopped = false;
+                break;
         }
-        StartInvestigation(2);
     }
 
     private void Update()
     {
+        if (_currentStatus == GuardStats.GuardStatus.Sleepy || _currentStatus == GuardStats.GuardStatus.Scared) return;
+
         if (PlayerInput.Instance.InPossession && PossessionHandler.Instance.PossessedEntity != gameObject && PossessionHandler.Instance.PossessedEntity.tag == "Possessable_Object" && _target != PossessionHandler.Instance.PossessedEntity.transform)
         {
             _target = PossessionHandler.Instance.PossessedEntity.transform;
@@ -137,6 +186,8 @@ public class GuardPatrol : MonoBehaviour
     private void PatrolUpdate()
     {
         if (_agent.pathPending) return;
+
+        if (_agent.speed == _chaseSpeed) _agent.speed = _walkingSpeed;
 
         if (_agent.remainingDistance <= _agent.stoppingDistance)
         {
@@ -174,7 +225,7 @@ public class GuardPatrol : MonoBehaviour
 
         if (_waypoints.Length == 1)
         {
-            TrySetDestination(_waypoints[0].position);
+            _agent.SetDestination(_waypoints[0].position);
             return;
         }
 
@@ -196,13 +247,14 @@ public class GuardPatrol : MonoBehaviour
         }
 
         _agent.ResetPath();
-        TrySetDestination(_waypoints[_currentIndex].position);
+        _agent.SetDestination(_waypoints[_currentIndex].position);
     }
 
     // === VISION SYSTEM ===
-    private void HandleVision()
+    protected virtual void HandleVision()
     {
         if (_target == null) return;
+        if (_currentStatus == GuardStats.GuardStatus.Scared || _currentStatus == GuardStats.GuardStatus.Sleepy) return;
 
         Vector3 eyePos = transform.position + Vector3.up * 1.25f + transform.forward * 0.2f;
         Vector3 dirToTarget = (_target.position - eyePos).normalized;
@@ -315,7 +367,7 @@ public class GuardPatrol : MonoBehaviour
                         StartInvestigation();
                     }
 
-                    TrySetDestination(_target.position);
+                    _agent.SetDestination(_target.position);
                 }
                 else
                     _agent.ResetPath();
@@ -330,7 +382,7 @@ public class GuardPatrol : MonoBehaviour
                     StartInvestigation();
                 }
 
-                TrySetDestination(_lastKnownPosition);
+                _agent.SetDestination(_lastKnownPosition);
             }
             else
             {
@@ -347,7 +399,7 @@ public class GuardPatrol : MonoBehaviour
                 StartInvestigation();
             }
 
-            TrySetDestination(followPoint);
+            _agent.SetDestination(followPoint);
         }
     }
 
@@ -388,7 +440,7 @@ public class GuardPatrol : MonoBehaviour
                 {
                     _stateTimer = 0f;
                     _investigationPoint = GetRandomPointNear(_lastKnownPosition, _investigateDistance, _targetMotor.Velocity.magnitude > 0.1f ? _targetMotor.Velocity.normalized : null);
-                    TrySetDestination(_investigationPoint);
+                    _agent.SetDestination(_investigationPoint);
                     _agent.isStopped = false;
                     _investigationPhase = 1;
                 }
@@ -479,7 +531,7 @@ public class GuardPatrol : MonoBehaviour
 
         _currentState = GuardState.Returning;
         _agent.ResetPath();
-        TrySetDestination(_waypoints[_currentIndex].position);
+        _agent.SetDestination(_waypoints[_currentIndex].position);
         HideMark();
     }
     private void ReturningUpdate()
@@ -559,65 +611,142 @@ public class GuardPatrol : MonoBehaviour
         // Fallback
         return GetRandomPointNear(origin, distance);
     }
-    
-    private bool TrySetDestination(Vector3 destination)
+
+    private IEnumerator HandleScaredSequence()
     {
-        NavMeshPath path = new NavMeshPath();
-        if (NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, path))
+        _agent.isStopped = false;
+        _agent.speed = _chaseSpeed;
+
+        // Se il muro è già alzato, salta direttamente al secondo punto
+        if (_secretRoomWall.State == HiddenWallLift.WallState.Up)
         {
-            if (path.status == NavMeshPathStatus.PathComplete)
+            if (_secretRoom != null)
             {
-                _agent.SetPath(path);
-                return true;
+                _agent.SetDestination(_secretRoom.position);
+                while (_agent.pathPending || _agent.remainingDistance > _agent.stoppingDistance)
+                yield return null;
+
+                StartCoroutine(ScaredBackAndForth());
             }
-            else if (path.status == NavMeshPathStatus.PathPartial)
+            yield break;
+        }
+
+        // Fase 1: fugge verso il primo punto
+        if (_book != null)
+        {
+            _agent.SetDestination(_book.transform.position);
+            while (_agent.pathPending || _agent.remainingDistance > 1f)
+                yield return null;
+        }
+
+        // Fase 2: chiama StartAnimation sul libro
+        _book?.StartAnimation();
+
+        // Fase 3: attende che il muro sia salito
+        while (_secretRoomWall.State != HiddenWallLift.WallState.Up)
+            yield return null;
+
+        // Fase 4: fugge verso il secondo punto
+        if (_secretRoom != null)
+        {
+            _agent.SetDestination(_secretRoom.position);
+            while (_agent.pathPending || _agent.remainingDistance > _agent.stoppingDistance)
+                yield return null;
+
+            StartCoroutine(ScaredBackAndForth());
+        }
+    }
+
+    private IEnumerator ScaredBackAndForth()
+    {
+        Vector3 start = _secretRoom.position;
+        Vector3 dir = Vector3.forward; // asse z
+        bool forward = true;
+
+        while (_currentStatus == GuardStats.GuardStatus.Scared)
+        {
+            Vector3 target = start + dir * (forward ? 1f : -1f);
+
+            _agent.SetDestination(target);
+
+            while (_agent.pathPending || _agent.remainingDistance > _agent.stoppingDistance)
+                yield return null;
+
+            forward = !forward;
+        }
+    }
+
+    public void ForcePathRecalculation()
+    {
+        if (!_isHandlingObstacle)
+            StartCoroutine(HandleStuckAndInteract());
+    }
+
+    private IEnumerator HandleStuckAndInteract()
+    {
+        _isHandlingObstacle = true;
+
+        float stillTime = 0f;
+        float requiredStillTime = 0.5f;
+        float threshold = 0.05f;
+        float maxWaitTime = 5f;
+        float elapsedTime = 0f;
+
+        while (stillTime < requiredStillTime && elapsedTime < maxWaitTime)
+        {
+            if (_agent.velocity.magnitude < threshold)
+                stillTime += Time.deltaTime;
+            else
+                stillTime = 0f;
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        if (stillTime < requiredStillTime)
+        {
+            _isHandlingObstacle = false;
+            yield break;
+        }
+
+        Interactable obstacle = GetObstacleToInteract();
+
+        if (obstacle != null)
+        {
+            obstacle.Interact();
+
+            yield return new WaitForSeconds(1f);
+            _agent.SetDestination(_agent.destination);
+        }
+
+        _isHandlingObstacle = false;
+    }
+
+    protected virtual Interactable GetObstacleToInteract()
+    {
+        Transform targetTransform = null;
+        float checkRadius = 2f;
+        Collider[] hits = Physics.OverlapSphere(transform.position, checkRadius);
+
+        foreach (var hit in hits)
+        {
+            if (hit.transform.CompareTag("Interactable") && hit.GetComponent<DoorOpener>() != null)
             {
-                // Rileva l’ultima posizione raggiungibile
-                Vector3 lastReachable = path.corners[path.corners.Length - 1];
-                Collider[] hits = Physics.OverlapSphere(lastReachable, 2f);
-                Transform targetTransform = null;
-                Debug.Log("Last reachable position: " + lastReachable);
+                if (hit.GetComponent<DoorLocked>() != null && hit.GetComponent<DoorLocked>().IsLocked)
+                    continue;
 
-                foreach (var hit in hits)
-                {
-                    if (hit.transform.CompareTag("Interactable") && hit.gameObject.GetComponent<DoorOpener>() != null && !hit.gameObject.GetComponent<DoorLocked>().IsLocked)
-                        targetTransform = hit.transform;
-                    else if (hit.transform.parent != null && hit.transform.parent.CompareTag("Interactable") && hit.transform.parent.gameObject.GetComponent<PullLeverHandler>() != null)
-                        targetTransform = hit.transform.parent;
-
-                    if (targetTransform != null)
-                    {
-                        var obstacle = targetTransform.GetComponent<Interactable>();
-                        if (obstacle != null)
-                        {
-                            StartCoroutine(GoInteractWithObstacle(obstacle, destination));
-                            return false; // Interrotto, non impostare il path per ora
-                        }
-                    }
-                }
+                targetTransform = hit.transform;
+                break;
+            }
+            else if (hit.transform.parent != null && hit.transform.parent.CompareTag("Interactable") &&
+                    hit.transform.parent.GetComponent<PullLeverHandler>() != null)
+            {
+                targetTransform = hit.transform.parent;
+                break;
             }
         }
 
-        return false;
-    }
-
-    private IEnumerator GoInteractWithObstacle(Interactable obstacle, Vector3 originalDestination)
-    {
-        Vector3 direction = (_agent.transform.position - obstacle.transform.position).normalized;
-        float offsetDistance = 1f;
-
-        _agent.SetDestination(obstacle.transform.position + direction * offsetDistance);
-
-        while (_agent.pathPending || _agent.remainingDistance > _agent.stoppingDistance)
-            yield return null;
-
-        obstacle.Interact();
-
-        // Aspetta che la porta/saracinesca sia effettivamente aperta
-        yield return new WaitForSeconds(1f);
-
-        // Riprova a raggiungere la destinazione iniziale
-        TrySetDestination(originalDestination);
+        return targetTransform?.GetComponent<Interactable>();
     }
 
     public void ResetAgent()

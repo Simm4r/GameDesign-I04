@@ -113,7 +113,7 @@ public class ShadowHandler : MonoBehaviour
                 Debug.Log(hit.collider.name);
                 Possessable possessable = hit.collider.GetComponentsInChildren<Possessable>(true)
                 .FirstOrDefault(c => c.enabled);
-                if (possessable != null)
+                if (possessable != null && !(possessable.transform.root.tag == "Possessable_Guard" && possessable.transform.root.GetComponent<GuardStats>().Status == GuardStats.GuardStatus.Scared))
                 {
                     detectedPossessable = possessable;
                 }

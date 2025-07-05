@@ -35,7 +35,7 @@ public class OutlineHandler : MonoBehaviour
         _outline.OutlineMode = Outline.Mode.OutlineAll;
         if (entity.tag.StartsWith("Possessable_"))
         {
-            if (entity.GetComponent<EntityStats>().EntityLevel > PlayerStats.Instance.PossessionLevel)
+            if (entity.GetComponent<EntityStats>().EntityLevel > PlayerStats.Instance.PossessionLevel || (entity.CompareTag("Possessable_Guard") && entity.GetComponent<GuardStats>().Status == GuardStats.GuardStatus.Scared))
                 _outline.OutlineColor = Color.red;
             else
                 _outline.OutlineColor = new Color(1, 1, 1, 1);
