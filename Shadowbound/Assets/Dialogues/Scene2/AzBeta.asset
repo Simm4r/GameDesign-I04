@@ -13,7 +13,48 @@ MonoBehaviour:
   m_Name: AzBeta
   m_EditorClassIdentifier: 
   paragraphs:
+  - speakerName: ???
+    text: Need a hand?
   - speakerName: Momo
-    text: Helo!
+    text: And what exactly are you supposed to be?
+  - speakerName: ???
+    text: You may call me Az. I presume you are the shadow of the Soul Devourer,
+      am I mistaken?
+  - speakerName: Momo
+    text: "Huh? No, you\u2019ve got it all wrong. I\u2019m just looking for my body,
+      I know it\u2019s somewhere in this tower."
   - speakerName: Az
-    text: Helooooo!
+    text: "Are you certain it isn\u2019t, by chance, the body of the Soul Devourer?
+      The very one imprisoned in this castle and stripped of its mind through ritual?"
+  - speakerName: Momo
+    text: "I have nothing to do with that beast! I swear, I\u2019m human."
+  - speakerName: Az
+    text: I would not dare contradict one who might one day decide to devour me.
+  - speakerName: Momo
+    text: "I\u2026 I don\u2019t eat anyone! I\u2019m not a monster!"
+  - speakerName: Az
+    text: Very well, very well. In any case, I wish to help you reach the top of
+      the tower. The hag who imprisoned you also saw fit to trap me within this book.
+  - speakerName: Az
+    text: "I must admit, I\u2019m not one to easily forget such treatment."
+  - speakerName: Az
+    text: I can tell you how to break the seal on the door leading to the upper floor.
+  - speakerName: Momo
+    text: "All right, I\u2019m listening."
+  - speakerName: Az
+    text: "You\u2019ll need to make sure both gems are in place."
+  - speakerName: Az
+    text: I know that one of them requires focusing a beam of light onto a specific
+      spot. You should find a dedicated chamber ahead.
+  - speakerName: Az
+    text: The other requires placing three ingredients into that cauldron.
+  - speakerName: Az
+    text: The first is a jar containing a green substance, it should be somewhere
+      in this room.
+  - speakerName: Az
+    text: The second is the inactive gem itself, which should be located in the laboratory.
+  - speakerName: Az
+    text: "Lastly, you\u2019ll need a catalyst: a small glowing crystal, also likely
+      to be in the lab."
+  - speakerName: Momo
+    text: "Got it. I\u2019ll get to work."

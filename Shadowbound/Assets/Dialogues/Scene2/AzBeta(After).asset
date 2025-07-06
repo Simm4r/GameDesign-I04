@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2666342667ed35e49a322785f6f47e64, type: 3}
+  m_Name: AzBeta(After)
+  m_EditorClassIdentifier: 
+  paragraphs:
+  - speakerName: Az
+    text: "You\u2019ll need to make sure both gems are in place."
+  - speakerName: Az
+    text: I know that one of them requires focusing a beam of light onto a specific
+      spot. You should find a dedicated chamber ahead.
+  - speakerName: Az
+    text: The other requires placing three ingredients into that cauldron.
+  - speakerName: Az
+    text: The first is a jar containing a green substance, it should be somewhere
+      in this room.
+  - speakerName: Az
+    text: The second is the inactive gem itself, which should be located in the laboratory.
+  - speakerName: Az
+    text: "Lastly, you\u2019ll need a catalyst: a small glowing crystal, also likely
+      to be in the lab."
+  - speakerName: Momo
+    text: "Got it. I\u2019ll get to work."

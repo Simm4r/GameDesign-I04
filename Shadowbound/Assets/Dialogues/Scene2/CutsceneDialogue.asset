@@ -13,11 +13,24 @@ MonoBehaviour:
   m_Name: CutsceneDialogue
   m_EditorClassIdentifier: 
   paragraphs:
+  - speakerName: Momo
+    text: How are you feeling?
   - speakerName: ???
-    text: Helo!!!!
+    text: "I'm fine, don\u2019t worry."
   - speakerName: ???
-    text: Hellooooooo!!
+    text: I should be the one taking care of you, like a good big sister.
+  - speakerName: Momo
+    text: "Don\u2019t be ridiculous, you need rest. I\u2019ll focus on finding a
+      solution, I've got this."
   - speakerName: ???
-    text: fsdfsdfsdcvsdfsdfsdfsd
+    text: "It\u2019s just... I wish I could spend more time with you, since I don\u2019t
+      know how much longer I can hold on."
+  - speakerName: Momo
+    text: ...
+  - speakerName: Momo
+    text: "Once you\u2019re better, we\u2019ll do anything you want. I promise I\u2019ll
+      find a way to break the curse, no matter what it takes."
   - speakerName: ???
-    text: dsfsdfsdfsd
+    text: ...
+  - speakerName: Momo
+    text: Please... be careful.

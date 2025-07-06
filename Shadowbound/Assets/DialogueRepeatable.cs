@@ -3,6 +3,10 @@ using UnityEngine;
 public class DialogueRepeatable : Talkable
 {
     [SerializeField] private DialogueText _dialogueText;
+    public DialogueText DialogueText
+    {
+        set => _dialogueText = value;
+    }
     private bool _firstLine = true;
 
     private bool _inDialogue = false;

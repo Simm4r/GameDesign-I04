@@ -8,7 +8,7 @@ using KinematicCharacterController;
 public class GuardPatrol : MonoBehaviour
 {
     public enum GuardState { Patrolling, Waiting, Alerted, Chasing, Investigating, Returning }
-    [SerializeField] private GuardState _currentState = GuardState.Patrolling;
+    [SerializeField] protected GuardState _currentState = GuardState.Patrolling;
 
     [Header("Patrol Settings")]
     [SerializeField] private Transform[] _waypoints;
@@ -32,12 +32,17 @@ public class GuardPatrol : MonoBehaviour
     [SerializeField] private Book _book;
     [SerializeField] private HiddenWallLift _secretRoomWall;
 
-    private Transform _target;
+    protected Transform _target;
     private NavMeshAgent _agent;
     private GuardStats _stats;
     private GuardStats.GuardStatus _currentStatus = GuardStats.GuardStatus.None;
     private KinematicCharacterMotor _targetMotor;
+    private int _originalPriority;
+    private float _rotationSpeed = 2f;
+    private float _originalRotSpeed;
     private float _walkingSpeed;
+    private float _originalWalkSpeed;
+    private float _originalChaseSpeed;
     private bool _isHandlingObstacle = false;
     private GameObject _exclamationMark;
     private GameObject _questionMark;
@@ -76,6 +81,10 @@ public class GuardPatrol : MonoBehaviour
         _questionMark = transform.Find("QuestionMark").gameObject;
         _markFiller = GetComponentInChildren<QuestionMarkFiller>(true);
         _walkingSpeed = _agent.speed;
+        _originalWalkSpeed = _walkingSpeed;
+        _originalChaseSpeed = _chaseSpeed;
+        _originalRotSpeed = _rotationSpeed;
+        _originalPriority = _agent.avoidancePriority;
         _allGuards = FindObjectsByType<GuardPatrol>(FindObjectsSortMode.None);
 
         if (_waypoints == null || _waypoints.Length == 0)
@@ -142,14 +151,18 @@ public class GuardPatrol : MonoBehaviour
             case GuardStats.GuardStatus.Fastened:
                 _walkingSpeed *= 2f;
                 _chaseSpeed *= 2f;
+                _rotationSpeed *= 2f;
+                _agent.avoidancePriority = 5;
                 break;
 
             case GuardStats.GuardStatus.Scared:
                 StartCoroutine(HandleScaredSequence());
                 break;
             case GuardStats.GuardStatus.None:
-                _walkingSpeed = 1f;
-                _chaseSpeed = 2f;
+                _walkingSpeed = _originalWalkSpeed;
+                _chaseSpeed = _originalChaseSpeed;
+                _rotationSpeed = _originalRotSpeed;
+                _agent.avoidancePriority = _originalPriority;
                 _agent.isStopped = false;
                 break;
         }
@@ -187,7 +200,11 @@ public class GuardPatrol : MonoBehaviour
     {
         if (_agent.pathPending) return;
 
-        if (_agent.speed == _chaseSpeed) _agent.speed = _walkingSpeed;
+        if (_agent.speed == _chaseSpeed)
+        {
+            _agent.speed = _walkingSpeed;
+            _agent.avoidancePriority = _originalPriority;
+        }
 
         if (_agent.remainingDistance <= _agent.stoppingDistance)
         {
@@ -348,6 +365,7 @@ public class GuardPatrol : MonoBehaviour
         _agent.stoppingDistance = _stopDistance;
         _agent.isStopped = false;
         _agent.speed = _chaseSpeed;
+        _agent.avoidancePriority = 10;
         ShowMark(_exclamationMark);
     }
 
@@ -424,6 +442,7 @@ public class GuardPatrol : MonoBehaviour
         _stateTimer = 0f;
         _investigationPhase = phase;
         _agent.speed = _walkingSpeed;
+        _agent.avoidancePriority = _originalPriority;
         _markFiller.SetMaxFill();
         ShowMark(_questionMark);
         _firstLook = true;
@@ -507,7 +526,7 @@ public class GuardPatrol : MonoBehaviour
             _isLookingAround = true;
         }
 
-        transform.rotation = Quaternion.Slerp(transform.rotation, _lookAroundRotation, Time.deltaTime * 2f);
+        transform.rotation = Quaternion.Slerp(transform.rotation, _lookAroundRotation, Time.deltaTime * _rotationSpeed);
 
         if (Quaternion.Angle(transform.rotation, _lookAroundRotation) < 1f)
         {
@@ -558,6 +577,7 @@ public class GuardPatrol : MonoBehaviour
         _agent.stoppingDistance = _stopDistance;
         _agent.isStopped = false;
         _agent.speed = _walkingSpeed;
+        _agent.avoidancePriority = _originalPriority;
         _markFiller.SetMaxFill();
         ShowMark(_questionMark);
     }
@@ -588,7 +608,7 @@ public class GuardPatrol : MonoBehaviour
         if (direction == Vector3.zero) return;
 
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 2f);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * _rotationSpeed);
     }
 
     private Vector3 GetRandomPointNear(Vector3 origin, float distance, Vector3? direction = null)
@@ -603,7 +623,7 @@ public class GuardPatrol : MonoBehaviour
         Vector3 desiredPoint = origin + finalDir.normalized * distance + offset;
 
         // Verifica se è sul NavMesh
-        if (NavMesh.SamplePosition(desiredPoint, out NavMeshHit hit, 1f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(desiredPoint, out NavMeshHit hit, 1f, NavMesh.AllAreas)) // TODO: Controllare che il punto sia raggiungibile
         {
             return hit.position;
         }
@@ -616,6 +636,7 @@ public class GuardPatrol : MonoBehaviour
     {
         _agent.isStopped = false;
         _agent.speed = _chaseSpeed;
+        _agent.avoidancePriority = 12;
 
         // Se il muro è già alzato, salta direttamente al secondo punto
         if (_secretRoomWall.State == HiddenWallLift.WallState.Up)
@@ -624,7 +645,7 @@ public class GuardPatrol : MonoBehaviour
             {
                 _agent.SetDestination(_secretRoom.position);
                 while (_agent.pathPending || _agent.remainingDistance > _agent.stoppingDistance)
-                yield return null;
+                    yield return null;
 
                 StartCoroutine(ScaredBackAndForth());
             }
@@ -755,7 +776,8 @@ public class GuardPatrol : MonoBehaviour
         _currentIndex = 0;
         _currentState = GuardState.Patrolling;
         HideMark();
-        _agent.speed = _walkingSpeed;
+        _agent.speed = _originalWalkSpeed;
+        _agent.avoidancePriority = _originalPriority;
         _agent.isStopped = false;
     }
 

@@ -3,8 +3,19 @@ using UnityEngine;
 public class MagicMissleController : MonoBehaviour
 {
     [SerializeField] private SphereLauncher _sphere;
-    [SerializeField] private bool _trylaunch = false;
-    [SerializeField] private Transform _trialPos;
+    private bool _trylaunch = false;
+    public bool TryLaunch
+    {
+        get => _trylaunch;
+        set => _trylaunch = value;
+    }
+    private Vector3 _trialPos;
+    public Vector3 TrialPos
+    {
+        get => _trialPos;
+        set => _trialPos = value;
+    }
+
     void Update()
     {
         if (_trylaunch)
@@ -15,7 +26,7 @@ public class MagicMissleController : MonoBehaviour
             _sphere.transform.position = transform.position;
             _sphere.GetComponentInChildren<Light>().enabled = true;
             _sphere.gameObject.SetActive(true);
-            _sphere.LaunchAuto(_trialPos.position, 20f, transform.root.gameObject);
+            _sphere.LaunchAuto(_trialPos, 10f, transform.root.gameObject);
         }
     }
 }

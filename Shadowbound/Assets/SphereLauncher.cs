@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SphereLauncher : MonoBehaviour
 {
     [SerializeField] private float _maxLifetime = 5.0f;
+    List<Collider> colliders = new();
     private float _lifeTime = 0.0f;   
     private Rigidbody rb;
     private bool isStopped = false;
@@ -12,7 +15,23 @@ public class SphereLauncher : MonoBehaviour
     {
         get => isStopped;
     }
+
+    public bool OnField = false;
     private GameObject _caller;
+    void OnEnable()
+    {
+        List<GameObject> agents = FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None).ToList().Select(obj => obj.transform.root.gameObject).ToList();
+        agents.ForEach(agent =>
+        {
+            List<Collider> colls = agent.GetComponentsInChildren<Collider>().ToList();
+            colliders.AddRange(colls);
+        });
+        colliders.ForEach(collider =>
+        {
+            Physics.IgnoreCollision(GetComponent<Collider>(), collider);
+        });
+            Physics.IgnoreCollision(Player.Instance.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -30,15 +49,13 @@ public class SphereLauncher : MonoBehaviour
                 isStopped = false;
                 GetComponentInChildren<Light>().enabled = false;
                 gameObject.SetActive(false);
+                OnField = false;
             }
         }
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        List<Collider> colliders = _caller.GetComponentsInChildren<Collider>().ToList();
-        if (colliders.Contains(collision.collider))
-            return;
         if (isStopped) return;
 
         // Ferma il movimento
@@ -50,6 +67,7 @@ public class SphereLauncher : MonoBehaviour
     }
     public void LaunchAuto(Vector3 target, float launchSpeed, GameObject caller, bool useHighArc = false)
     {
+        OnField = true;
         rb.constraints = RigidbodyConstraints.None;
 
         _caller = caller;
