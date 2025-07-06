@@ -9,6 +9,7 @@ public class HUDHandler : MonoBehaviour
     [SerializeField] private GameObject _interactionBar;
     [SerializeField] private GameObject _notificationBar;
     [SerializeField] private GameObject _tutorial;
+    [SerializeField] private GameObject _inventory;
     private bool _isRotating = false;
 
     void Awake()
@@ -25,7 +26,7 @@ public class HUDHandler : MonoBehaviour
         if (PauseHandler.Instance.InPause || Player.Instance.InCutscene)
         {
             if(PauseHandler.Instance.InPause)
-                _textBox.SetActive(false);
+            _textBox.SetActive(false);
             _cooldownBar.SetActive(false);
             _scroll.SetActive(false);
             _interactionBar.SetActive(false);

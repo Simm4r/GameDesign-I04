@@ -14,6 +14,7 @@ public class UndissolveController : MonoBehaviour
     [SerializeField] private ParticleSystem _leftEye;
     [SerializeField] private ParticleSystem _rightEye;
     [SerializeField] private Material _originalMaterial;
+    [SerializeField] private float objectHeight = 0.305f;
 
     private MaterialPropertyBlock _propBlock;
 
@@ -32,6 +33,8 @@ public class UndissolveController : MonoBehaviour
         Instance = this;
         _propBlock = new MaterialPropertyBlock();
         _targetRenderer.GetPropertyBlock(_propBlock);
+        _propBlock.SetFloat("_DissolveAmount", _undissolveAmount);
+        _propBlock.SetFloat("_ObjectHeight", objectHeight);
         enabled = false;
     }
 

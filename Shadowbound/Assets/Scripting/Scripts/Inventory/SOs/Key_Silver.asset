@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Key_Silver
   id: 17
-  icon: {fileID: 21300000, guid: 9146303c4e436f745aff5765fea28a30, type: 3}
+  icon: {fileID: 21300000, guid: 34e32ae8449a40045b4aab4e0a48f7cf, type: 3}
   worldPrefab: {fileID: 3707735130553130310, guid: 0a8665e49b929324daf8d0e49196c241, type: 3}
   description: A silver key

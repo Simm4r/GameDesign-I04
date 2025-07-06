@@ -14,6 +14,7 @@ public class DissolveController : MonoBehaviour
     [SerializeField] private ParticleSystem leftEye;
     [SerializeField] private ParticleSystem rightEye;
     [SerializeField] private Material fadeMaterial;
+    [SerializeField] private float objectHeight = 0.305f;
 
     private MaterialPropertyBlock propBlock;
 
@@ -32,6 +33,7 @@ public class DissolveController : MonoBehaviour
         propBlock = new MaterialPropertyBlock();
         targetRenderer.GetPropertyBlock(propBlock);
         propBlock.SetFloat("_DissolveAmount", dissolveAmount);
+        propBlock.SetFloat("_ObjectHeight", objectHeight);
         targetRenderer.SetPropertyBlock(propBlock);
     }
 
