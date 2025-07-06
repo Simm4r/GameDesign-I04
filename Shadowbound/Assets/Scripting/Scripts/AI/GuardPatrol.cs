@@ -41,8 +41,8 @@ public class GuardPatrol : MonoBehaviour
     private float _rotationSpeed = 2f;
     private float _originalRotSpeed;
     protected float _walkingSpeed;
-    private float _originalWalkSpeed;
-    private float _originalChaseSpeed;
+    protected float _originalWalkSpeed;
+    protected float _originalChaseSpeed;
     private bool _isHandlingObstacle = false;
     protected GameObject _exclamationMark;
     protected GameObject _questionMark;
@@ -303,7 +303,7 @@ public class GuardPatrol : MonoBehaviour
                     _isTargetVisible = true;
                     _lastKnownPosition = _target.position;
 
-                    if (_target != Player.Instance.transform)
+                    if (_target != Player.Instance.transform && _currentState != GuardState.Chasing)
                     {
                         objectVelocity = _targetMotor.Velocity.magnitude;
                         if (objectVelocity == 0) return;
@@ -589,7 +589,7 @@ public class GuardPatrol : MonoBehaviour
         _questionMark.SetActive(markToShow == _questionMark);
     }
 
-    private void HideMark()
+    protected void HideMark()
     {
         _exclamationMark.SetActive(false);
         _questionMark.SetActive(false);
@@ -778,7 +778,7 @@ public class GuardPatrol : MonoBehaviour
         obstacle.Interact();
     }
 
-    public void ResetAgent()
+    public virtual void ResetAgent()
     {
         _agent.ResetPath();
         _currentIndex = 0;

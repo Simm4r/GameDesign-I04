@@ -85,4 +85,14 @@ public class StrongGuardPatrol : GuardPatrol
             InteractWithObstacle(_target.GetComponent<Interactable>());
         }
     }
+
+    public override void ResetAgent()
+    {
+        _agent.ResetPath();
+        _currentState = GuardState.Patrolling;
+        HideMark();
+        _agent.speed = _originalWalkSpeed;
+        _agent.avoidancePriority = _originalPriority;
+        _agent.isStopped = false;
+    }
 }
