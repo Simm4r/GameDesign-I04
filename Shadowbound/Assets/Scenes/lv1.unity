@@ -85164,11 +85164,11 @@ PrefabInstance:
       objectReference: {fileID: 1418761089}
     - target: {fileID: 2194555407241727251, guid: e05e64610a4530f4ab0c10f597748364, type: 3}
       propertyPath: minDistance
-      value: 0.1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2194555407241727251, guid: e05e64610a4530f4ab0c10f597748364, type: 3}
       propertyPath: cameraRadius
-      value: 0.05
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 2194555407241727251, guid: e05e64610a4530f4ab0c10f597748364, type: 3}
       propertyPath: rotationSpeed

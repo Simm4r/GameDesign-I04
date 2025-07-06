@@ -18,7 +18,7 @@ public class MagicMissleController : MonoBehaviour
 
     void Update()
     {
-        if (_trylaunch)
+        if (_trylaunch && !_sphere.OnField)
         {
             _trylaunch = false;
             if (_sphere.IsStopped)
@@ -27,6 +27,10 @@ public class MagicMissleController : MonoBehaviour
             _sphere.GetComponentInChildren<Light>().enabled = true;
             _sphere.gameObject.SetActive(true);
             _sphere.LaunchAuto(_trialPos, 10f, transform.root.gameObject);
+        }
+        else
+        {
+            _trylaunch = false;
         }
     }
 }
