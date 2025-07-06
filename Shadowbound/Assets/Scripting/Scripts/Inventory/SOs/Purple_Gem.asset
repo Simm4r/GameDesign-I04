@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Purple Gem
   id: 21
-  icon: {fileID: 21300000, guid: d75cabeb04e82b846b8aa644c872df0a, type: 3}
+  icon: {fileID: 21300000, guid: 9cb7d3e80f2d16142a2dd4e29119d7f6, type: 3}
   worldPrefab: {fileID: 4904954969001687, guid: 32059eab8924c8347a2b4aede0f2f77f, type: 3}
   description: sdfsdf

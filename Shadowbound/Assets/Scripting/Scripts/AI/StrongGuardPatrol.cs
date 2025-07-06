@@ -7,7 +7,6 @@ public class StrongGuardPatrol : GuardPatrol
     [SerializeField] private SphereLauncher _sphere;
 
     private Animator _anim;
-    private Coroutine _missileRoutine;
 
     protected override void HandleVision()
     {

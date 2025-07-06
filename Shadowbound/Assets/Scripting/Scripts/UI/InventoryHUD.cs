@@ -68,6 +68,11 @@ public class InventoryHUD : MonoBehaviour
             _slots[_header].sprite = item.icon;
             _slots[_header].enabled = true;
         }
+        else if (_slots[_header] != null)
+        {
+            _slots[_header].sprite = null;
+            _slots[_header].enabled = false;
+        }
             
     }
 
