@@ -1109,6 +1109,9 @@ MonoBehaviour:
   _chaseDuration: 50
   _stopDistance: 2
   _investigateDistance: 5
+  _secretRoom: {fileID: 0}
+  _book: {fileID: 0}
+  _secretRoomWall: {fileID: 0}
 --- !u!114 &8622556951194838015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1199,6 +1202,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entityLevel: 1
   _torch: {fileID: 165669118219878565}
+  _sleepAura: {fileID: 0}
+  _scareAura: {fileID: 0}
+  _speedAura: {fileID: 0}
+  _statusMaxTime: []
 --- !u!114 &366418802057887070
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,12 +1,14 @@
 using System.Collections;
 using UnityEngine;
 
-public class DestroyBarrel : MonoBehaviour
+public class DestroyBarrel : Interactable
 {
     [SerializeField] private bool _startAnimation = false;
     [SerializeField] ParticleSystem _smash;
+    private bool _canInteract = true;
+    public override bool CanInteract { get => _canInteract; set => _canInteract = true; }
 
-    public void Destroybarrel()
+    public override void Interact()
     {
         if (!PlayerInput.Instance.InPossession && !PlayerInput.Instance.QuitPossession)
         {
@@ -35,7 +37,7 @@ public class DestroyBarrel : MonoBehaviour
         if (_startAnimation)
         {
             _startAnimation = false;
-            Destroybarrel();
+            Interact();
         }
     }
 }

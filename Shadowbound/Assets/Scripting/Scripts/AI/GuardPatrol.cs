@@ -20,9 +20,9 @@ public class GuardPatrol : MonoBehaviour
     [SerializeField] private float _alertAngle = 120f;
 
     [Header("Chase Settings")]
-    [SerializeField] private float _chaseSpeed = 2.1f;
+    [SerializeField] protected float _chaseSpeed = 2.1f;
     [SerializeField] private float _chaseDuration = 20f;
-    [SerializeField] private float _stopDistance = 2f;
+    [SerializeField] private float _stopDistance = 1f;
 
     [Header("Investigation Settings")]
     [SerializeField] private float _investigateDistance = 5f;
@@ -33,28 +33,28 @@ public class GuardPatrol : MonoBehaviour
     [SerializeField] private HiddenWallLift _secretRoomWall;
 
     protected Transform _target;
-    private NavMeshAgent _agent;
+    protected NavMeshAgent _agent;
     private GuardStats _stats;
     private GuardStats.GuardStatus _currentStatus = GuardStats.GuardStatus.None;
     private KinematicCharacterMotor _targetMotor;
-    private int _originalPriority;
+    protected int _originalPriority;
     private float _rotationSpeed = 2f;
     private float _originalRotSpeed;
-    private float _walkingSpeed;
+    protected float _walkingSpeed;
     private float _originalWalkSpeed;
     private float _originalChaseSpeed;
     private bool _isHandlingObstacle = false;
-    private GameObject _exclamationMark;
-    private GameObject _questionMark;
+    protected GameObject _exclamationMark;
+    protected GameObject _questionMark;
     private QuestionMarkFiller _markFiller;
     private GuardPatrol[] _allGuards;
 
     private int _currentIndex = 0;
     private bool _goingForward = true;
 
-    private float _stateTimer = 0f;
+    protected float _stateTimer = 0f;
     private Vector3 _lastKnownPosition;
-    private bool _isTargetVisible;
+    protected bool _isTargetVisible;
 
     private Vector3 _investigationPoint;
     private int _investigationPhase = 0;
@@ -175,11 +175,13 @@ public class GuardPatrol : MonoBehaviour
         if (PlayerInput.Instance.InPossession && PossessionHandler.Instance.PossessedEntity != gameObject && PossessionHandler.Instance.PossessedEntity.tag == "Possessable_Object" && _target != PossessionHandler.Instance.PossessedEntity.transform)
         {
             _target = PossessionHandler.Instance.PossessedEntity.transform;
+            _targetMotor = _target.GetComponent<KinematicCharacterMotor>();
         }
 
         if (!PlayerInput.Instance.InPossession && _target != Player.Instance.transform)
         {
             _target = Player.Instance.transform;
+            _targetMotor = _target.GetComponent<KinematicCharacterMotor>();
         }
 
         switch (_currentState)
@@ -362,7 +364,6 @@ public class GuardPatrol : MonoBehaviour
     {
         _currentState = GuardState.Chasing;
         _stateTimer = 0f;
-        _agent.stoppingDistance = _stopDistance;
         _agent.isStopped = false;
         _agent.speed = _chaseSpeed;
         _agent.avoidancePriority = 10;
@@ -570,11 +571,10 @@ public class GuardPatrol : MonoBehaviour
     }
 
     // === CHECK ODDITY ===
-    private void CheckOddity()
+    protected virtual void CheckOddity()
     {
         _currentState = GuardState.Chasing;
         _stateTimer = 0f;
-        _agent.stoppingDistance = _stopDistance;
         _agent.isStopped = false;
         _agent.speed = _walkingSpeed;
         _agent.avoidancePriority = _originalPriority;
@@ -583,7 +583,7 @@ public class GuardPatrol : MonoBehaviour
     }
 
     // === UTILS === 
-    private void ShowMark(GameObject markToShow)
+    protected void ShowMark(GameObject markToShow)
     {
         _exclamationMark.SetActive(markToShow == _exclamationMark);
         _questionMark.SetActive(markToShow == _questionMark);
@@ -601,7 +601,7 @@ public class GuardPatrol : MonoBehaviour
         RotateTowards(point);
     }
 
-    private void RotateTowards(Vector3 point)
+    protected void RotateTowards(Vector3 point)
     {
         Vector3 direction = point - transform.position;
         direction.y = 0f;
@@ -613,23 +613,32 @@ public class GuardPatrol : MonoBehaviour
 
     private Vector3 GetRandomPointNear(Vector3 origin, float distance, Vector3? direction = null)
     {
-        Vector3 finalDir = direction ?? Random.insideUnitSphere;
-        finalDir.y = 0f;
-
-        // Leggera deviazione casuale
-        Vector2 randomOffset = Random.insideUnitCircle * (distance * 0.3f); // 30% casuale
-        Vector3 offset = new Vector3(randomOffset.x, 0, randomOffset.y);
-
-        Vector3 desiredPoint = origin + finalDir.normalized * distance + offset;
-
-        // Verifica se è sul NavMesh
-        if (NavMesh.SamplePosition(desiredPoint, out NavMeshHit hit, 1f, NavMesh.AllAreas)) // TODO: Controllare che il punto sia raggiungibile
+        const int maxAttempts = 10;
+        for (int attempt = 0; attempt < maxAttempts; attempt++)
         {
-            return hit.position;
+            Vector3 finalDir = direction ?? Random.insideUnitSphere;
+            finalDir.y = 0f;
+
+            Vector2 randomOffset = Random.insideUnitCircle * (distance * 0.3f);
+            Vector3 offset = new Vector3(randomOffset.x, 0, randomOffset.y);
+
+            Vector3 desiredPoint = origin + finalDir.normalized * distance + offset;
+
+            // Controlla che sia sul NavMesh
+            if (NavMesh.SamplePosition(desiredPoint, out NavMeshHit hit, 1f, NavMesh.AllAreas))
+            {
+                // Verifica che il percorso sia completo
+                NavMeshPath path = new NavMeshPath();
+                if (NavMesh.CalculatePath(origin, hit.position, NavMesh.AllAreas, path)
+                    && path.status == NavMeshPathStatus.PathComplete)
+                {
+                    return hit.position;
+                }
+            }
         }
 
-        // Fallback
-        return GetRandomPointNear(origin, distance);
+        // Fallback: restituisci l'origine se nessun punto valido trovato
+        return origin;
     }
 
     private IEnumerator HandleScaredSequence()
@@ -707,37 +716,32 @@ public class GuardPatrol : MonoBehaviour
     {
         _isHandlingObstacle = true;
 
-        float stillTime = 0f;
-        float requiredStillTime = 0.5f;
-        float threshold = 0.05f;
-        float maxWaitTime = 5f;
-        float elapsedTime = 0f;
+        NavMeshPath path = new NavMeshPath();
+        _agent.CalculatePath(_agent.destination, path);
 
-        while (stillTime < requiredStillTime && elapsedTime < maxWaitTime)
+        if (path.corners.Length >= 2)
         {
-            if (_agent.velocity.magnitude < threshold)
-                stillTime += Time.deltaTime;
-            else
-                stillTime = 0f;
+            Vector3 from = path.corners[0];
+            Vector3 to = path.corners[1];
+            Vector3 pathDir = (to - from).normalized;
 
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
+            // Ottieni l’ostacolo potenzialmente interagibile
+            Interactable obstacle = GetObstacleToInteract();
 
-        if (stillTime < requiredStillTime)
-        {
-            _isHandlingObstacle = false;
-            yield break;
-        }
+            if (obstacle != null)
+            {
+                Vector3 obstacleDir = (obstacle.transform.position - _agent.transform.position).normalized;
+                float dot = Vector3.Dot(pathDir, obstacleDir);
 
-        Interactable obstacle = GetObstacleToInteract();
+                // Se la direzione dell'ostacolo è abbastanza allineata col percorso (es: almeno 0.7 su 1)
+                if (dot > 0.7f)
+                {
+                    InteractWithObstacle(obstacle);
 
-        if (obstacle != null)
-        {
-            obstacle.Interact();
-
-            yield return new WaitForSeconds(1f);
-            _agent.SetDestination(_agent.destination);
+                    yield return new WaitForSeconds(1f);
+                    _agent.SetDestination(_agent.destination);
+                }
+            }
         }
 
         _isHandlingObstacle = false;
@@ -751,7 +755,7 @@ public class GuardPatrol : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            if (hit.transform.CompareTag("Interactable") && hit.GetComponent<DoorOpener>() != null)
+            if (hit.GetComponent<DoorOpener>() != null)
             {
                 if (hit.GetComponent<DoorLocked>() != null && hit.GetComponent<DoorLocked>().IsLocked)
                     continue;
@@ -759,8 +763,7 @@ public class GuardPatrol : MonoBehaviour
                 targetTransform = hit.transform;
                 break;
             }
-            else if (hit.transform.parent != null && hit.transform.parent.CompareTag("Interactable") &&
-                    hit.transform.parent.GetComponent<PullLeverHandler>() != null)
+            else if (hit.transform.parent != null && hit.transform.parent.GetComponent<PullLeverHandler>() != null)
             {
                 targetTransform = hit.transform.parent;
                 break;
@@ -768,6 +771,11 @@ public class GuardPatrol : MonoBehaviour
         }
 
         return targetTransform?.GetComponent<Interactable>();
+    }
+
+    protected virtual void InteractWithObstacle(Interactable obstacle)
+    {
+        obstacle.Interact();
     }
 
     public void ResetAgent()

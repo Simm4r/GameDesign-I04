@@ -21,6 +21,8 @@ public class CarveHandler : MonoBehaviour
         foreach (NavMeshObstacle obstacle in _obstacles)
         {
             bool find = false;
+            if (obstacle == null) continue;
+            
             foreach (NavMeshAgent agent in _agents)
             {
                 if (Vector3.Distance(obstacle.transform.position, agent.transform.position) > _triggerDistance)
