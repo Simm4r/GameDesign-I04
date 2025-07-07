@@ -8,7 +8,7 @@ using System.Linq;
 
 public class GuardPatrol : MonoBehaviour
 {
-    public enum GuardState { Patrolling, Waiting, Alerted, Chasing, Investigating, Returning }
+    public enum GuardState { Patrolling, Waiting, Alerted, Chasing, Investigating, Returning, Checking }
     [SerializeField] protected GuardState _currentState = GuardState.Patrolling;
 
     [Header("Patrol Settings")]
@@ -25,6 +25,9 @@ public class GuardPatrol : MonoBehaviour
     [SerializeField] private float _chaseDuration = 20f;
     [SerializeField] private float _stopDistance = 1f;
 
+    [Header("Checking Oddity Settings")]
+    [SerializeField] protected float _checkDuration = 10f;
+
     [Header("Investigation Settings")]
     [SerializeField] private float _investigateDistance = 5f;
 
@@ -37,7 +40,7 @@ public class GuardPatrol : MonoBehaviour
     protected NavMeshAgent _agent;
     private GuardStats _stats;
     private GuardStats.GuardStatus _currentStatus = GuardStats.GuardStatus.None;
-    private KinematicCharacterMotor _targetMotor;
+    protected KinematicCharacterMotor _targetMotor;
     protected int _originalPriority;
     private float _rotationSpeed = 2f;
     private float _originalRotSpeed;
@@ -54,14 +57,14 @@ public class GuardPatrol : MonoBehaviour
     private bool _goingForward = true;
 
     protected float _stateTimer = 0f;
-    private Vector3 _lastKnownPosition;
+    protected Vector3 _lastKnownPosition;
     protected bool _isTargetVisible;
 
     private Vector3 _investigationPoint;
     private int _investigationPhase = 0;
     private float _lookAroundTimer = 0f;
     private bool _firstLook = true;
-    private Vector3? _targetDirection = null;
+    protected Vector3? _targetDirection = null;
     private float _nextLookDuration = 0f;
     private Quaternion _lookAroundRotation;
     private bool _isLookingAround = false;
@@ -173,10 +176,20 @@ public class GuardPatrol : MonoBehaviour
     {
         if (_currentStatus == GuardStats.GuardStatus.Sleepy || _currentStatus == GuardStats.GuardStatus.Scared) return;
 
-        if (PlayerInput.Instance.InPossession && PossessionHandler.Instance.PossessedEntity != gameObject && PossessionHandler.Instance.PossessedEntity.tag == "Possessable_Object" && _target != PossessionHandler.Instance.PossessedEntity.transform)
+        if (PlayerInput.Instance.InPossession)
         {
-            _target = PossessionHandler.Instance.PossessedEntity.transform;
-            _targetMotor = _target.GetComponent<KinematicCharacterMotor>();
+            if (PossessionHandler.Instance.PossessedEntity.tag == "Possessable_Object")
+            {
+                if (_target != PossessionHandler.Instance.PossessedEntity.transform)
+                {
+                    _target = PossessionHandler.Instance.PossessedEntity.transform;
+                    _targetMotor = _target.GetComponent<KinematicCharacterMotor>();
+                }
+            }
+            else
+            {
+                _target = null;
+            }
         }
 
         if (!PlayerInput.Instance.InPossession && _target != Player.Instance.transform)
@@ -193,6 +206,7 @@ public class GuardPatrol : MonoBehaviour
             case GuardState.Chasing: ChasingUpdate(); break;
             case GuardState.Investigating: InvestigatingUpdate(); break;
             case GuardState.Returning: ReturningUpdate(); break;
+            case GuardState.Checking: CheckingUpdate(); break;
         }
 
         HandleVision();
@@ -274,6 +288,7 @@ public class GuardPatrol : MonoBehaviour
     protected virtual void HandleVision()
     {
         if (_target == null) return;
+        
         if (_currentStatus == GuardStats.GuardStatus.Scared || _currentStatus == GuardStats.GuardStatus.Sleepy) return;
 
         Vector3 eyePos = transform.position + Vector3.up * 1.25f + transform.forward * 0.2f;
@@ -307,11 +322,14 @@ public class GuardPatrol : MonoBehaviour
                     _isTargetVisible = true;
                     _lastKnownPosition = _target.position;
 
-                    if (_target != Player.Instance.transform && _currentState != GuardState.Chasing)
+                    if (_target != Player.Instance.transform)
                     {
-                        objectVelocity = _targetMotor.Velocity.magnitude;
-                        if (objectVelocity == 0) return;
-                        CheckOddity();
+                        if (_currentState != GuardState.Checking)
+                        {
+                            objectVelocity = _targetMotor.Velocity.magnitude;
+                            if (objectVelocity == 0) return;
+                            StartCheckingOddity();
+                        }
                     }
                     else
                     {
@@ -347,12 +365,15 @@ public class GuardPatrol : MonoBehaviour
 
     private void AlertedUpdate()
     {
+        if (_target != Player.Instance.transform) StartReturning();
+        if (_target == null) return;
+
         if (!_isTargetVisible)
         {
             _stateTimer -= Time.deltaTime;
             if (_stateTimer <= 0)
                 _markFiller.ResetFill();
-                StartReturning();
+            StartReturning();
         }
         else
         {
@@ -380,6 +401,9 @@ public class GuardPatrol : MonoBehaviour
 
     private void ChasingUpdate()
     {
+        if (_target != Player.Instance.transform) StartInvestigation();
+        if (_target == null) return;
+
         _stateTimer += Time.deltaTime;
 
         if (IsClosestGuardToTarget())
@@ -444,7 +468,7 @@ public class GuardPatrol : MonoBehaviour
     }
 
     // === INVESTIGATING ===
-    private void StartInvestigation(int phase = 0)
+    protected void StartInvestigation(int phase = 0)
     {
         _currentState = GuardState.Investigating;
         _agent.isStopped = true;
@@ -579,15 +603,69 @@ public class GuardPatrol : MonoBehaviour
     }
 
     // === CHECK ODDITY ===
-    protected virtual void CheckOddity()
+    protected virtual void StartCheckingOddity()
     {
-        _currentState = GuardState.Chasing;
+        _currentState = GuardState.Checking;
         _stateTimer = 0f;
         _agent.isStopped = false;
         _agent.speed = _walkingSpeed;
         _agent.avoidancePriority = _originalPriority;
         _markFiller.SetMaxFill();
         ShowMark(_questionMark);
+    }
+
+    protected virtual void CheckingUpdate()
+    {
+        if (_target == null) StartInvestigation();
+
+        _stateTimer += Time.deltaTime;
+
+        if (IsClosestGuardToTarget())
+        {
+            if (_isTargetVisible && _target != Player.Instance.transform)
+            {
+                float dist = Vector3.Distance(transform.position, _target.position);
+                if (dist > _stopDistance)
+                {
+                    if (!NavMesh.SamplePosition(_target.position, out _, 1f, NavMesh.AllAreas))
+                    {
+                        StartInvestigation();
+                    }
+
+                    _agent.SetDestination(_target.position);
+                }
+                else
+                    _agent.ResetPath();
+
+                _lastKnownPosition = _target.position;
+                _targetDirection = _targetMotor.Velocity.magnitude > 0.1f ? _targetMotor.Velocity.normalized : null;
+            }
+            else if (_stateTimer < _checkDuration)
+            {
+                if (!NavMesh.SamplePosition(_lastKnownPosition, out _, 1f, NavMesh.AllAreas) || Vector3.Distance(transform.position, _lastKnownPosition) <= _agent.stoppingDistance)
+                {
+                    StartInvestigation();
+                }
+
+                _agent.SetDestination(_lastKnownPosition);
+            }
+            else
+            {
+                StartInvestigation();
+            }
+        }
+        else
+        {
+            Vector3 toLeader = _target.position - transform.position;
+            Vector3 followPoint = _target.position - toLeader.normalized * 1f;
+            
+            if (!NavMesh.SamplePosition(followPoint, out _, 1f, NavMesh.AllAreas))
+            {
+                StartInvestigation();
+            }
+
+            _agent.SetDestination(followPoint);
+        }
     }
 
     // === UTILS === 

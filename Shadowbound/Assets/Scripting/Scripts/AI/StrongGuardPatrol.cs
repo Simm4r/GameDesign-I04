@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class StrongGuardPatrol : GuardPatrol
 {
@@ -23,9 +24,12 @@ public class StrongGuardPatrol : GuardPatrol
         float delay = Random.Range(3f, 5f);
         yield return new WaitForSeconds(delay);
 
-        var missile = GetComponentInChildren<MagicMissleController>();
-        missile.TrialPos = _target.position + _target.forward * 0.5f;
-        missile.TryLaunch = true;
+        if (_currentState == GuardState.Chasing)
+        {
+            var missile = GetComponentInChildren<MagicMissleController>();
+            missile.TrialPos = _target.position + _target.forward * 0.5f;
+            missile.TryLaunch = true;
+        }
     }
 
     protected override Interactable GetObstacleToInteract()
@@ -71,22 +75,54 @@ public class StrongGuardPatrol : GuardPatrol
         base.InteractWithObstacle(obstacle);
     }
 
-    protected override void CheckOddity()
+    protected override void StartCheckingOddity()
     {
-        _currentState = GuardState.Chasing;
+        _currentState = GuardState.Checking;
         _stateTimer = 0f;
         _agent.isStopped = false;
         _agent.speed = _chaseSpeed;
         _agent.avoidancePriority = 10;
         ShowMark(_exclamationMark);
+    }
 
-        if (Vector3.Distance(transform.position, _target.position) < 1f)
+    protected override void CheckingUpdate()
+    {
+        _stateTimer += Time.deltaTime;
+
+        if (_isTargetVisible && _target != Player.Instance.transform)
         {
-            InteractWithObstacle(_target.GetComponent<Interactable>());
+            float dist = Vector3.Distance(transform.position, _target.position);
+            if (dist > 0.5f)
+            {
+                if (!NavMesh.SamplePosition(_target.position, out _, 1f, NavMesh.AllAreas))
+                {
+                    StartInvestigation();
+                }
+
+                _agent.SetDestination(_target.position);
+            }
+            else
+                InteractWithObstacle(_target.GetComponent<Interactable>());
+
+            _lastKnownPosition = _target.position;
+            _targetDirection = _targetMotor.Velocity.magnitude > 0.1f ? _targetMotor.Velocity.normalized : null;
+        }
+        else if (_stateTimer < _checkDuration)
+        {
+            if (!NavMesh.SamplePosition(_lastKnownPosition, out _, 1f, NavMesh.AllAreas) || Vector3.Distance(transform.position, _lastKnownPosition) <= _agent.stoppingDistance)
+            {
+                StartInvestigation();
+            }
+
+            _agent.SetDestination(_lastKnownPosition);
+        }
+        else
+        {
+            StartInvestigation();
         }
     }
 
-    public override void ResetAgent()
+    /*public override void ResetAgent()
     {
         _agent.ResetPath();
         _currentState = GuardState.Patrolling;
@@ -94,5 +130,5 @@ public class StrongGuardPatrol : GuardPatrol
         _agent.speed = _originalWalkSpeed;
         _agent.avoidancePriority = _originalPriority;
         _agent.isStopped = false;
-    }
+    }*/
 }
