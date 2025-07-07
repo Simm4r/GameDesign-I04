@@ -172,6 +172,8 @@ public class ShadowHandler : MonoBehaviour
 
     private void CheckObjectsInPureShadow()
     {
+        if (!_playerInShadow)
+            return;
         GameObject foundGameObject = null;
         Collider momoCollider = GetComponent<Collider>();
 
@@ -208,10 +210,13 @@ public class ShadowHandler : MonoBehaviour
                 if (light == null || !light.enabled)
                     continue;
 
-                if ((light.transform.position - obj.transform.position).magnitude <= light.range)
+                var mag = (light.transform.position - obj.transform.position).magnitude;
+                var dir = (light.transform.position - obj.transform.position).normalized;
+                
+                if ((light.transform.position - (obj.transform.position - Vector3.Project(gameObjectCollider.bounds.extents, dir))).magnitude <= light.range)
                 {
                     collided = false;
-                    hits = Physics.RaycastAll(obj.transform.position, (light.transform.position - obj.transform.position).normalized, (light.transform.position - obj.transform.position).magnitude, _shadowCastingLayers);
+                    hits = Physics.RaycastAll(obj.transform.position - Vector3.Project(gameObjectCollider.bounds.extents, dir), dir, (light.transform.position - (obj.transform.position - Vector3.Project(gameObjectCollider.bounds.extents, dir))).magnitude, _shadowCastingLayers);
 
                     foreach (RaycastHit hit in hits)
                     {

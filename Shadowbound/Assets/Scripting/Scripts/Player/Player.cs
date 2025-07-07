@@ -4,7 +4,6 @@ using UnityEngine.TextCore.Text;
 public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; }
-    [SerializeField] private GameObject _dashTrail;
     [SerializeField] private RespawnPoint _actualCheckpoint;
     private bool _inDialogue = false;
     private bool _reading = false;
@@ -50,7 +49,6 @@ public class Player : MonoBehaviour
         
         Instance = this;
         Application.targetFrameRate = 500;
-        _dashTrail.SetActive(false);
     }
 
     private void HandleCharacterInputs()

@@ -41,6 +41,8 @@ public class DoorLocked : Interactable
     {
         if (!PlayerInput.Instance.InPossession || NotificationBar.Instance.IsBlinking)
         {
+            if (!_doorOpener.IsOpen && _springLock)
+                _isLocked = true;
             _canInteract = false;
             return;
         }

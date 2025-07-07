@@ -88,7 +88,7 @@ public class PossessedController : MonoBehaviour, ICharacterController
             _stableMoveSpeed = _sprintSpeed * 2;
             return;
         }
-        if (PlayerInput.Instance.Sprint)
+        if (PlayerInput.Instance.Sprint && !transform.root.CompareTag("Possessable_Object"))
             _stableMoveSpeed = _sprintSpeed;
         else
             _stableMoveSpeed = _walkSpeed;

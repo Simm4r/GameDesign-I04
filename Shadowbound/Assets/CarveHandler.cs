@@ -29,7 +29,8 @@ public class CarveHandler : MonoBehaviour
                     continue;
                 find = true;
                 obstacle.carving = true;
-                agent.GetComponent<GuardPatrol>().ForcePathRecalculation();
+                if(agent.enabled)
+                    agent.GetComponent<GuardPatrol>().ForcePathRecalculation();
                 break;
             }
             if (!find)

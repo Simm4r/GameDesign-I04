@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -69,12 +70,37 @@ public class Inventory : MonoBehaviour
             dropped.isStatic = false;
             InteractionHandler interactionHandler = dropped.GetComponent<InteractionHandler>();
             interactionHandler.Player = PlayerInput.Instance.InPossession ? PossessionHandler.Instance.PossessedEntity : null;
+            Rigidbody rb = dropped.AddComponent<Rigidbody>();
+            rb.useGravity = true;        // Per farlo cadere
+            rb.mass = 5f;                // Un po’ pesante, ma dipende dall’oggetto
+            rb.linearDamping = 5f;                // Frizione lineare per rallentare lo scivolamento
+            rb.angularDamping = 5f;         // Frizione angolare per non farlo rotolare
+            rb.interpolation = RigidbodyInterpolation.Interpolate; // Per maggiore stabilità visiva
+            rb.collisionDetectionMode = CollisionDetectionMode.Continuous; // Per collisioni accurate
+            StartCoroutine(WaitUntilStableThenFreeze(dropped));
             /*
             Item pickedProperty = dropped.AddComponent<Item>();
             pickedProperty.ItemData = itemToDrop;
             */
         }
         RemoveItem(item.data);
+    }
+
+    private IEnumerator WaitUntilStableThenFreeze(GameObject dropped)
+    {
+        Rigidbody rb = dropped.GetComponent<Rigidbody>();
+        if (rb == null) yield break;
+
+        yield return new WaitForSeconds(0.5f);
+
+        while (rb.linearVelocity.magnitude > 0.05f || rb.angularVelocity.magnitude > 0.05f)
+        {
+            yield return null;
+        }
+        rb.constraints = RigidbodyConstraints.FreezeAll;
+
+
+        Destroy(rb);
     }
     public ItemData Contains(int idItem)
     {

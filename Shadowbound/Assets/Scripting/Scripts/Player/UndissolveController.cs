@@ -15,6 +15,7 @@ public class UndissolveController : MonoBehaviour
     [SerializeField] private ParticleSystem _rightEye;
     [SerializeField] private Material _originalMaterial;
     [SerializeField] private float objectHeight = 0.305f;
+    [SerializeField] private Outline _outline;
 
     private MaterialPropertyBlock _propBlock;
 
@@ -72,6 +73,7 @@ public class UndissolveController : MonoBehaviour
 
     public void StartUndissolve()
     {
+        _outline.OutlineMode = Outline.Mode.OutlineAll;
         Time.timeScale = 0.05f;
         _undissolveAmount = 1f;
         _undissolving = true;

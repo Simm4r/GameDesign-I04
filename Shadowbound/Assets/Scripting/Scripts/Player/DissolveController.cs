@@ -15,6 +15,7 @@ public class DissolveController : MonoBehaviour
     [SerializeField] private ParticleSystem rightEye;
     [SerializeField] private Material fadeMaterial;
     [SerializeField] private float objectHeight = 0.305f;
+    [SerializeField] private Outline _outline;
 
     private MaterialPropertyBlock propBlock;
 
@@ -62,6 +63,7 @@ public class DissolveController : MonoBehaviour
         {
             Time.timeScale = 1.0f;
             dissolving = false;
+            _outline.OutlineMode = Outline.Mode.NoOutline;
             UndissolveController.Instance.enabled = true;
             enabled = false;
         }

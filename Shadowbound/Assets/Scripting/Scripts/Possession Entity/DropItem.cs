@@ -20,7 +20,7 @@ public class DropItem : MonoBehaviour
             if (itemData == null)
                 return;
 
-            Vector3 dropPos = transform.position + transform.forward * 1.5f;
+            Vector3 dropPos = transform.position + transform.forward * 1f + Vector3.up;
             _inventory.DropItem(itemData, dropPos);
         }
     }
