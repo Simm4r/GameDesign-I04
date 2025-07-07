@@ -9,7 +9,6 @@ public class HUDHandler : MonoBehaviour
     [SerializeField] private GameObject _interactionBar;
     [SerializeField] private GameObject _notificationBar;
     [SerializeField] private GameObject _tutorial;
-    [SerializeField] private GameObject _inventory;
     private bool _isRotating = false;
 
     void Awake()
@@ -34,6 +33,7 @@ public class HUDHandler : MonoBehaviour
             _tutorial.SetActive(false);
             SmallNotificationBarHandler.Instance.HideBar();
             AuxiliaryBarHandler.Instance.HideBar();
+            InventoryHUD.Instance.HideInventoryHUD();
             return;
         }
         _tutorial.SetActive(true);
