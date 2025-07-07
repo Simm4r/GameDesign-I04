@@ -21,6 +21,8 @@ TagManager:
   - Mirror
   - GemStone
   - Magic
+  - TutorialWall
+  - SafeZone
   layers:
   - Default
   - TransparentFX

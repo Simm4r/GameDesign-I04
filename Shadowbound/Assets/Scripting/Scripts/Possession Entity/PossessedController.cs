@@ -126,6 +126,11 @@ public class PossessedController : MonoBehaviour, ICharacterController
             NotificationBar.Instance.SetText("Only Momo can proceed...");
             NotificationBar.Instance.StartBlink();
         }
+        if (coll.CompareTag("TutorialWall") && !NotificationBar.Instance.IsBlinking)
+        {
+            NotificationBar.Instance.SetText("Lock the guard in the cell first!");
+            NotificationBar.Instance.StartBlink();
+        }
         if (_cachedColliders.Contains(coll))
             return false;
         return true;

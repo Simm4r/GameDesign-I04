@@ -91,6 +91,8 @@ public class PlayerController : MonoBehaviour, ICharacterController
                 return false;
         if (coll.CompareTag("NextAreaWall"))
             return false;
+        if (coll.CompareTag("TutorialWall"))
+            return false;
         return true;
     }
 

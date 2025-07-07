@@ -15,7 +15,11 @@ public class DoorOpener : MonoBehaviour
     private Quaternion _startRotation;
     private Quaternion _finalRotation;
     private float time = 0;
+    private float sum = 0;
     [SerializeField] private float _duration = 1.0f;
+    [SerializeField] private AudioSource _sound;
+    [SerializeField] private AudioClip _open;
+    [SerializeField] private AudioClip _close;
     public bool IsAnimationStarted
     {
         get { return _isAnimationStarted; }
@@ -51,10 +55,12 @@ public class DoorOpener : MonoBehaviour
     {
         if (_isAnimationStarted)
         {
+            sum += Time.deltaTime;
             time += Time.deltaTime / _duration;
             transform.localRotation = Quaternion.Slerp(_startRotation, _finalRotation, time);
             if (transform.localRotation == _finalRotation)
             {
+                Debug.Log(sum);
                 _isOpen = !_isOpen;
                 _isAnimationStarted = false;
             }
@@ -63,13 +69,20 @@ public class DoorOpener : MonoBehaviour
 
     public void StartAnimation()
     {
+        sum = 0;
         if (_isOpen)
         {
             _startRotation = Quaternion.Euler(Vector3.up * (_angle));
             _finalRotation = Quaternion.Euler(Vector3.zero);
+            _sound.resource = _close;
+            _sound.Stop();
+            _sound.Play();
         }
         else
         {
+            _sound.resource = _open;
+            _sound.Stop();
+            _sound.Play();
             _startRotation = Quaternion.Euler(Vector3.zero);
             _finalRotation = Quaternion.Euler(Vector3.up * (_angle));
         }

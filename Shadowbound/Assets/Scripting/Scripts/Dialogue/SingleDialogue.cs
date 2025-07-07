@@ -5,6 +5,7 @@ public class SingleDialogue : Talkable
     [SerializeField] private DialogueText _dialogueText;
     [SerializeField] private TriggerProximityHandler _handler;
     private bool firstLine = true;
+    public bool DialogueFinished = false;
     public override void Talk()
     {
         if (firstLine)
@@ -20,11 +21,12 @@ public class SingleDialogue : Talkable
 
         if (DialogueController.Instance.CanExit && !_handler.DialogueFinished)
         {
+            DialogueFinished = true;
             _handler.DialogueFinished = true;
             DialogueController.Instance.CanExit = false;
         }
-            
-            
+
+
     }
 
     

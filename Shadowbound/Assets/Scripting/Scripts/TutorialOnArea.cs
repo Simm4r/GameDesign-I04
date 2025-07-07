@@ -10,7 +10,8 @@ public class TutorialOnArea : MonoBehaviour
 
     void Update()
     {
-        if (Vector3.Distance(Player.Instance.transform.position, transform.position) > _minCheckDistance)
+        var player = PlayerInput.Instance.InPossession ? PossessionHandler.Instance.PossessedEntity : Player.Instance.gameObject;
+        if (Vector3.Distance(player.transform.position, transform.position) > _minCheckDistance)
             return;
 
         if (TutorialHandler.Instance.GetActualState() == "Idle")
@@ -18,7 +19,7 @@ public class TutorialOnArea : MonoBehaviour
             Player.Instance.Tutorial = true;
             HandleTutorialPage();
             Collider[] hits = Physics.OverlapBox(transform.position + Vector3.up * 0.3f, _boxExtents, Quaternion.identity);
-            hits = hits.Where(h => h.gameObject.CompareTag(tag)).ToArray();
+            hits = hits.Where(h => h.gameObject == player).ToArray();
 
             if (hits.Length == 0)
                 return;

@@ -19,6 +19,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private int _possessionLevel = 1;
     [SerializeField] private int _shadowVisionLevel = 1;
     [SerializeField] private int _shadowScreenLevel = 1;
+    [SerializeField] private AudioSource _deathSound;
 
     [SerializeField] private bool _isDead = false;
     private bool _hitByLaser = false;
@@ -124,7 +125,8 @@ public class PlayerStats : MonoBehaviour
         if (_isDead) return;
         _isDead = true;
 
-
+        _deathSound.Stop();
+        _deathSound.Play();
         OnPlayerDeath?.Invoke(); // Notifica esterna
     }
 
