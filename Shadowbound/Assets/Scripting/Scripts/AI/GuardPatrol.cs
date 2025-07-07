@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using KinematicCharacterController;
+using System.Linq;
 
 public class GuardPatrol : MonoBehaviour
 {
@@ -295,7 +296,10 @@ public class GuardPatrol : MonoBehaviour
 
         if (distToTarget <= _alertRange && angleToTarget <= dynamicAngle)
         {
-            if (Physics.Raycast(eyePos, dirToTarget, out RaycastHit hit, _alertRange))
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 0.1f);
+            Collider smokeCollider = colliders.FirstOrDefault(c => c.CompareTag("Smoke"));
+
+            if (Physics.Raycast(eyePos, dirToTarget, out RaycastHit hit, _alertRange) && smokeCollider == null)
             {
                 // Debug.Log($"{_agent.name} - Hit: {hit.transform.root.name}");
                 if (hit.transform == _target || hit.transform.IsChildOf(_target))
@@ -320,10 +324,14 @@ public class GuardPatrol : MonoBehaviour
                         {
                             StartAlert();
                         }
-                    }      
+                    }
 
                     FaceTarget();
                 }
+            }
+            else if (smokeCollider != null)
+            {
+                StartInvestigation();
             }
         }
     }
