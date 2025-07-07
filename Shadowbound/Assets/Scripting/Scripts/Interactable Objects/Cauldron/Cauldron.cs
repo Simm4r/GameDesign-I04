@@ -33,8 +33,6 @@ public class Cauldron : Interactable
         _visualEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         _visualEffect.Play(true);
         _guardInventory.RemoveItem(_guardItem);
-        NotificationBar.Instance.SetText("Right ingredient");
-        NotificationBar.Instance.StartBlink();
         _caller.Player = null;
         _canInteract = false;
         _recipie.Remove(_guardItem);
