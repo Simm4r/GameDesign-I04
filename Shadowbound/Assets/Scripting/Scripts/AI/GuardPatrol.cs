@@ -7,6 +7,7 @@ using KinematicCharacterController;
 
 public class GuardPatrol : MonoBehaviour
 {
+    private bool _forceFrozen = false;
     public enum GuardState { Patrolling, Waiting, Alerted, Chasing, Investigating, Returning }
     [SerializeField] private GuardState _currentState = GuardState.Patrolling;
 
@@ -111,6 +112,8 @@ public class GuardPatrol : MonoBehaviour
 
     private void Update()
     {
+        if (_forceFrozen) return;
+
         if (Player.Instance.InDialogue)
         {
             
@@ -686,5 +689,19 @@ public class GuardPatrol : MonoBehaviour
             Gizmos.DrawLine(eyePos, _target.position);
         }
     }
+    public void FreezeGuard()
+    {
+        _forceFrozen = true;
+        _agent.isStopped = true;
+        _agent.ResetPath();
+        _currentState = GuardState.Waiting;
+        Debug.Log($"{name} frozen immediately.");
+    }
 
+    public void UnfreezeGuard()
+    {
+        _forceFrozen = false;
+        ResetAgent();
+        Debug.Log($"{name} unfrozen.");
+    }
 }

@@ -75,6 +75,7 @@ public class PlayerStats : MonoBehaviour
 
     public void TakeDamage()
     {
+        if(!CanBeHit) return;
 
         if (_currentHealth <= 0)
         {

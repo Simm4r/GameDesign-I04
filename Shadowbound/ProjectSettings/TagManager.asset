@@ -21,6 +21,7 @@ TagManager:
   - Mirror
   - GemStone
   - Magic
+  - TableTrigger
   layers:
   - Default
   - TransparentFX

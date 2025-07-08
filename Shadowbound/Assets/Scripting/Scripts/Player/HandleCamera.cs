@@ -10,7 +10,7 @@ public class HandleCamera : MonoBehaviour
     void Update()
     {
         AnimatorStateInfo stateInfo = ScreenFadeController.Instance.Animator.GetCurrentAnimatorStateInfo(0);
-        Debug.Log(stateInfo.nameHash);
+        //Debug.Log(stateInfo.nameHash);
         if (!stateInfo.IsName("FadeOut") && !Player.Instance.InDialogue)
         {
             Camera.main.GetComponent<ThirdPersonCamera>().enabled = true;

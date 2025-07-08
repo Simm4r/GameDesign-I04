@@ -127,7 +127,7 @@ public class ShadowHandler : MonoBehaviour
         }
         
         bool isInShadow = totalLightIntensity < _lightThreshold;
-        Debug.Log("InShadow: " + isInShadow);
+        //Debug.Log("InShadow: " + isInShadow);
         // aggiorno se necessario il _currentPossessable
         if (isInShadow && _currentPossessable != detectedPossessable && !_foundGameObjectInPureShadow)
         {
