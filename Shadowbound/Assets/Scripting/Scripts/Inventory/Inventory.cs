@@ -93,14 +93,17 @@ public class Inventory : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        while (rb.linearVelocity.magnitude > 0.05f || rb.angularVelocity.magnitude > 0.05f)
+        while (rb != null && rb.linearVelocity.magnitude > 0.05f || rb.angularVelocity.magnitude > 0.05f)
+            {
+                if (rb == null) yield break;
+                yield return null;
+            }
+
+        if (rb != null)
         {
-            yield return null;
+            rb.constraints = RigidbodyConstraints.FreezeAll;
+            Destroy(rb);
         }
-        rb.constraints = RigidbodyConstraints.FreezeAll;
-
-
-        Destroy(rb);
     }
     public ItemData Contains(int idItem)
     {

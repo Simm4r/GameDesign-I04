@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class LaserReceiver : MonoBehaviour
 {
+    private Renderer _renderer;
     private bool _hit = false;
     public bool Hit
     {
@@ -14,11 +15,13 @@ public class LaserReceiver : MonoBehaviour
     [SerializeField] private GameObject _mirror2;
     private GameObject _camera1;
     [SerializeField] private GameObject _camera2;
+    [SerializeField] private GameObject _camera3;
     [SerializeField] private LiftPillar _pillar;
 
     void Awake()
     {
         _camera1 = Camera.main.gameObject;
+        _renderer = GetComponent<Renderer>();
     }
     void Update()
     {
@@ -27,7 +30,6 @@ public class LaserReceiver : MonoBehaviour
             _activeOnce = true;
             _mirror1.GetComponentInChildren<Possessable>().enabled = false;
             _mirror2.GetComponentInChildren<Possessable>().enabled = false;
-            ScreenFadeController.Instance.FadeToBlack();
             Player.Instance.InCutscene = true;
             StartCoroutine(Changecamera());
         }
@@ -39,8 +41,34 @@ public class LaserReceiver : MonoBehaviour
 
     IEnumerator Changecamera()
     {
-        yield return new WaitForSeconds(2.0f);
+        ScreenFadeController.Instance.FadeToBlack();
+        yield return new WaitForSeconds(1.5f);
+        ScreenFadeController.Instance.FadeFromBlack();
         _camera1.SetActive(false);
+        _camera3.SetActive(true);
+        yield return new WaitForSeconds(0.8f);
+        Material mat = _renderer.material;
+
+        float elapsed = 0f;
+        Color baseColor = Color.white;
+
+        while (elapsed < 2.0f)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / 2.0f);
+            
+            // Emission intensity da 0 a 4, in gamma space
+            float intensity = Mathf.Lerp(1f, 4f, t);
+
+            mat.SetColor("_EmissionColor", baseColor * Mathf.Pow(intensity, 2f));
+
+            yield return null;
+        }
+        mat.SetColor("_EmissionColor", baseColor * Mathf.Pow(4.0f, 2f));
+        yield return new WaitForSeconds(0.5f);
+        ScreenFadeController.Instance.FadeToBlack();
+        yield return new WaitForSeconds(2.0f);
+        _camera3.SetActive(false);
         _camera2.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         ScreenFadeController.Instance.FadeFromBlack();
