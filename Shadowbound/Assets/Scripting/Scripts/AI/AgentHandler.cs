@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -12,6 +13,10 @@ public class AgentHandler : MonoBehaviour
     private List<MonoBehaviour> _scripts = new();
     private bool _inDialogue = false;
     private bool _inCutscene = false;
+    private bool _inChase = false;
+    [SerializeField] private AudioSource _source;
+    [SerializeField] private AudioClip _background;
+    [SerializeField] private AudioClip _chase;
     void Awake()
     {
         if (Instance != null)
@@ -65,7 +70,37 @@ public class AgentHandler : MonoBehaviour
                     script.enabled = true;
                 });
             }
-                
+        }
+
+        IsAgentInChase();
+        
+    }
+
+    private void IsAgentInChase()
+    {
+        var agents = _agents.Where(agent => agent.GetComponent<GuardPatrol>() != null && agent.enabled).Select(agent => agent.GetComponent<GuardPatrol>()).ToList();
+        bool inChase = false;
+        foreach (GuardPatrol agent in agents)
+        {
+            Debug.Log(agent);
+            if (agent.CurrentState != GuardPatrol.GuardState.Chasing)
+                continue;
+            inChase = true;
+            break;
+        }
+
+        if (_inChase != inChase)
+        {
+            _source.Stop();
+            _inChase = inChase;
+            if (inChase)
+            {
+                _source.resource = _chase;
+            }
+            else
+                _source.resource = _background;
+
+            _source.Play();
         }
     }
 }

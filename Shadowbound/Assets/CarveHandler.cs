@@ -11,12 +11,13 @@ public class CarveHandler : MonoBehaviour
     void Awake()
     {
         _agents = FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None).ToList().Where(agent => agent.transform.root.CompareTag("Possessable_Guard")).ToList();
-        _obstacles = FindObjectsByType<NavMeshObstacle>(FindObjectsSortMode.None).ToList();
+        _obstacles = FindObjectsByType<NavMeshObstacle>(FindObjectsSortMode.None).ToList().Where(obs => obs.GetComponent<BarrelStats>() != null || obs.GetComponent<DoorOpener>() != null || obs.GetComponent<PortcullisHandler>() != null).ToList();
         _obstacles.ForEach(obstacle => obstacle.carving = false);
     }
 
     void Update()
     {
+        
         foreach (NavMeshObstacle obstacle in _obstacles)
         {
             bool find = false;
@@ -24,7 +25,7 @@ public class CarveHandler : MonoBehaviour
 
             float triggerDistance = 1.5f; // default
             bool isDoor = obstacle.GetComponent<DoorOpener>() != null;
-            
+
             foreach (NavMeshAgent agent in _agents)
             {
                 if (isDoor)

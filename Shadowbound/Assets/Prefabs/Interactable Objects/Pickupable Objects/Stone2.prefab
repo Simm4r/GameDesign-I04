@@ -119,7 +119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
   _triggerDistance: 1.5
-  _text: Pick Up (Glowing Purple Gem)
+  _text: Pick Up (Purple Gem)
 --- !u!64 &556068461036890123
 MeshCollider:
   m_ObjectHideFlags: 0

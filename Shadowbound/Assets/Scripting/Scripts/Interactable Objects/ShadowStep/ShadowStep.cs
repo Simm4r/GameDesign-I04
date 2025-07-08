@@ -27,7 +27,7 @@ public class ShadowStep : Interactable
         StartCoroutine(ShadowTeleportCoroutine());
     }
 
-    private IEnumerator ShadowTeleportCoroutine()
+    IEnumerator ShadowTeleportCoroutine()
     {
         var player = Player.Instance;
         var motor = player.GetComponent<KinematicCharacterMotor>();

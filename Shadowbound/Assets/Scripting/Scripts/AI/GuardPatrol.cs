@@ -40,6 +40,9 @@ public class GuardPatrol : MonoBehaviour
     protected NavMeshAgent _agent;
     private GuardStats _stats;
     private GuardStats.GuardStatus _currentStatus = GuardStats.GuardStatus.None;
+    public GuardState CurrentState {
+        get => _currentState;
+    }
     protected KinematicCharacterMotor _targetMotor;
     protected int _originalPriority;
     private float _rotationSpeed = 2f;

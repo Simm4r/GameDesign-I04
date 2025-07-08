@@ -123,7 +123,6 @@ public class ThirdPersonCamera : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, player.transform.position + offset, Time.unscaledDeltaTime * rotationSpeed);
             if (!Player.Instance.InShadowStep && Player.Instance.GetComponent<KinematicCharacterMotor>().Velocity.magnitude != 0)
             {
-                Debug.Log(exitTimer);
                 if (PlayerInput.Instance.MovementInput.z > 0)
                     exitTimer += PlayerInput.Instance.Sprint ? Time.deltaTime * 2 : Time.deltaTime;
                 if (exitTimer >= maxTimer)
