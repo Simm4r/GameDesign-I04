@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class CarveHandler : MonoBehaviour
 {
-    [SerializeField] private float _triggerDistance = 1f;
     private List<NavMeshAgent> _agents = new();
     private List<NavMeshObstacle> _obstacles = new();
 
@@ -22,15 +21,38 @@ public class CarveHandler : MonoBehaviour
         {
             bool find = false;
             if (obstacle == null) continue;
+
+            float triggerDistance = 1.5f; // default
+            bool isDoor = obstacle.GetComponent<DoorOpener>() != null;
             
             foreach (NavMeshAgent agent in _agents)
             {
-                if (Vector3.Distance(obstacle.transform.position, agent.transform.position) > _triggerDistance)
+                if (isDoor)
+                {
+                    Vector3 toAgent = (agent.transform.position - obstacle.transform.position).normalized;
+                    Vector3 forward = obstacle.transform.forward;
+                    float dot = Vector3.Dot(forward, toAgent);
+
+                    if (dot > 0.5f) // la porta si apre verso l'agente
+                        triggerDistance = 2.5f;
+                    else
+                        triggerDistance = 1f;
+                }
+
+                if (Vector3.Distance(obstacle.transform.position, agent.transform.position) > triggerDistance)
                     continue;
                 find = true;
-                obstacle.carving = true;
-                if(agent.enabled)
-                    agent.GetComponent<GuardPatrol>().ForcePathRecalculation();
+
+                if (!obstacle.carving)
+                {
+                    obstacle.carving = true;
+                    if (agent.enabled &&
+                        (obstacle.GetComponent<BarrelStats>() != null ||
+                        (obstacle.GetComponent<DoorOpener>() != null && !obstacle.GetComponent<DoorOpener>().IsOpen && !obstacle.GetComponent<DoorOpener>().IsAnimationStarted) ||
+                        (obstacle.GetComponent<PortcullisHandler>() != null && !obstacle.GetComponent<PortcullisHandler>().IsUp && !obstacle.GetComponent<PortcullisHandler>().IsActive)))
+                        agent.GetComponent<GuardPatrol>().ForcePathRecalculation();
+                }
+
                 break;
             }
             if (!find)

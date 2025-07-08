@@ -101,7 +101,7 @@ public class StrongGuardPatrol : GuardPatrol
 
                 _agent.SetDestination(_target.position);
             }
-            else
+            else if (_target.GetComponent<MultiTag>() == null) // Lo specchio ha un multi-tag
                 InteractWithObstacle(_target.GetComponent<Interactable>());
 
             _lastKnownPosition = _target.position;

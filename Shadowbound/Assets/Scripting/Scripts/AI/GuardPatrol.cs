@@ -365,8 +365,11 @@ public class GuardPatrol : MonoBehaviour
 
     private void AlertedUpdate()
     {
-        if (_target != Player.Instance.transform) StartReturning();
-        if (_target == null) return;
+        if (_target == null || _target != Player.Instance.transform)
+        {
+            StartReturning();
+            return;
+        }
 
         if (!_isTargetVisible)
         {
@@ -401,8 +404,11 @@ public class GuardPatrol : MonoBehaviour
 
     private void ChasingUpdate()
     {
-        if (_target != Player.Instance.transform) StartInvestigation();
-        if (_target == null) return;
+        if (_target == null || _target != Player.Instance.transform)
+        {
+            StartInvestigation();
+            return;
+        }
 
         _stateTimer += Time.deltaTime;
 
@@ -616,7 +622,11 @@ public class GuardPatrol : MonoBehaviour
 
     protected virtual void CheckingUpdate()
     {
-        if (_target == null) StartInvestigation();
+        if (_target == null)
+        {
+            StartInvestigation();
+            return;
+        }
 
         _stateTimer += Time.deltaTime;
 
@@ -816,7 +826,17 @@ public class GuardPatrol : MonoBehaviour
 
             if (obstacle != null)
             {
-                Vector3 obstacleDir = (obstacle.transform.position - _agent.transform.position).normalized;
+                Vector3 obstaclePos;
+                if (obstacle.GetComponent<PullLeverHandler>() != null)
+                {
+                    obstaclePos = obstacle.GetComponent<PullLeverHandler>().Portcullis.transform.position;
+                }
+                else
+                {
+                    obstaclePos = obstacle.transform.position;
+                }
+                
+                Vector3 obstacleDir = (obstaclePos - _agent.transform.position).normalized;
                 float dot = Vector3.Dot(pathDir, obstacleDir);
 
                 // Se la direzione dell'ostacolo è abbastanza allineata col percorso (es: almeno 0.7 su 1)
@@ -836,7 +856,7 @@ public class GuardPatrol : MonoBehaviour
     protected virtual Interactable GetObstacleToInteract()
     {
         Transform targetTransform = null;
-        float checkRadius = 2f;
+        float checkRadius = 3f;
         Collider[] hits = Physics.OverlapSphere(transform.position, checkRadius);
 
         foreach (var hit in hits)

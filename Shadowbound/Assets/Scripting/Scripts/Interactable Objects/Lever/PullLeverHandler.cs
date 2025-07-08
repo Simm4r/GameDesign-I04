@@ -10,6 +10,11 @@ public class PullLeverHandler : Interactable
 
     private bool _canInteract = false;
 
+    public PortcullisHandler Portcullis
+    {
+        get { return _portcullis; }
+    }
+
     public bool IsUpLever
     {
         get { return _isUpLever; }

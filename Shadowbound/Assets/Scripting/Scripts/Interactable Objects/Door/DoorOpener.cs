@@ -60,7 +60,6 @@ public class DoorOpener : MonoBehaviour
             transform.localRotation = Quaternion.Slerp(_startRotation, _finalRotation, time);
             if (transform.localRotation == _finalRotation)
             {
-                Debug.Log(sum);
                 _isOpen = !_isOpen;
                 _isAnimationStarted = false;
             }
