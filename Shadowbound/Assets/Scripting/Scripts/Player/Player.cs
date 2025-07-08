@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     private bool _reading = false;
     private bool _tutorial = false;
     private bool _inCutscene = false;
+    private bool _inShadowStep = false;
 
     public bool InCutscene
     {
@@ -27,6 +28,12 @@ public class Player : MonoBehaviour
     {
         get => _reading;
         set => _reading = value;
+    }
+
+    public bool InShadowStep
+    {
+        get => _inShadowStep;
+        set => _inShadowStep = value;
     }
 
     public bool InDialogue

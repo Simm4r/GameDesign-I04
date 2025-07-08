@@ -272,7 +272,7 @@ public class PossessionHandler : MonoBehaviour
         _possessedController.enabled = true;
         _possessedMotor.enabled = true;
 
-        _camera.player = _possessedEntity.transform;
+        _camera.SetFollowTarget(_possessedEntity.transform);
 
         PlayerInput.Instance.InPossession = true;
         _possessedEntity.GetComponentInChildren<EyeParticlesHandler>().LitEyes();
@@ -321,7 +321,7 @@ public class PossessionHandler : MonoBehaviour
         Time.timeScale = 0.0f;
         _choosingPosition = true;
         _choosingSphere.SetActive(true);
-        _camera.player = _choosingSphere.transform;
+        _camera.SetFollowTarget(_choosingSphere.transform);
         //_collider.enabled = true;
         //_camera.player = gameObject.transform;
         //UndissolveController.Instance.StartUndissolve();
@@ -400,7 +400,7 @@ public class PossessionHandler : MonoBehaviour
         motor.SetPositionAndRotation(PossessedEntity.transform.position + correctedPosition.normalized * 0.5f, PossessedEntity.transform.rotation);
         motor.SetPosition(correctedPosition);
         _collider.enabled = true;
-        _camera.player = gameObject.transform;
+        _camera.ResetFollowTarget();
         
         _choosingSphere.SetActive(false);
         UndissolveController.Instance.StartUndissolve();

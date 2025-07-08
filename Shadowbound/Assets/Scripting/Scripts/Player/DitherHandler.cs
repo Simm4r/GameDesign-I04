@@ -8,7 +8,7 @@ public class DitherHandler : MonoBehaviour
 
     void Update()
     {
-        if (PlayerInput.Instance.InPossession)
+        if (PlayerInput.Instance.InPossession || Player.Instance.InShadowStep)
             return;
 
         if (_rend.sharedMaterial.HasProperty("_Alpha"))

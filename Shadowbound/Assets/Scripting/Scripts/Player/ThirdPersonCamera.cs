@@ -3,6 +3,8 @@ using UnityEngine;
 public class ThirdPersonCamera : MonoBehaviour
 {
     public Transform player;
+    private Transform _followTarget;
+
     public float distance = 4f;
     public float height = 1.5f;
     public float rotationSpeed = 50f;
@@ -30,11 +32,12 @@ public class ThirdPersonCamera : MonoBehaviour
         pitch = pitchAngle;
         Cursor.lockState = CursorLockMode.Locked;
         smokeCollider = SmokeScreen.Instance.gameObject.GetComponentInChildren<SphereCollider>();
+        _followTarget = player;
     }
 
     void LateUpdate()
     {
-        if (!player) return;
+        if (!_followTarget) return;
 
         float mouseX = PlayerInput.Instance.LookInput.x;
         float mouseY = PlayerInput.Instance.LookInput.y;
@@ -46,9 +49,9 @@ public class ThirdPersonCamera : MonoBehaviour
 
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
         Vector3 targetOffset = new Vector3(0, 0, -distance);
-        Vector3 desiredCameraPos = player.position + (rotation * targetOffset) + Vector3.up * height;
+        Vector3 desiredCameraPos = _followTarget.position + (rotation * targetOffset) + Vector3.up * height;
 
-        Vector3 rayOrigin = player.position + Vector3.up * height;
+        Vector3 rayOrigin = _followTarget.position + Vector3.up * height;
         Vector3 direction = (desiredCameraPos - rayOrigin).normalized;
         float targetDistance = distance;
 
@@ -69,10 +72,10 @@ public class ThirdPersonCamera : MonoBehaviour
         }
 
         Vector3 correctedOffset = rotation * new Vector3(0, 0, -targetDistance);
-        Vector3 finalPosition = player.position + correctedOffset + Vector3.up * height;
+        Vector3 finalPosition = _followTarget.position + correctedOffset + Vector3.up * height;
 
         transform.position = Vector3.Lerp(transform.position, finalPosition, Time.unscaledDeltaTime * rotationSpeed);
-        transform.LookAt(player.position + Vector3.up * 0.8f);
+        transform.LookAt(_followTarget.position + Vector3.up * 0.8f);
 
     }
     
@@ -92,5 +95,15 @@ public class ThirdPersonCamera : MonoBehaviour
         Vector3 euler = transform.rotation.eulerAngles;
         yaw = euler.y;
         pitch = euler.x;
+    }
+
+    public void SetFollowTarget(Transform target)
+    {
+        _followTarget = target;
+    }
+
+    public void ResetFollowTarget()
+    {
+        _followTarget = player;
     }
 }
