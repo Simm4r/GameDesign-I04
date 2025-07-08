@@ -11614,7 +11614,7 @@ PrefabInstance:
       objectReference: {fileID: 1278461226}
     - target: {fileID: 2865194175071063403, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: _possessionMaxTime
-      value: 5000
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4330857223206950753, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: m_Name
@@ -11698,7 +11698,7 @@ PrefabInstance:
       objectReference: {fileID: 918050667}
     - target: {fileID: 8591797864794040731, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: _maxHealth
-      value: 1000
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8591797864794040731, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: _baseDamageTaken
