@@ -270,6 +270,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""KillInstant"",
+                    ""type"": ""Button"",
+                    ""id"": ""3841de1c-b4ef-41fe-843b-fea3045cf5cb"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -723,6 +732,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""MouseConfirm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f60e3b45-3cb3-41cf-bd20-3446a0a7d19d"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";MouseKeyboard"",
+                    ""action"": ""KillInstant"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -940,6 +960,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_PauseQuit = m_Player.FindAction("PauseQuit", throwIfNotFound: true);
         m_Player_Mouse = m_Player.FindAction("Mouse", throwIfNotFound: true);
         m_Player_MouseConfirm = m_Player.FindAction("MouseConfirm", throwIfNotFound: true);
+        m_Player_KillInstant = m_Player.FindAction("KillInstant", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_Up = m_Menu.FindAction("Up", throwIfNotFound: true);
@@ -1049,6 +1070,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_PauseQuit;
     private readonly InputAction m_Player_Mouse;
     private readonly InputAction m_Player_MouseConfirm;
+    private readonly InputAction m_Player_KillInstant;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1141,6 +1163,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @MouseConfirm => m_Wrapper.m_Player_MouseConfirm;
         /// <summary>
+        /// Provides access to the underlying input action "Player/KillInstant".
+        /// </summary>
+        public InputAction @KillInstant => m_Wrapper.m_Player_KillInstant;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -1226,6 +1252,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MouseConfirm.started += instance.OnMouseConfirm;
             @MouseConfirm.performed += instance.OnMouseConfirm;
             @MouseConfirm.canceled += instance.OnMouseConfirm;
+            @KillInstant.started += instance.OnKillInstant;
+            @KillInstant.performed += instance.OnKillInstant;
+            @KillInstant.canceled += instance.OnKillInstant;
         }
 
         /// <summary>
@@ -1297,6 +1326,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @MouseConfirm.started -= instance.OnMouseConfirm;
             @MouseConfirm.performed -= instance.OnMouseConfirm;
             @MouseConfirm.canceled -= instance.OnMouseConfirm;
+            @KillInstant.started -= instance.OnKillInstant;
+            @KillInstant.performed -= instance.OnKillInstant;
+            @KillInstant.canceled -= instance.OnKillInstant;
         }
 
         /// <summary>
@@ -1654,6 +1686,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMouseConfirm(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "KillInstant" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnKillInstant(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Menu" which allows adding and removing callbacks.

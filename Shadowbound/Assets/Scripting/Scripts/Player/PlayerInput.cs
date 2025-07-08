@@ -71,10 +71,11 @@ public class PlayerInput : MonoBehaviour
     public bool ConfirmPosition => !Player.Instance.InCutscene && !Player.Instance.Tutorial && !PauseHandler.Instance.InPause && PossessionHandler.Instance.ChoosingPosition && _controls.Player.ConfirmPosition.triggered;
     public bool Pause => !Player.Instance.InCutscene && !PauseHandler.Instance.InPause && _controls.Player.Pause.triggered;
     public bool PauseQuit => PauseHandler.Instance.InPause && _controls.Player.PauseQuit.triggered;
-    public bool PauseUp => PauseHandler.Instance.InPause && _controls.Player.PauseUp.triggered;
+    public bool PauseUp => !_dying && PauseHandler.Instance.InPause && _controls.Player.PauseUp.triggered;
     public bool PauseDown => PauseHandler.Instance.InPause && _controls.Player.PauseDown.triggered;
     public bool PauseConfirm => PauseHandler.Instance.InPause && _controls.Player.PauseConfirm.triggered;
     public bool MouseConfirm => _controls.Player.MouseConfirm.triggered;
+    public bool KillInstant => !_dying && !Player.Instance.InCutscene && !Player.Instance.InDialogue && !PauseHandler.Instance.InPause && _controls.Player.KillInstant.triggered;
     private void Awake()
     {
         if (Instance != null)

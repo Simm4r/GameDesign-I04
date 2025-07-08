@@ -1,3 +1,6 @@
+using System.Collections;
+using KinematicCharacterController;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ThirdPersonCamera : MonoBehaviour
@@ -18,6 +21,7 @@ public class ThirdPersonCamera : MonoBehaviour
     public float cameraRadius = 0.05f;
     public float minDistance = 0.5f;
     private Collider smokeCollider;
+    private bool _inShadowStep = false;
 
 
     private float yaw = 0f;
@@ -34,11 +38,9 @@ public class ThirdPersonCamera : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!player) return;
-
+        if (!player || _inShadowStep) return;
         float mouseX = PlayerInput.Instance.LookInput.x;
         float mouseY = PlayerInput.Instance.LookInput.y;
-
 
         yaw += (invertX ? -1 : 1) * mouseX * horizontalSensitivity;
         pitch -= (invertY ? -1 : 1) * mouseY * verticalSensitivity;
@@ -52,22 +54,24 @@ public class ThirdPersonCamera : MonoBehaviour
         Vector3 direction = (desiredCameraPos - rayOrigin).normalized;
         float targetDistance = distance;
 
-        RaycastHit[] hits = Physics.SphereCastAll(rayOrigin, cameraRadius, direction, distance, collisionLayers);
-        System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
-
-        foreach (var hit in hits)
+        if (!_inShadowStep)
         {
-            string rootTag = hit.collider.transform.root.tag;
-            if (hit.collider == smokeCollider)
-                continue;
-            if (rootTag.StartsWith("Possessable") && PlayerInput.Instance.InPossession && hit.collider.transform.root.gameObject == PossessionHandler.Instance.PossessedEntity)
-                continue;
+            RaycastHit[] hits = Physics.SphereCastAll(rayOrigin, cameraRadius, direction, distance, collisionLayers);
+            System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+            foreach (var hit in hits)
+            {
+                string rootTag = hit.collider.transform.root.tag;
+                if (hit.collider == smokeCollider)
+                    continue;
+                if (rootTag.StartsWith("Possessable") && PlayerInput.Instance.InPossession && hit.collider.transform.root.gameObject == PossessionHandler.Instance.PossessedEntity)
+                    continue;
 
                 targetDistance = Mathf.Clamp(hit.distance - cameraRadius, minDistance, distance);
                 break;
 
+            }
         }
-
         Vector3 correctedOffset = rotation * new Vector3(0, 0, -targetDistance);
         Vector3 finalPosition = player.position + correctedOffset + Vector3.up * height;
 
@@ -75,14 +79,16 @@ public class ThirdPersonCamera : MonoBehaviour
         transform.LookAt(player.position + Vector3.up * 0.8f);
 
     }
-    
-    public void ForceSetCamera(Vector3 focusPoint, Vector3 direction)
+
+    public void ForceSetCamera(Vector3 focusPoint, Vector3 direction, float? customDistance = null)
     {
         Vector3 dir = direction.normalized;
         if (dir == Vector3.zero)
             dir = Vector3.forward;
 
-        Vector3 cameraPos = focusPoint + (dir * distance) + Vector3.up * height;
+        float dist = customDistance ?? distance; // Usa distanza personalizzata se fornita, altrimenti quella di default
+        Debug.Log("CustomDistance" + dist);
+        Vector3 cameraPos = focusPoint + (dir * dist) + Vector3.up * height;
         transform.position = cameraPos;
 
         // Guarda verso focusPoint
@@ -92,5 +98,42 @@ public class ThirdPersonCamera : MonoBehaviour
         Vector3 euler = transform.rotation.eulerAngles;
         yaw = euler.y;
         pitch = euler.x;
+        if (Player.Instance.InShadowStep)
+        {
+            _inShadowStep = true;
+            StartCoroutine(HandleStepFollow());
+        }
+
+    }
+
+    IEnumerator HandleStepFollow()
+    {
+        Vector3 offset = transform.position - player.transform.position;
+        Debug.Log("Sono Nella corutine : InShadowStep: " + _inShadowStep + " PlayerInShadowStep: " + Player.Instance.InShadowStep);
+        float exitTimer = 0.0f;
+        float maxTimer = 1.0f;
+
+        while (_inShadowStep)
+        {
+            if (PlayerInput.Instance.Dying)
+            {
+                _inShadowStep = false;
+                yield break;
+            }
+            transform.position = Vector3.Lerp(transform.position, player.transform.position + offset, Time.unscaledDeltaTime * rotationSpeed);
+            if (!Player.Instance.InShadowStep && Player.Instance.GetComponent<KinematicCharacterMotor>().Velocity.magnitude != 0)
+            {
+                Debug.Log(exitTimer);
+                if (PlayerInput.Instance.MovementInput.z > 0)
+                    exitTimer += PlayerInput.Instance.Sprint ? Time.deltaTime * 2 : Time.deltaTime;
+                if (exitTimer >= maxTimer)
+                    {
+                        _inShadowStep = false;
+                        yield break;
+                    }
+            }
+
+            yield return null;
+        }
     }
 }

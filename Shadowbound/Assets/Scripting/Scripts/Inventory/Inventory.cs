@@ -86,23 +86,43 @@ public class Inventory : MonoBehaviour
         RemoveItem(item.data);
     }
 
-    private IEnumerator WaitUntilStableThenFreeze(GameObject dropped)
+    IEnumerator WaitUntilStableThenFreeze(GameObject dropped)
     {
         Rigidbody rb = dropped.GetComponent<Rigidbody>();
         if (rb == null) yield break;
 
         yield return new WaitForSeconds(0.5f);
 
-        while (rb != null && rb.linearVelocity.magnitude > 0.05f || rb.angularVelocity.magnitude > 0.05f)
+        bool isStable = false;
+
+        while (!isStable)
+        {
+            if (rb == null || rb.Equals(null)) yield break;
+
+            float linearVelocity = 0f;
+            float angularVelocity = 0f;
+
+            try
             {
-                if (rb == null) yield break;
-                yield return null;
+                linearVelocity = rb.linearVelocity.magnitude;
+                angularVelocity = rb.angularVelocity.magnitude;
+            }
+            catch (MissingReferenceException)
+            {
+                Debug.Log("Trying Accessing a destroyed rigidbody");
+                yield break;
             }
 
-        if (rb != null)
+            isStable = linearVelocity <= 0.05f && angularVelocity <= 0.05f;
+
+            if (!isStable)
+                yield return null;
+        }
+
+        if (rb != null && !rb.Equals(null))
         {
             rb.constraints = RigidbodyConstraints.FreezeAll;
-            Destroy(rb);
+            Destroy(rb); 
         }
     }
     public ItemData Contains(int idItem)

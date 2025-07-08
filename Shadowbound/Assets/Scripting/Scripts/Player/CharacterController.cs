@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour, ICharacterController
 
     public void SetInputs()
     {
-        if (Camera.main == null || Player.Instance.InCutscene)
+        if (Camera.main == null || Player.Instance.InCutscene || Player.Instance.InShadowStep)
         {
             _moveInputVector = Vector3.zero;
             return;

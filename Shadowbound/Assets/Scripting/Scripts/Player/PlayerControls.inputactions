@@ -184,6 +184,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "KillInstant",
+                    "type": "Button",
+                    "id": "3841de1c-b4ef-41fe-843b-fea3045cf5cb",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -635,6 +644,17 @@
                     "processors": "",
                     "groups": ";MouseKeyboard",
                     "action": "MouseConfirm",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f60e3b45-3cb3-41cf-bd20-3446a0a7d19d",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";MouseKeyboard",
+                    "action": "KillInstant",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
