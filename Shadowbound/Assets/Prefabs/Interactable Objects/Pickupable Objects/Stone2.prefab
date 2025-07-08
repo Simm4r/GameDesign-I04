@@ -69,7 +69,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 84e76693a4305464a96d36edccb36b9e, type: 2}
+  - {fileID: 2100000, guid: 5495f67ee162f6346bdaf6daa43cd7a5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -118,8 +118,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
-  _triggerDistance: 1
-  _text: Pick Up (Purple Gem)
+  _triggerDistance: 1.5
+  _text: Pick Up (Glowing Purple Gem)
 --- !u!64 &556068461036890123
 MeshCollider:
   m_ObjectHideFlags: 0
