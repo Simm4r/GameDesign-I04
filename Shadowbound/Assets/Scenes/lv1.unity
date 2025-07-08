@@ -11698,7 +11698,7 @@ PrefabInstance:
       objectReference: {fileID: 918050667}
     - target: {fileID: 8591797864794040731, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: _maxHealth
-      value: 5000
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 8591797864794040731, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: _baseDamageTaken
@@ -38142,7 +38142,7 @@ GameObject:
   - component: {fileID: 1051873152}
   - component: {fileID: 1051873153}
   - component: {fileID: 1051873154}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cube
   m_TagString: TutorialWall
   m_Icon: {fileID: 0}

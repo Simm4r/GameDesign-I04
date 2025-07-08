@@ -402,6 +402,7 @@ public class GuardPatrol : MonoBehaviour
         _agent.isStopped = false;
         _agent.speed = _chaseSpeed;
         _agent.avoidancePriority = 10;
+        if (_isLookingAround) _isLookingAround = false;
         ShowMark(_exclamationMark);
     }
 
@@ -437,7 +438,7 @@ public class GuardPatrol : MonoBehaviour
             }
             else if (_stateTimer < _chaseDuration)
             {
-                if (!NavMesh.SamplePosition(_lastKnownPosition, out _, 1f, NavMesh.AllAreas) || Vector3.Distance(transform.position, _lastKnownPosition) <= _agent.stoppingDistance)
+                if (!NavMesh.SamplePosition(_lastKnownPosition, out _, 1f, NavMesh.AllAreas) || Vector3.Distance(transform.position, _lastKnownPosition) <= _agent.stoppingDistance + 1f)
                 {
                     StartInvestigation();
                 }
@@ -469,7 +470,7 @@ public class GuardPatrol : MonoBehaviour
 
         foreach (var guard in _allGuards)
         {
-            if (guard == this) continue;
+            if (guard == this || guard.CurrentState != GuardState.Chasing) continue;
             if (Vector3.Distance(guard.transform.position, _target.position) < myDist)
                 return false;
         }

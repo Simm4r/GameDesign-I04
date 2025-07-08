@@ -109,7 +109,7 @@ public class StrongGuardPatrol : GuardPatrol
         }
         else if (_stateTimer < _checkDuration)
         {
-            if (!NavMesh.SamplePosition(_lastKnownPosition, out _, 1f, NavMesh.AllAreas) || Vector3.Distance(transform.position, _lastKnownPosition) <= _agent.stoppingDistance)
+            if (!NavMesh.SamplePosition(_lastKnownPosition, out _, 1f, NavMesh.AllAreas) || Vector3.Distance(transform.position, _lastKnownPosition) <= _agent.stoppingDistance + 1f)
             {
                 StartInvestigation();
             }
