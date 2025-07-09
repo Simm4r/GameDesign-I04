@@ -32,8 +32,10 @@ public class FinalCuscene : MonoBehaviour
     IEnumerator StartCutscene()
     {
         ScreenFadeController.Instance.FadeToBlack();
+        var listener = MoveListener.Instance.GetComponent<AudioListener>();
         yield return new WaitForSecondsRealtime(1.5f);
         _camera1.SetActive(false);
+        listener.enabled = false;
         _camera2.SetActive(true);
         yield return new WaitForSecondsRealtime(0.5f);
         ScreenFadeController.Instance.FadeFromBlack();
@@ -50,6 +52,7 @@ public class FinalCuscene : MonoBehaviour
         ScreenFadeController.Instance.FadeToBlack();
         yield return new WaitForSecondsRealtime(1.5f);
         _camera1.SetActive(true);
+        listener.enabled = true;
         _camera2.SetActive(false);
         yield return new WaitForSecondsRealtime(0.5f);
         ScreenFadeController.Instance.FadeFromBlack();

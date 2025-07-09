@@ -10,6 +10,7 @@ public class ShadowStep : Interactable
 
     private enum Direction { Left, Right };
     [SerializeField] private Direction _direction;
+    [SerializeField] private AudioSource _source;
 
     private bool _canInteract = false;
 
@@ -81,7 +82,7 @@ public class ShadowStep : Interactable
 
         float moveDuration = 0.4f; // stesso valore del fade
         float moveElapsed = 0f;
-
+        _source.Play();
         while (moveElapsed < moveDuration)
         {
             moveElapsed += Time.deltaTime;

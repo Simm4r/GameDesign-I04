@@ -7,6 +7,8 @@ public class RepeatableRead : Interactable
     [TextArea(5, 10)]
     [SerializeField] private string _content;
     private bool _readingThis = false;
+    [SerializeField] private AudioSource _source;
+
 
     public bool ReadingThis
     {
@@ -25,6 +27,7 @@ public class RepeatableRead : Interactable
         Player.Instance.Reading = true;
         _readingThis = true;
         ScrollHUDHandler.Instance.SetText(_content);
+        ScrollHUDHandler.Instance.SetSource(_source);
         ScrollHUDHandler.Instance.Show();
     }
 

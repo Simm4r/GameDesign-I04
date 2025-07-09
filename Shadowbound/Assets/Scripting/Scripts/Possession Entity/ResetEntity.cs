@@ -53,6 +53,7 @@ public class ResetEntity : MonoBehaviour
                     GuardPatrol patrol = GetComponent<GuardPatrol>();
                     patrol?.ResetAgent();
                     Light torchLight = GetComponentInChildren<Light>();
+                    GetComponent<GuardStats>().Torch.GetComponentInChildren<AudioSource>().Play();
                     ParticleSystem fire = torchLight.transform.parent.GetComponentInChildren<ParticleSystem>();
                     var emission = fire.emission;
                     torchLight.enabled = true;

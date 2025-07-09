@@ -16,6 +16,7 @@ public class DissolveController : MonoBehaviour
     [SerializeField] private Material fadeMaterial;
     [SerializeField] private float objectHeight = 0.305f;
     [SerializeField] private Outline _outline;
+    [SerializeField] private AudioSource _source;
 
     private MaterialPropertyBlock propBlock;
 
@@ -75,5 +76,6 @@ public class DissolveController : MonoBehaviour
         Time.timeScale = 0.05f;
         dissolveAmount = 0f;
         dissolving = true;
+        _source.Play();
     }
 }

@@ -11,6 +11,7 @@ public class WaterSource : Interactable
         get { return _canInteract; }
         set { _canInteract = value; }
     }
+    [SerializeField] private AudioSource _source;
 
     public override void Interact()
     {
@@ -23,7 +24,9 @@ public class WaterSource : Interactable
         _caller.Player = null;
         _canInteract = false;
         torchLight.enabled = false;
-
+        var torchAudio = torch.GetComponentInChildren<AudioSource>(); 
+        _source.Play();
+        torchAudio.Stop();
         var torchFire = torch.GetComponentsInChildren<ParticleSystem>();
         torchFire.ToList().ForEach(ps =>
         {

@@ -282,6 +282,8 @@ public class PossessionHandler : MonoBehaviour
     private void HandlePossessionEnd()
     {
         _quitImmediate = false;
+        if (_possessedEntity == null)
+            return;
         _possessedMotor.enabled = false;
         _possessedMotorCollider.enabled = false;
         _possessedController.enabled = false;
@@ -358,7 +360,7 @@ public class PossessionHandler : MonoBehaviour
         else if (!DissolveController.Instance.IsDissolving && !PlayerInput.Instance.InPossession)
             HandlePossessionTransition();
 
-        if (_possessionTime == _possessionMaxTime || PlayerInput.Instance.QuitPossession || _quitImmediate)
+        if ((_possessionTime == _possessionMaxTime || PlayerInput.Instance.QuitPossession || _quitImmediate) && !_choosingPosition)
             HandlePossessionEnd();
 
         if (PlayerInput.Instance.InPossession && !_choosingPosition)

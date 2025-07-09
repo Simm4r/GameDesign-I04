@@ -13,6 +13,7 @@ public class Cauldron : Interactable
     private ItemData _guardItem;
     private bool _triggerStone = false;
     private Inventory _guardInventory;
+    [SerializeField] private AudioSource _source;
     public override bool CanInteract
     {
         get => _canInteract;
@@ -31,6 +32,7 @@ public class Cauldron : Interactable
             return;
         }
         _visualEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        _source.Play();
         _visualEffect.Play(true);
         NotificationBar.Instance.SetText("Right ingredient");
         NotificationBar.Instance.StartBlink();

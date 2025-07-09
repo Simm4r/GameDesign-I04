@@ -17,6 +17,7 @@ public class LaserReceiver : MonoBehaviour
     [SerializeField] private GameObject _camera2;
     [SerializeField] private GameObject _camera3;
     [SerializeField] private LiftPillar _pillar;
+    [SerializeField] private AudioSource _source;
 
     void Awake()
     {
@@ -28,6 +29,7 @@ public class LaserReceiver : MonoBehaviour
         if (_hit && !_activeOnce)
         {
             _activeOnce = true;
+            _source.Play();
             _mirror1.GetComponentInChildren<Possessable>().enabled = false;
             _mirror2.GetComponentInChildren<Possessable>().enabled = false;
             Player.Instance.InCutscene = true;
@@ -42,9 +44,11 @@ public class LaserReceiver : MonoBehaviour
     IEnumerator Changecamera()
     {
         ScreenFadeController.Instance.FadeToBlack();
+        var originalListener = MoveListener.Instance.GetComponent<AudioListener>();
         yield return new WaitForSeconds(1.5f);
         ScreenFadeController.Instance.FadeFromBlack();
         _camera1.SetActive(false);
+        originalListener.enabled = false;
         _camera3.SetActive(true);
         yield return new WaitForSeconds(0.8f);
         Material mat = _renderer.material;
@@ -65,6 +69,7 @@ public class LaserReceiver : MonoBehaviour
             yield return null;
         }
         mat.SetColor("_EmissionColor", baseColor * Mathf.Pow(4.0f, 2f));
+
         yield return new WaitForSeconds(0.5f);
         ScreenFadeController.Instance.FadeToBlack();
         yield return new WaitForSeconds(2.0f);
@@ -77,6 +82,7 @@ public class LaserReceiver : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         ScreenFadeController.Instance.FadeToBlack();
         yield return new WaitForSeconds(1.5f);
+        originalListener.enabled = true;
         _camera1.SetActive(true);
         _camera2.SetActive(false);
         yield return new WaitForSeconds(0.5f);

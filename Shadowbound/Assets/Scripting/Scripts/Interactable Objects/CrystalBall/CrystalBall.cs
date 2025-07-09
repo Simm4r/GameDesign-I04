@@ -13,6 +13,7 @@ public class CrystalBall : Interactable
     [SerializeField] private GameObject _respawnPosition;
     [SerializeField] private ParticleSystem _flame;
     [SerializeField] private InteractionHandler _caller;
+    [SerializeField] private AudioSource _source;
     private bool _canInteract = false;
     public override bool CanInteract
     {
@@ -32,6 +33,7 @@ public class CrystalBall : Interactable
         Debug.Log(checkPoint.position);
         checkPoint.scene = SceneManager.GetActiveScene().name;
         Player.Instance.ActualCheckPoint = checkPoint;
+        _source.Play();
     }
 
     void Update()

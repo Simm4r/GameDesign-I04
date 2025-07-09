@@ -44,7 +44,7 @@ public class SphereLauncher : MonoBehaviour
         if (isStopped)
         {
             _lifeTime = Mathf.Clamp(_lifeTime + Time.deltaTime, 0.0f, _maxLifetime);
-            if (_lifeTime == _maxLifetime)
+            if (_lifeTime == _maxLifetime || PlayerInput.Instance.Dying)
             {
                 isStopped = false;
                 GetComponentInChildren<Light>().enabled = false;

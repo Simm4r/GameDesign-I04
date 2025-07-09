@@ -8,6 +8,7 @@ public class LiftPillar : MonoBehaviour
     private float _progress = 0.0f;
     [SerializeField] private float _speed = 1.0f;
     [SerializeField] private bool _startAnimation = false; // Per chiamare da editor StartAnimation, per debug
+    [SerializeField] private AudioSource _source;
     public enum PillarState
     {
         Up,
@@ -59,12 +60,12 @@ public class LiftPillar : MonoBehaviour
     {
         if (_state == PillarState.TransitionUp || _state == PillarState.TransitionDown)
             return;
-
         if (_actualPos == _minPos)
             _state = PillarState.TransitionUp;
         else if (_actualPos == _maxPos)
             _state = PillarState.TransitionDown;
         _progress = 0.0f;
+        _source.Play();
     }
 
 

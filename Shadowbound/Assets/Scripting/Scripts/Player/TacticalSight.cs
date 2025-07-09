@@ -16,6 +16,7 @@ public class TacticalSight : MonoBehaviour
     private float _heightOffset = 0.15f;
     private HashSet<GameObject> _alreadyDetected = new();
     private List<GameObject> _rootObjects = new();
+    [SerializeField] private AudioSource _source;
 
     public float ShadowVisionCooldown
     {
@@ -111,6 +112,7 @@ public class TacticalSight : MonoBehaviour
         if (PlayerInput.Instance.ShadowVision && !_expandingSight.IsAlive())
         {
             _expandingSight.Play();
+            _source.Play();
             _timer = 0.0f;
             _alreadyDetected.Clear();
             HandleSightCollider();

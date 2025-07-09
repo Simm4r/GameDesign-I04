@@ -25,6 +25,7 @@ public class AzAnimation : MonoBehaviour
     [SerializeField] private MeshRenderer _renderer;
     private Vector3 _actualPos;
     private Quaternion _startRotation;
+    [SerializeField] private AudioSource _source;
     void Awake()
     {
         if (Instance != null)
@@ -48,7 +49,7 @@ public class AzAnimation : MonoBehaviour
         switch (_state)
         {
             case AzState.OnScreen:
-                Vector3 _player = Player.Instance.gameObject.transform.position + Vector3.up * 0.5f;
+                Vector3 _player = Player.Instance.gameObject.transform.position + Vector3.up * 0.2f;
                 Vector3 lookDirection = _player - transform.position;
                 if (lookDirection != Vector3.zero)
                     transform.rotation = Quaternion.LookRotation(lookDirection);
@@ -84,6 +85,7 @@ public class AzAnimation : MonoBehaviour
         {
             _state = AzState.Showing;
             _renderer.enabled = true;
+            _source.Play();
             _effects.Play(true);
         }
 

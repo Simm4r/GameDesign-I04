@@ -8,6 +8,7 @@ public class ScrollHUDHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _text;
     private float _alpha = 0;
     private float _oldScaleTime = 1.0f;
+    private AudioSource _source;
     private enum State
     {
         Idle,
@@ -65,6 +66,7 @@ public class ScrollHUDHandler : MonoBehaviour
 
     public void Show()
     {
+        _source.Play();
         _oldScaleTime = Time.timeScale;
         Time.timeScale = 0;
         _state = State.Showing;
@@ -81,6 +83,10 @@ public class ScrollHUDHandler : MonoBehaviour
         _text.text = text;
     }
 
+    public void SetSource(AudioSource source)
+    {
+        _source = source;
+    }
     public string GetActualState()
     {
         switch (_state)

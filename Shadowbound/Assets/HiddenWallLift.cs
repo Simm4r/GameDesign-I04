@@ -21,6 +21,7 @@ public class HiddenWallLift : MonoBehaviour
     private float _progress;
     [SerializeField] private float _speed = 1.0f;
     [SerializeField] private bool _startAnimation = false;
+    [SerializeField] private AudioSource _source;
 
     void Awake()
     {
@@ -52,5 +53,6 @@ public class HiddenWallLift : MonoBehaviour
         if (_state != WallState.Down)
             return;
         _state = WallState.Lifting;
+        _source.Play();
     }
 }

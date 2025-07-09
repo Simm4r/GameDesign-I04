@@ -7,6 +7,7 @@ public class FinalLaserBeam : MonoBehaviour
 {
     [SerializeField] private GameObject _sigil;
     [SerializeField] private Collider _stoneCollider;
+    [SerializeField] private AudioSource _source;
     private float _maxDistance = 100f;
     private LineRenderer _line;
     private bool _stoneHit = false;
@@ -49,6 +50,8 @@ public class FinalLaserBeam : MonoBehaviour
             var hit = hits[0];
             if (hit.collider == _stoneCollider)
             {
+                if (!_source.isPlaying && !_stoneHit)
+                    _source.Play();
                 points.Add(hit.collider.gameObject.transform.position);
                 points.Add(_sigil.transform.position);
                 _line.positionCount = points.Count;

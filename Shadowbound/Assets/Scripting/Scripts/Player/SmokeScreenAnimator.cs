@@ -8,7 +8,7 @@ public class SmokeScreenAnimator : MonoBehaviour
     [SerializeField] private float _lifeTime = 0.0f;
     private SphereCollider _smokeCollider;
     private MeshRenderer _renderer;
-
+    [SerializeField] private AudioSource _source;
     void Awake()
     {
         if (Instance != null)
@@ -27,7 +27,7 @@ public class SmokeScreenAnimator : MonoBehaviour
         if (!_smoke.IsAlive())
             return;
 
-        if (_lifeTime == _maxLifeTime)
+        if (_lifeTime == _maxLifeTime || PlayerInput.Instance.Dying)
         {
             StopAnimation();
             return;
@@ -38,8 +38,10 @@ public class SmokeScreenAnimator : MonoBehaviour
     }
     public void StartAnimation()
     {
+        _source.Play();
         var emission = _smoke.emission;
         emission.rateOverTime = 40.0f;
+        _smoke.Play();
         _lifeTime = 0.0f;
         _smokeCollider.enabled = true;
         _renderer.enabled = true;
@@ -48,6 +50,7 @@ public class SmokeScreenAnimator : MonoBehaviour
     {
         var emission = _smoke.emission;
         emission.rateOverTime = 0.0f;
+        _smoke.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         _lifeTime = 0.0f;
         _smokeCollider.enabled = false;
         _renderer.enabled = false;

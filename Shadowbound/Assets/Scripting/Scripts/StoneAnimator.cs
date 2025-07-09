@@ -7,7 +7,8 @@ public class StoneAnimator : MonoBehaviour
     private Vector3 _actualPos;
     private float _progress = 0.0f;
     [SerializeField] private float _speed = 1.0f;
-    [SerializeField] private bool _startAnimation = false; 
+    [SerializeField] private bool _startAnimation = false;
+    [SerializeField] private AudioSource _source;
     public enum StoneState
     {
         Up,
@@ -44,6 +45,7 @@ public class StoneAnimator : MonoBehaviour
                 transform.localPosition = _actualPos;
                 if (_actualPos == _maxPos)
                 {
+                    _source.Play();
                     _state = StoneState.Up;
                     GetComponent<Item>().enabled = true;
                 }

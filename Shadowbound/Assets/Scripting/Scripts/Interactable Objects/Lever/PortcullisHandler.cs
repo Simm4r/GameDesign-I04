@@ -8,7 +8,7 @@ public class PortcullisHandler : MonoBehaviour
     private bool _isActive = false;
     private bool _isLeverSync = false;
     float sum = 0.0f;
-
+    [SerializeField] private bool _startAnimation = false;
     [SerializeField] private Vector3 targetPosition;
     [SerializeField] private float _targetHeight = 3.2f;
     private float speed = 2f;
@@ -59,6 +59,11 @@ public class PortcullisHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_startAnimation)
+        {
+            _startAnimation = false;
+            StartAnimation();
+        }
         
         if (_isActive)
         {

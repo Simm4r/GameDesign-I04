@@ -21,6 +21,7 @@ public class DoorLargeOpener : MonoBehaviour
     private Quaternion _actualRotationR;
     private Quaternion _actualRotationL;
     [SerializeField] private bool _startAnimation = false;
+    [SerializeField] private AudioSource _source;
     void Awake()
     {
         _actualRotationR = _startAngle;
@@ -53,6 +54,7 @@ public class DoorLargeOpener : MonoBehaviour
     {
         if (_state != DoorState.Close)
             return;
+        _source.Play();
         _state = DoorState.Opening;
         _progress = 0.0f;
     }

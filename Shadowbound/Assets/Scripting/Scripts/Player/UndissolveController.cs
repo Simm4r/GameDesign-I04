@@ -16,6 +16,7 @@ public class UndissolveController : MonoBehaviour
     [SerializeField] private Material _originalMaterial;
     [SerializeField] private float objectHeight = 0.305f;
     [SerializeField] private Outline _outline;
+    [SerializeField] private AudioSource _source;
 
     private MaterialPropertyBlock _propBlock;
 
@@ -73,6 +74,7 @@ public class UndissolveController : MonoBehaviour
 
     public void StartUndissolve()
     {
+        _source.Play();
         _outline.OutlineMode = Outline.Mode.OutlineAndSilhouette;
         Time.timeScale = 0.05f;
         _undissolveAmount = 1f;

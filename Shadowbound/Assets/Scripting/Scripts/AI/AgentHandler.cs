@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class AgentHandler : MonoBehaviour
     private bool _inDialogue = false;
     private bool _inCutscene = false;
     private bool _inChase = false;
+    private bool _inCorutine = false;
     [SerializeField] private AudioSource _source;
     [SerializeField] private AudioClip _background;
     [SerializeField] private AudioClip _chase;
@@ -71,9 +73,7 @@ public class AgentHandler : MonoBehaviour
                 });
             }
         }
-
         IsAgentInChase();
-        
     }
 
     private void IsAgentInChase()
@@ -82,7 +82,6 @@ public class AgentHandler : MonoBehaviour
         bool inChase = false;
         foreach (GuardPatrol agent in agents)
         {
-            Debug.Log(agent);
             if (agent.CurrentState != GuardPatrol.GuardState.Chasing)
                 continue;
             inChase = true;
@@ -91,16 +90,65 @@ public class AgentHandler : MonoBehaviour
 
         if (_inChase != inChase)
         {
-            _source.Stop();
             _inChase = inChase;
+            if (_inCorutine)
+                return;
             if (inChase)
-            {
-                _source.resource = _chase;
-            }
-            else
-                _source.resource = _background;
+                {
+                    _source.Stop();
+                    _source.resource = _chase;
+                    _source.volume = 1.0f;
+                    _source.Play();
+                }
+                else
+                {
+                    if (_source.isPlaying)
+                    {
+                        StartCoroutine(CrossFadeChase());
+                    }
+                    else
+                    {
+                        _source.Stop();
+                        _source.resource = _background;
+                        _source.volume = 1.0f;
+                        _source.Play();
+                    }
 
-            _source.Play();
+                }
+
+
         }
+    }
+
+    IEnumerator CrossFadeChase()
+    {
+        _inCorutine = true;
+        while (_source.volume != 0)
+        {
+            if (PlayerInput.Instance.Dying)
+            {
+                _inCorutine = false;
+                _source.Stop();
+                _source.resource = _background;
+                _source.volume = 1.0f;
+                _source.Play();
+                yield break;
+            }
+                
+            if (!_inChase)
+                {
+                    _source.volume = Mathf.Clamp01(_source.volume - Time.deltaTime / 8);
+                    Debug.Log(_source.volume);
+                }
+                else
+                    _source.volume = Mathf.Clamp01(_source.volume + Time.deltaTime / 2);
+
+            yield return null;
+        }
+        _source.Stop();
+        _source.volume = 1.0f;
+        _source.resource = _background;
+        _source.Play();
+        _inCorutine = false;
     }
 }

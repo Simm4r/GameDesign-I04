@@ -76,7 +76,7 @@ public class Inventory : MonoBehaviour
             rb.linearDamping = 5f;                // Frizione lineare per rallentare lo scivolamento
             rb.angularDamping = 5f;         // Frizione angolare per non farlo rotolare
             rb.interpolation = RigidbodyInterpolation.Interpolate; // Per maggiore stabilità visiva
-            rb.collisionDetectionMode = CollisionDetectionMode.Continuous; // Per collisioni accurate
+            rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic; // Per collisioni accurate
             StartCoroutine(WaitUntilStableThenFreeze(dropped));
             /*
             Item pickedProperty = dropped.AddComponent<Item>();

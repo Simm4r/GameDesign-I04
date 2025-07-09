@@ -20,6 +20,7 @@ public class PotionDepot : Interactable
     [SerializeField] private PotionType _type;
     [SerializeField] private List<GameObject> _potions;
     [SerializeField] private InteractionHandler _caller;
+    [SerializeField] private AudioSource _source;
 
     public override void Interact()
     {
@@ -30,6 +31,7 @@ public class PotionDepot : Interactable
         GameObject obj = _potions[0];
         _potions.RemoveAt(0);
         Destroy(obj);
+        _source.Play();
     }
 
     private void SetStatus(GuardStats stats)
