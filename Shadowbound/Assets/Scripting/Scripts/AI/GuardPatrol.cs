@@ -72,6 +72,8 @@ public class GuardPatrol : MonoBehaviour
     private Quaternion _lookAroundRotation;
     private bool _isLookingAround = false;
 
+    private Coroutine _stuckCheckCoroutine;
+
     private bool _firstEnable = true;
     private bool _enableAfterDialogue = false;
 
@@ -404,6 +406,10 @@ public class GuardPatrol : MonoBehaviour
         _agent.avoidancePriority = 10;
         if (_isLookingAround) _isLookingAround = false;
         ShowMark(_exclamationMark);
+
+        if (_stuckCheckCoroutine != null)
+            StopCoroutine(_stuckCheckCoroutine);
+        _stuckCheckCoroutine = StartCoroutine(CheckIfStuckWhileChasing());
     }
 
     private void ChasingUpdate()
@@ -582,6 +588,12 @@ public class GuardPatrol : MonoBehaviour
     {
         _stateTimer = 0f;
         _agent.isStopped = false;
+
+        if (_stuckCheckCoroutine != null)
+        {
+            StopCoroutine(_stuckCheckCoroutine);
+            _stuckCheckCoroutine = null;
+        }
 
         if (_waypoints == null || _waypoints.Length == 0)
         {
@@ -811,6 +823,34 @@ public class GuardPatrol : MonoBehaviour
         if (!_isHandlingObstacle)
             StartCoroutine(HandleStuckAndInteract());
     }
+    
+    private IEnumerator CheckIfStuckWhileChasing()
+    {
+        float stuckDuration = 5f;
+        float elapsed = 0f;
+
+        while (_currentState == GuardState.Chasing)
+        {
+            Debug.Log(elapsed);
+            if (_agent.velocity.magnitude < 0.05f)
+            {
+                elapsed += Time.deltaTime;
+                if (elapsed >= stuckDuration)
+                {
+                    Debug.Log("Agente bloccato, ritorna alla pattuglia.");
+                    StartReturning();
+                    yield break;
+                }
+            }
+            else
+            {
+                // Si sta muovendo o ha raggiunto la meta
+                elapsed = 0f;
+            }
+
+            yield return null;
+        }
+    }
 
     private IEnumerator HandleStuckAndInteract()
     {
@@ -839,7 +879,7 @@ public class GuardPatrol : MonoBehaviour
                 {
                     obstaclePos = obstacle.transform.position;
                 }
-                
+
                 Vector3 obstacleDir = (obstaclePos - _agent.transform.position).normalized;
                 float dot = Vector3.Dot(pathDir, obstacleDir);
 
@@ -848,7 +888,7 @@ public class GuardPatrol : MonoBehaviour
                 {
                     InteractWithObstacle(obstacle);
 
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(1.2f);
                     _agent.SetDestination(_agent.destination);
                 }
             }
@@ -867,8 +907,8 @@ public class GuardPatrol : MonoBehaviour
         {
             if (hit.GetComponent<DoorOpener>() != null)
             {
-                if (hit.GetComponent<DoorLocked>() != null && hit.GetComponent<DoorLocked>().IsLocked)
-                    continue;
+                //if (hit.GetComponent<DoorLocked>() != null && hit.GetComponent<DoorLocked>().IsLocked)
+                //    continue;
 
                 targetTransform = hit.transform;
                 break;
@@ -878,6 +918,10 @@ public class GuardPatrol : MonoBehaviour
                 targetTransform = hit.transform.parent;
                 break;
             }
+            /*else if (hit.transform.root.GetComponent<DestroyBarrel>() != null)
+            {
+                return hit.transform.root.GetComponent<Interactable>();
+            }*/
         }
 
         return targetTransform?.GetComponent<Interactable>();
@@ -885,6 +929,17 @@ public class GuardPatrol : MonoBehaviour
 
     protected virtual void InteractWithObstacle(Interactable obstacle)
     {
+        Debug.Log(_agent.name + ": Interact with " + obstacle);
+        if (obstacle.GetComponent<DoorOpener>() != null)
+        {
+            if (obstacle.GetComponent<DoorLocked>() != null && obstacle.GetComponent<DoorLocked>().IsLocked)
+            {
+                Debug.Log(_agent.name + ": Door locked");
+                StartReturning();
+                return;
+            }
+        }
+
         obstacle.Interact();
     }
 
