@@ -11,7 +11,6 @@ public class FleeingEntity : MonoBehaviour
     [SerializeField] private Transform _den;
     [SerializeField] private float _detectionRange = 3f;
     [SerializeField] private float _pathRecalculateInterval = 1.2f;
-    [SerializeField] private float _avoidStrength = 1.5f;
 
     private NavMeshAgent _agent;
     private float _lastPathUpdateTime;
@@ -50,13 +49,14 @@ public class FleeingEntity : MonoBehaviour
     private void StartFleeing()
     {
         _currentState = EntityState.Fleeing;
-        _agent.isStopped = false;
         _lastPathUpdateTime = -_pathRecalculateInterval; // forza aggiornamento immediato
+        _agent.isStopped = false;
+        _agent.SetDestination(_den.position);
     }
 
     private void FleeingUpdate()
     {
-        if (Vector3.Distance(transform.position, _den.position) < 1.5f)
+        if (Vector3.Distance(transform.position, _den.position) < _agent.stoppingDistance + 0.5f)
         {
             ReachDen();
             return;
@@ -65,20 +65,20 @@ public class FleeingEntity : MonoBehaviour
         float timeSinceUpdate = Time.time - _lastPathUpdateTime;
         if (timeSinceUpdate >= _pathRecalculateInterval)
         {
-            Vector3 fleeDir = (transform.position - Player.Instance.transform.position).normalized;
-            Vector3 toDenDir = (_den.position - transform.position).normalized;
-
-            // Direzione combinata: si allontana ma "scivola" verso la tana
-            Vector3 moveDir = (fleeDir * _avoidStrength + toDenDir).normalized;
-
-            Vector3 candidatePos = transform.position + moveDir * 5f;
-
-            if (NavMesh.SamplePosition(candidatePos, out NavMeshHit hit, 2f, NavMesh.AllAreas))
-            {
-                _agent.SetDestination(hit.position);
-            }
-
             _lastPathUpdateTime = Time.time;
+
+            if (!HasLineOfSightTo(Player.Instance.transform))
+            {
+                _agent.isStopped = true;
+            }
+            else
+            {
+                if (_agent.isStopped)
+                {
+                    _agent.isStopped = false;
+                    _agent.SetDestination(_den.position);
+                }
+            }
         }
     }
 
@@ -94,10 +94,16 @@ public class FleeingEntity : MonoBehaviour
     {
         Vector3 origin = transform.position + Vector3.up * 0.5f;
         Vector3 dir = target.position - origin;
-        if (Physics.Raycast(origin, dir.normalized, out RaycastHit hit, _detectionRange))
+        float dist = Vector3.Distance(origin, target.position);
+
+        if (dist > _detectionRange)
+            return false;
+
+        if (Physics.Raycast(origin, dir.normalized, out RaycastHit hit, dist))
         {
             return hit.transform == target || hit.transform.IsChildOf(target);
         }
+
         return false;
     }
 
