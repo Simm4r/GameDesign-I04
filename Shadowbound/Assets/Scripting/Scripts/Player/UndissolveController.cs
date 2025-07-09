@@ -73,7 +73,7 @@ public class UndissolveController : MonoBehaviour
 
     public void StartUndissolve()
     {
-        _outline.OutlineMode = Outline.Mode.OutlineAll;
+        _outline.OutlineMode = Outline.Mode.OutlineAndSilhouette;
         Time.timeScale = 0.05f;
         _undissolveAmount = 1f;
         _undissolving = true;
