@@ -23,6 +23,8 @@ TagManager:
   - Magic
   - TutorialWall
   - SafeZone
+  - Table
+  - ShadowStep
   layers:
   - Default
   - TransparentFX

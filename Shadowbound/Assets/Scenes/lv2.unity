@@ -1176,7 +1176,7 @@ PrefabInstance:
       objectReference: {fileID: 67061581}
     - target: {fileID: 1896245395274100764, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: objectHeight
-      value: 0.36
+      value: 0.37
       objectReference: {fileID: 0}
     - target: {fileID: 2101374788213859547, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: m_IsActive
@@ -1224,7 +1224,7 @@ PrefabInstance:
       objectReference: {fileID: 67061581}
     - target: {fileID: 6002466883494646987, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: objectHeight
-      value: 0.36
+      value: 0.37
       objectReference: {fileID: 0}
     - target: {fileID: 7253317231851300288, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: m_LocalPosition.x
@@ -33049,11 +33049,11 @@ PrefabInstance:
       objectReference: {fileID: 67061580}
     - target: {fileID: 2194555407241727251, guid: e05e64610a4530f4ab0c10f597748364, type: 3}
       propertyPath: minDistance
-      value: 0.5
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 2194555407241727251, guid: e05e64610a4530f4ab0c10f597748364, type: 3}
       propertyPath: cameraRadius
-      value: 0.2
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2194555407241727251, guid: e05e64610a4530f4ab0c10f597748364, type: 3}
       propertyPath: rotationSpeed
