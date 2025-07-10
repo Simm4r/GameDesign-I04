@@ -26,25 +26,30 @@ public class AnimatorController : MonoBehaviour
     {
         if (_motor.GroundingStatus.IsStableOnGround)
         {
-            if (PlayerInput.Instance.MovementInput != Vector3.zero)
-            {
-                float newState = Mathf.Clamp01(Mathf.Pow(_motor.Velocity.magnitude / PlayerController.Instance.SprintSpeed, 2.2f));
-                _currentState = Mathf.Lerp(_currentState, newState, Time.deltaTime / _animationTransitionTime);
-                float newVert = _motor.Velocity.magnitude > 0.2 ? 1.0f : 0.5f;
-                _currentVert = Mathf.Lerp(_currentVert, newVert, Time.deltaTime / _animationTransitionTime);
-            }
-            else
-            {
-                _currentState = Mathf.Lerp(_currentState, 0.0f, Time.deltaTime / _animationTransitionTime);
-                _currentVert = Mathf.Lerp(_currentVert, 0.0f, Time.deltaTime / _animationTransitionTime);
-            }
-            
+            float currentSpeed = _motor.Velocity.magnitude;
+
+            float walkSpeed = 1.25f;
+            float sprintThreshold = 1.5f;
+
+            float normalizedSpeed = currentSpeed / walkSpeed;
+            normalizedSpeed = Mathf.Clamp(normalizedSpeed, 0f, 2f);
+
+            float visualVert = normalizedSpeed;
+            if (visualVert > 0.05f && visualVert < 0.4f)
+                visualVert = 0.4f;
+
+            float vertTransitionTime = 0.1f;
+            _currentVert = Mathf.Lerp(_currentVert, Mathf.Clamp01(visualVert), Time.deltaTime / vertTransitionTime);
+
+            float targetState = currentSpeed > sprintThreshold ? 1f : 0f;
+            _currentState = Mathf.Lerp(_currentState, targetState, Time.deltaTime / _animationTransitionTime);
         }
-        if(!_motor.GroundingStatus.IsStableOnGround)
+        else
         {
             _currentState = Mathf.Lerp(_currentState, 0.0f, Time.deltaTime / _animationTransitionTime);
             _currentVert = Mathf.Lerp(_currentVert, 0.0f, Time.deltaTime / _animationTransitionTime);
         }
+
         _animator.SetFloat("State", _currentState);
         _animator.SetFloat("Vert", _currentVert);
     }

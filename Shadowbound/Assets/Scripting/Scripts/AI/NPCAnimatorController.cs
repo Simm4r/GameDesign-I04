@@ -26,18 +26,39 @@ public class NPCAnimatorController : MonoBehaviour
 
     private void SetAnimationValues()
     {
-        _maxSpeed =(PlayerInput.Instance.InPossession && PossessionHandler.Instance.PossessedEntity == gameObject)?
-        ((gameObject.CompareTag("Possessable_Guard") && GetComponent<PossessedController>().Enhanced)? _maxMotorSpeed * 2f : _maxMotorSpeed) : _maxSpeed;
-            
-        float currentSpeed = (PlayerInput.Instance.InPossession && PossessionHandler.Instance.PossessedEntity == gameObject) ? GetComponent<KinematicCharacterMotor>().Velocity.magnitude : new Vector3(_agent.velocity.x, 0, _agent.velocity.z).magnitude;
-        float normalizedSpeed = Mathf.Clamp01(currentSpeed / _maxSpeed); // Valore tra 0 e 1
+        float currentSpeed;
+        float referenceSpeed;
 
-        // State = camminata o corsa, interpolata (usa threshold ~0.8f)
-        float targetState = normalizedSpeed > 0.8f ? 1f : 0f;
+        bool isPossessed = PlayerInput.Instance.InPossession && PossessionHandler.Instance.PossessedEntity == gameObject;
+
+        if (isPossessed)
+        {
+            var motor = GetComponent<KinematicCharacterMotor>();
+            currentSpeed = motor.Velocity.magnitude;
+
+            bool isEnhanced = gameObject.CompareTag("Possessable_Guard") && GetComponent<PossessedController>().Enhanced;
+            referenceSpeed = isEnhanced ? 3f : 1.5f;
+
+            _animator.speed = isEnhanced ? 2f : 1.30f;
+        }
+        else
+        {
+            currentSpeed = new Vector3(_agent.velocity.x, 0, _agent.velocity.z).magnitude;
+            bool isEnhanced = gameObject.CompareTag("Possessable_Guard") && GetComponent<GuardStats>().Status == GuardStats.GuardStatus.Fastened;
+            referenceSpeed = isEnhanced ? 2f : 1f;
+
+            _animator.speed = isEnhanced ? 2f : 1f;
+        }
+
+        float normalizedSpeed = currentSpeed / referenceSpeed;
+
+        if (normalizedSpeed > 0.97f) normalizedSpeed = 1f;
+        normalizedSpeed = Mathf.Clamp(normalizedSpeed, 0f, 2f);
+
+        float targetState = currentSpeed > referenceSpeed * 1.2f ? 1f : 0f;
         _currentState = Mathf.Lerp(_currentState, targetState, Time.deltaTime / _animationTransitionTime);
 
-        // Vert = blending tra idle e movimento
-        _currentVert = Mathf.Lerp(_currentVert, normalizedSpeed, Time.deltaTime / _animationTransitionTime);
+        _currentVert = Mathf.Lerp(_currentVert, Mathf.Clamp01(normalizedSpeed), Time.deltaTime / _animationTransitionTime);
 
         _animator.SetFloat("State", _currentState);
         _animator.SetFloat("Vert", _currentVert);
