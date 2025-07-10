@@ -78,6 +78,12 @@ public class AgentHandler : MonoBehaviour
 
     private void IsAgentInChase()
     {
+        if(PlayerInput.Instance.Dying) {
+            _source.Stop();
+            _source.resource = _background;
+            _source.volume = 1.0f;
+            _source.Play();
+        }
         var agents = _agents.Where(agent => agent.GetComponent<GuardPatrol>() != null && agent.enabled).Select(agent => agent.GetComponent<GuardPatrol>()).ToList();
         bool inChase = false;
         foreach (GuardPatrol agent in agents)

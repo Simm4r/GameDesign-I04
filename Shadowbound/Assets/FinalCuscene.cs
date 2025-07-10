@@ -9,6 +9,9 @@ public class FinalCuscene : MonoBehaviour
     [SerializeField] private FinalLaserBeam _laserR;
     [SerializeField] private ParticleSystem _instableSmoke;
     [SerializeField] private ParticleSystem _ruptureFlash;
+    [SerializeField] private AudioSource _source;
+    [SerializeField] private AudioClip _overcharge;
+    [SerializeField] private AudioClip _electroBoom;
     private GameObject _camera1;
     [SerializeField] private GameObject _camera2;
     
@@ -39,7 +42,14 @@ public class FinalCuscene : MonoBehaviour
         _camera2.SetActive(true);
         yield return new WaitForSecondsRealtime(0.5f);
         ScreenFadeController.Instance.FadeFromBlack();
+        yield return new WaitForSecondsRealtime(0.5f);
+        _source.Stop();
+        _source.resource = _overcharge;
+        _source.Play();
         yield return new WaitForSecondsRealtime(3.0f);
+        _source.Stop();
+        _source.resource = _electroBoom;
+        _source.Play();
         _ruptureFlash.Play(true);
         _sigil.gameObject.SetActive(false);
         _instableSmoke.gameObject.SetActive(false);
