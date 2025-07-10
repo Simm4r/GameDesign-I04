@@ -32,7 +32,6 @@ public class GuardStats : EntityStats
             {
                 case GuardStatus.Sleepy:
                     _sleepAura.Play(true);
-
                     break;
                 case GuardStatus.Scared:
                     _scareAura.Play(true);
@@ -41,6 +40,11 @@ public class GuardStats : EntityStats
                 case GuardStatus.Fastened:
                     _speedAura.Play(true);
                     break;
+                case GuardStatus.None:
+                    _sleepAura.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                    _scareAura.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                    _speedAura.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                    break;  
             }
             _status = value;
             OnStatusChanged?.Invoke(value);

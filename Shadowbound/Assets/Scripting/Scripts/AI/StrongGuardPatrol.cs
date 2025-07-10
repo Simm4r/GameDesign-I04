@@ -48,7 +48,7 @@ public class StrongGuardPatrol : GuardPatrol
         if (baseObstacle != null) return baseObstacle;
 
         // Poi cerca barili da rompere
-        Collider[] hits = Physics.OverlapSphere(transform.position, 2f);
+        Collider[] hits = Physics.OverlapSphere(transform.position, 2.5f);
 
         foreach (var hit in hits)
         {

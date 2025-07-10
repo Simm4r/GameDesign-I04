@@ -293,7 +293,7 @@ public class GuardPatrol : MonoBehaviour
     protected virtual void HandleVision()
     {
         if (_target == null) return;
-        
+
         if (_currentStatus == GuardStats.GuardStatus.Scared || _currentStatus == GuardStats.GuardStatus.Sleepy) return;
 
         Vector3 eyePos = transform.position + Vector3.up * 1.25f + transform.forward * 0.2f;
@@ -355,6 +355,19 @@ public class GuardPatrol : MonoBehaviour
             else if (smokeCollider != null)
             {
                 StartInvestigation();
+            }
+        }
+        
+        if (_target != Player.Instance.transform && _currentState != GuardState.Checking)
+        {
+            float objVelocity = _targetMotor.Velocity.magnitude;
+            float closeThreshold = 1.2f;
+            float closeDistance = Vector3.Distance(transform.position, _target.position);
+
+            if (objVelocity > 0 && closeDistance <= closeThreshold)
+            {
+                FaceTarget();
+                StartCheckingOddity();
             }
         }
     }
@@ -952,6 +965,7 @@ public class GuardPatrol : MonoBehaviour
         _agent.speed = _originalWalkSpeed;
         _agent.avoidancePriority = _originalPriority;
         _agent.isStopped = false;
+        _stats.Status = GuardStats.GuardStatus.None;
     }
 
     private void OnDrawGizmosSelected()
