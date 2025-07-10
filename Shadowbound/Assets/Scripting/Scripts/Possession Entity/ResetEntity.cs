@@ -59,9 +59,8 @@ public class ResetEntity : MonoBehaviour
                     torchLight.enabled = true;
                     emission.rateOverTime = 40.0f;
                     break;
-                case "Possessable_Animal":
+                case "Rat":
                     FleeingEntity entity = GetComponent<FleeingEntity>();
-                    transform.Find("Capsule").gameObject.SetActive(true);
                     transform.Find("Rat").gameObject.SetActive(true);
                     entity?.ResetAgent();
                     break;

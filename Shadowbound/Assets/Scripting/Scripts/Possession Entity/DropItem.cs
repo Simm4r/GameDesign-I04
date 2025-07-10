@@ -26,7 +26,7 @@ public class DropItem : MonoBehaviour
 
             if (Physics.Raycast(transform.position + Vector3.up, direction.normalized, out RaycastHit hit, direction.magnitude))
             {
-                dropPos = hit.point;
+                dropPos = hit.point - direction.normalized * 0.2f;
             }
 
             _inventory.DropItem(itemData, dropPos);

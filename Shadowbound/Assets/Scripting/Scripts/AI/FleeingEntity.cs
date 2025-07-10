@@ -86,7 +86,6 @@ public class FleeingEntity : MonoBehaviour
     {
         _currentState = EntityState.Safe;
         _agent.isStopped = true;
-        transform.Find("Capsule").gameObject.SetActive(false);
         transform.Find("Rat").gameObject.SetActive(false);
     }
 

@@ -25,6 +25,7 @@ TagManager:
   - SafeZone
   - Table
   - ShadowStep
+  - Rat
   layers:
   - Default
   - TransparentFX
