@@ -39,6 +39,7 @@ AudioMixerController:
   - guids:
     - ec2367199935d4445aa1de74facb5f24
     - cbb38eb1dc94f7340bf4e2759d681604
+    - 3f14baf3916bd094a82baf12ebcf52f4
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -53,6 +54,7 @@ AudioMixerGroupController:
   m_GroupID: ec2367199935d4445aa1de74facb5f24
   m_Children:
   - {fileID: -4207723762011233945}
+  - {fileID: 6740197243556114681}
   m_Volume: 62ac041432c5ced4c853813b145c0f7e
   m_Pitch: a41f99c9d116957408333b2601724ee6
   m_Send: 00000000000000000000000000000000
@@ -88,6 +90,39 @@ AudioMixerSnapshotController:
   m_FloatValues:
     9f9fad307e990044bb985682ff1d60d7: 9.925883
   m_TransitionOverrides: {}
+--- !u!243 &6740197243556114681
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MagiDoor
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 3f14baf3916bd094a82baf12ebcf52f4
+  m_Children: []
+  m_Volume: 77b82ce192898cf4e9e48d520700bc45
+  m_Pitch: 53885f7e02a7ba64e95f44ebe14f91ba
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 6862534609652287622}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &6862534609652287622
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: cccc8f89ecf66ab459b121d21817c6c0
+  m_EffectName: Attenuation
+  m_MixLevel: 3c512d26c48b3214d94682d1f87ec59a
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!244 &8334932281734998487
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
