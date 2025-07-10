@@ -13,7 +13,7 @@ public class StrongGuardPatrol : GuardPatrol
     {
         base.HandleVision();
 
-        if (_currentState == GuardState.Chasing && _target == Player.Instance.transform && !_sphere.OnField)
+        if (_currentState == GuardState.Chasing && _target == Player.Instance.transform && !_sphere.OnField && !PlayerInput.Instance.Dying)
         {
             StartCoroutine(MissileRoutine());
         }
@@ -22,9 +22,18 @@ public class StrongGuardPatrol : GuardPatrol
     private IEnumerator MissileRoutine()
     {
         float delay = Random.Range(3f, 5f);
-        yield return new WaitForSeconds(delay);
+        float elapsed = 0f;
 
-        if (_currentState == GuardState.Chasing)
+        while (elapsed < delay)
+        {
+            if (PlayerInput.Instance.Dying)
+                yield break;
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        if (_currentState == GuardState.Chasing && !PlayerInput.Instance.Dying)
         {
             var missile = GetComponentInChildren<MagicMissleController>();
             missile.TrialPos = _target.position + _target.forward * 0.5f;
