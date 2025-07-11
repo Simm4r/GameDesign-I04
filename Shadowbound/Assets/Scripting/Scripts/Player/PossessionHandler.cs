@@ -321,6 +321,7 @@ public class PossessionHandler : MonoBehaviour
         Vector3 direction = ComputeSafeDirection(_possessedEntity.transform.position + Vector3.up * 0.15f);
         _choosingSphere.transform.position = _possessedEntity.transform.position  + direction * 0.7f + Vector3.up * 0.15f;
         Time.timeScale = 0.0f;
+        PauseHandler.Instance.StopAudio();
         _choosingPosition = true;
         _choosingSphere.SetActive(true);
         _camera.player = _choosingSphere.transform;

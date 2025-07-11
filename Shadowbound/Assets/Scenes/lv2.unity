@@ -1091,6 +1091,10 @@ PrefabInstance:
       propertyPath: precomputeOutline
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1242816321901158078, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
+      propertyPath: m_TagString
+      value: PossessionRing
+      objectReference: {fileID: 0}
     - target: {fileID: 1896245395274100764, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: _outline
       value: 
@@ -1106,10 +1110,6 @@ PrefabInstance:
     - target: {fileID: 2776468307905692813, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: _lightThreshold
       value: 0.075
-      objectReference: {fileID: 0}
-    - target: {fileID: 2796602160274547154, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 17.5
       objectReference: {fileID: 0}
     - target: {fileID: 2865194175071063403, guid: 15c52ee13f435894c9d5fabe929030ef, type: 3}
       propertyPath: _healthbar
@@ -21233,7 +21233,7 @@ GameObject:
   - component: {fileID: 903339977}
   m_Layer: 0
   m_Name: GameManager
-  m_TagString: Untagged
+  m_TagString: GameManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

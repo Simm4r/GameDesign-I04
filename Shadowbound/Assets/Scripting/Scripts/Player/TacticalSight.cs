@@ -41,7 +41,7 @@ public class TacticalSight : MonoBehaviour
     }
     private void HandleSightCollider()
     {
-        _timer += Time.unscaledDeltaTime;
+        _timer += Time.deltaTime;
 
         float radius = Mathf.Lerp(0.0f, _maxRadius, _timer / _effectDuration);
 
@@ -104,7 +104,7 @@ public class TacticalSight : MonoBehaviour
     {
         if (_cooldown != 0)
         {
-            _cooldown -= Time.unscaledDeltaTime;
+            _cooldown -= Time.deltaTime;
             _cooldown = Mathf.Clamp(_cooldown, 0.0f, _maxCooldown);
             return;
         }

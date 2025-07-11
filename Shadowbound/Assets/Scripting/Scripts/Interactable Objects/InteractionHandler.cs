@@ -46,7 +46,7 @@ public class InteractionHandler : MonoBehaviour
 
         float distance = Vector3.Distance(_player.transform.position, transform.position);
 
-        if (distance > _triggerDistance)
+        if (distance > _triggerDistance || PlayerInput.Instance.Dying)
         {
             _actualState = State.Removed;
             InteractionBarHandler.Instance.RemoveInteraction(this);

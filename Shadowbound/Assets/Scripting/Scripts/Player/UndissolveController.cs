@@ -76,6 +76,7 @@ public class UndissolveController : MonoBehaviour
     {
         _source.Play();
         _outline.OutlineMode = Outline.Mode.OutlineAndSilhouette;
+        PauseHandler.Instance.PlayAudio();
         Time.timeScale = 0.05f;
         _undissolveAmount = 1f;
         _undissolving = true;

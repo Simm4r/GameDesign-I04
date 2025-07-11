@@ -26,6 +26,9 @@ TagManager:
   - Table
   - ShadowStep
   - Rat
+  - HUD
+  - GameManager
+  - PossessionRing
   layers:
   - Default
   - TransparentFX

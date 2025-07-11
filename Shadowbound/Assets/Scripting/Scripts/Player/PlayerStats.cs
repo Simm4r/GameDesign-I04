@@ -102,7 +102,10 @@ public class PlayerStats : MonoBehaviour
 
     void StopRumble()
     {
-        Gamepad.current.SetMotorSpeeds(0f, 0f);
+        if (Gamepad.current != null)
+        {
+            Gamepad.current.SetMotorSpeeds(0f, 0f);
+        }
     }
 
     public void HealDamage()
