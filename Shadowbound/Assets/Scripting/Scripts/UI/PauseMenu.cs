@@ -119,6 +119,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (PlayerInput.Instance.PauseQuit)
         {
+            HUDAudioHandler.Instance.StartSound();
             Hide();
         }
             
@@ -223,6 +224,7 @@ public class PauseMenu : MonoBehaviour
 
     private void ActivateSlot(int i)
     {
+        HUDAudioHandler.Instance.StartSound();
         Debug.Log(i);
         switch (i)
         {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class StartCuscene : MonoBehaviour
@@ -12,6 +13,9 @@ public class StartCuscene : MonoBehaviour
     private bool _startedFinalCorutine = false;
     private bool _dialogueFinished = false;
     private Canvas _canvas;
+    [SerializeField] private AudioSource _source;
+    [SerializeField] private AudioClip _clip;
+    [SerializeField] private AudioClip _background;
 
     void Awake()
     {
@@ -25,6 +29,9 @@ public class StartCuscene : MonoBehaviour
     }
     public void StartCutscene(Image _image, DialogueRepeatable dialogue)
     {
+        _source.Stop();
+        _source.resource = _clip;
+        _source.Play();
         _dialogue = dialogue;
         _cutsceneStarted = false;
         _startedFinalCorutine = false;
@@ -74,13 +81,21 @@ public class StartCuscene : MonoBehaviour
         yield return new WaitForSecondsRealtime(1.0f);
         _canvas.enabled = false;
         yield return new WaitForSecondsRealtime(0.5f);
+        while (_source.volume > 0.0f)
+        {
+            _source.volume = Mathf.Clamp01(_source.volume -= Time.deltaTime / 1.2f);
+            yield return null;
+        }
         ScreenFadeController.Instance.FadeToBlack();
-        yield return new WaitForSecondsRealtime(1.5f);
+        yield return new WaitForSecondsRealtime(0.5f);
         DialogueController.Instance.gameObject.SetActive(false);
         ScreenFadeController.Instance.FadeFromBlack();
-        yield return new WaitForSecondsRealtime(1.0f);
+        yield return new WaitForSecondsRealtime(0.5f);
         Player.Instance.InCutscene = false;
+        _source.Stop();
+        _source.volume = 1f;
+        _source.resource = _background;
+        _source.Play();
         OnCutsceneEnd?.Invoke();
-        Debug.Log("Invoco il metodo");
     }
 }

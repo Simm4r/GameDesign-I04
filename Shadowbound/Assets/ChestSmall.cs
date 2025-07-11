@@ -18,6 +18,7 @@ public class ChestSmall : MonoBehaviour
     [SerializeField] private float _speed = 1.0f;
     [SerializeField] private bool _startAnimation = false;
     [SerializeField] private GameObject _lid;
+    [SerializeField] private AudioSource _source;
 
     void Awake()
     {
@@ -49,6 +50,7 @@ public class ChestSmall : MonoBehaviour
     {
         if (_state == ChestSmallState.Opening || _state == ChestSmallState.Opened || _state == ChestSmallState.Closing)
             return;
+        _source.Play();
         _state = ChestSmallState.Opening;
         _progress = 0.0f;
     }

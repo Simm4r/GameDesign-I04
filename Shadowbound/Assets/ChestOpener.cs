@@ -13,6 +13,7 @@ public class ChestOpener : Interactable
     private Inventory _inventory;
     [SerializeField] private InteractionHandler _caller;
     [SerializeField] private ChestSmall _chest;
+    [SerializeField] private AudioSource _source;
 
     public override void Interact()
     {

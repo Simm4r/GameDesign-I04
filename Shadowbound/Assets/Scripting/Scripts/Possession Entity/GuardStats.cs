@@ -10,6 +10,10 @@ public class GuardStats : EntityStats
     [SerializeField] private ParticleSystem _sleepAura;
     [SerializeField] private ParticleSystem _scareAura;
     [SerializeField] private ParticleSystem _speedAura;
+    [SerializeField] private AudioSource _source;
+    [SerializeField] private AudioClip _fearSound;
+    [SerializeField] private AudioClip _speedSound;
+    [SerializeField] private AudioClip _sleepSound;
     public event Action<GuardStatus> OnStatusChanged;
     public enum GuardStatus
     {
@@ -31,16 +35,29 @@ public class GuardStats : EntityStats
             switch (value)
             {
                 case GuardStatus.Sleepy:
+                    _source.Stop();
+                    _source.resource = _sleepSound;
+                    _source.Play();
                     _sleepAura.Play(true);
                     break;
                 case GuardStatus.Scared:
+                    _source.Stop();
+                    _source.resource = _fearSound;
+                    _source.Play();
                     _scareAura.Play(true);
                     StartCoroutine(WaitForScare());
                     break;
                 case GuardStatus.Fastened:
+                    _source.Stop();
+                    _source.resource = _speedSound;
+                    _source.Play();
                     _speedAura.Play(true);
                     break;
                 case GuardStatus.None:
+                    if (PlayerInput.Instance.Dying)
+                    {
+                        _source.Stop();
+                    }
                     _sleepAura.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
                     _scareAura.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
                     _speedAura.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);

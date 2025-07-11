@@ -6,7 +6,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
 public class MenuHandler : MonoBehaviour
 {
     public static MenuHandler Instance { get; private set; }
@@ -20,6 +19,7 @@ public class MenuHandler : MonoBehaviour
     private bool _hoveringSomething = false;
     [SerializeField] private GameObject _lvSelectionMenu;
     [SerializeField] private GameObject _lvHighlightBar;
+    [SerializeField] private AudioSource _source;
     private bool _inLvSelection = false;
     private bool _hoveringSomethingLv = false;
     private CanvasGroup _lvHighlightCanvas;
@@ -166,6 +166,7 @@ public class MenuHandler : MonoBehaviour
 
     private void ActivateSlotLv(int i)
     {
+        HUDAudioHandler.Instance.StartSound();
         switch (i)
         {
             case 0:
@@ -181,7 +182,12 @@ public class MenuHandler : MonoBehaviour
 
     IEnumerator ChangeLevel(string v)
     {
-        yield return new WaitForSecondsRealtime(2.0f);
+        while (_source.volume > 0)
+        {
+            _source.volume = Mathf.Clamp01(_source.volume - Time.deltaTime / 2f);
+            yield return null;
+        }
+        yield return new WaitForSeconds(1.5f);
         SceneManager.LoadScene(v);
     }
 
@@ -287,6 +293,7 @@ public class MenuHandler : MonoBehaviour
     }
     private void ActivateSlot(int i)
     {
+        HUDAudioHandler.Instance.StartSound();
         Debug.Log(i);
         switch (i)
         {
@@ -329,7 +336,12 @@ public class MenuHandler : MonoBehaviour
 
     IEnumerator PlayDemo()
     {
-        yield return new WaitForSecondsRealtime(2.0f);
+        while (_source.volume > 0)
+        {
+            _source.volume = Mathf.Clamp01(_source.volume - Time.deltaTime / 2f);
+            yield return null;
+        }
+        yield return new WaitForSeconds(1.5f);
         SceneManager.LoadScene("intro");
     }
 }

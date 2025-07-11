@@ -11,6 +11,8 @@ public class SphereLauncher : MonoBehaviour
     private float _lifeTime = 0.0f;   
     private Rigidbody rb;
     private bool isStopped = false;
+    [SerializeField] private AudioSource _source;
+    [SerializeField] private List<AudioClip> _missles;
     public bool IsStopped
     {
         get => isStopped;
@@ -68,6 +70,9 @@ public class SphereLauncher : MonoBehaviour
     public void LaunchAuto(Vector3 target, float launchSpeed, GameObject caller, bool useHighArc = false)
     {
         OnField = true;
+        var index = Random.Range(0, _missles.Count);
+        _source.resource = _missles[index];
+        _source.Play();
         rb.constraints = RigidbodyConstraints.None;
 
         _caller = caller;

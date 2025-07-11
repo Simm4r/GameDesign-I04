@@ -13,6 +13,10 @@ public class DialogueController : MonoBehaviour
     private Queue<DialogueParagraph> paragraphs = new Queue<DialogueParagraph>();
     private bool conversationEnded;
     private bool isTyping;
+    public bool IsTyping
+    {
+        get => isTyping;
+    }
     private string p;
     private Coroutine typeDialogueCoroutine;
     private const string HTML_ALPHA = "<color=#00000000>";

@@ -15,6 +15,8 @@ public class SingleDialogue : Talkable
         }
         else if (PlayerInput.Instance.DialogueNext)
         {
+            if (!DialogueController.Instance.IsTyping)
+                HUDAudioHandler.Instance.StartSound();
             DialogueController.Instance.DisplayNextParagraph(_dialogueText);
 
         }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,6 +12,8 @@ public class FleeingEntity : MonoBehaviour
     [SerializeField] private Transform _den;
     [SerializeField] private float _detectionRange = 3f;
     [SerializeField] private float _pathRecalculateInterval = 1.2f;
+    [SerializeField] private AudioSource _source;
+    [SerializeField] private List<AudioClip> _squeeks;
 
     private NavMeshAgent _agent;
     private float _lastPathUpdateTime;
@@ -48,6 +51,9 @@ public class FleeingEntity : MonoBehaviour
 
     private void StartFleeing()
     {
+        var index = Random.Range(0, _squeeks.Count);
+        _source.resource = _squeeks[index];
+        _source.Play();
         _currentState = EntityState.Fleeing;
         _lastPathUpdateTime = -_pathRecalculateInterval; // forza aggiornamento immediato
         _agent.isStopped = false;

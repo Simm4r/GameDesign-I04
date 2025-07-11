@@ -58,8 +58,11 @@ public class EventDialogue : Talkable
             firstLine = false;
         }
         else if (PlayerInput.Instance.DialogueNext)
+        {
+            if (!DialogueController.Instance.IsTyping)
+                HUDAudioHandler.Instance.StartSound();
             DialogueController.Instance.DisplayNextParagraph(_dialogueText);
-
+        }
         if (DialogueController.Instance.CanExit && !_dialogueFinished)
         {
             _dialogueFinished = true;
