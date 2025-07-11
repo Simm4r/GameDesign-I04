@@ -193,6 +193,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleHUD",
+                    "type": "Button",
+                    "id": "d28ed3c6-1a33-481f-a8ed-a94029342c04",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -655,6 +664,17 @@
                     "processors": "",
                     "groups": ";MouseKeyboard",
                     "action": "KillInstant",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6a61b60e-a002-420b-a6b4-4621942c6fca",
+                    "path": "<Keyboard>/h",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleHUD",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -11039,6 +11039,7 @@ GameObject:
   - component: {fileID: 607895781}
   - component: {fileID: 607895780}
   - component: {fileID: 607895783}
+  - component: {fileID: 607895784}
   m_Layer: 3
   m_Name: Intro_Dialogue
   m_TagString: Untagged
@@ -11102,6 +11103,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f706e3a3650d1854ab7f7396f3e8eb94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &607895784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607895778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 736d6e3998da77243894935b51fa975b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tutorialPage: 6
+  _triggerType: 2
 --- !u!1001 &614004347
 PrefabInstance:
   m_ObjectHideFlags: 0

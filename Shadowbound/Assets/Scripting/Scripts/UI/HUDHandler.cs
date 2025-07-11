@@ -103,6 +103,7 @@ public class HUDHandler : MonoBehaviour
         }
         else if (PossessionHandler.Instance.ChoosingPosition)
         {
+            _interactionBar.SetActive(false);
             AuxiliaryBarHandler.Instance.HideBar();
             InteractionKeySpritehandler.Instance.setKey(InteractionKeySpritehandler.KeyType.Interact);
             SmallNotificationBarHandler.Instance.SetText("Choose position");

@@ -279,6 +279,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleHUD"",
+                    ""type"": ""Button"",
+                    ""id"": ""d28ed3c6-1a33-481f-a8ed-a94029342c04"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -743,6 +752,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""KillInstant"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a61b60e-a002-420b-a6b4-4621942c6fca"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleHUD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -961,6 +981,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Mouse = m_Player.FindAction("Mouse", throwIfNotFound: true);
         m_Player_MouseConfirm = m_Player.FindAction("MouseConfirm", throwIfNotFound: true);
         m_Player_KillInstant = m_Player.FindAction("KillInstant", throwIfNotFound: true);
+        m_Player_ToggleHUD = m_Player.FindAction("ToggleHUD", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_Up = m_Menu.FindAction("Up", throwIfNotFound: true);
@@ -1071,6 +1092,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Mouse;
     private readonly InputAction m_Player_MouseConfirm;
     private readonly InputAction m_Player_KillInstant;
+    private readonly InputAction m_Player_ToggleHUD;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1167,6 +1189,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @KillInstant => m_Wrapper.m_Player_KillInstant;
         /// <summary>
+        /// Provides access to the underlying input action "Player/ToggleHUD".
+        /// </summary>
+        public InputAction @ToggleHUD => m_Wrapper.m_Player_ToggleHUD;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -1255,6 +1281,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @KillInstant.started += instance.OnKillInstant;
             @KillInstant.performed += instance.OnKillInstant;
             @KillInstant.canceled += instance.OnKillInstant;
+            @ToggleHUD.started += instance.OnToggleHUD;
+            @ToggleHUD.performed += instance.OnToggleHUD;
+            @ToggleHUD.canceled += instance.OnToggleHUD;
         }
 
         /// <summary>
@@ -1329,6 +1358,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @KillInstant.started -= instance.OnKillInstant;
             @KillInstant.performed -= instance.OnKillInstant;
             @KillInstant.canceled -= instance.OnKillInstant;
+            @ToggleHUD.started -= instance.OnToggleHUD;
+            @ToggleHUD.performed -= instance.OnToggleHUD;
+            @ToggleHUD.canceled -= instance.OnToggleHUD;
         }
 
         /// <summary>
@@ -1693,6 +1725,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnKillInstant(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleHUD" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleHUD(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Menu" which allows adding and removing callbacks.

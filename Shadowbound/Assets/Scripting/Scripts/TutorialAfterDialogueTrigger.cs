@@ -9,7 +9,8 @@ public class TutorialAfterDialogueTrigger : MonoBehaviour
     private enum TriggerType
     {
         Proximity,
-        Dialogue
+        Dialogue,
+        DialogueCutscene
     }
     [SerializeField] private TriggerType _triggerType = TriggerType.Proximity;
     void Awake()
@@ -20,7 +21,7 @@ public class TutorialAfterDialogueTrigger : MonoBehaviour
 
     void Update()
     {
-        if ((_triggerType == TriggerType.Proximity && !_handler.DialogueFinished) || (_triggerType == TriggerType.Dialogue && !_dialogue.DialogueFinished))
+        if ((_triggerType == TriggerType.Proximity && !_handler.DialogueFinished) || (_triggerType == TriggerType.Dialogue && !_dialogue.DialogueFinished) || (_triggerType == TriggerType.DialogueCutscene && GetComponent<HandleCamera>() != null))
             return;
 
         if (TutorialHandler.Instance.GetActualState() == "Idle")
@@ -55,6 +56,10 @@ public class TutorialAfterDialogueTrigger : MonoBehaviour
                 TutorialHandler.Instance.Hide();
                 enabled = false;
                 break;
+            case TutorialHandler.TutorialPage.Base:
+                TutorialHandler.Instance.Hide();
+                enabled = false;
+                break;
         }
         HUDAudioHandler.Instance.StartSound();
     }
@@ -71,6 +76,9 @@ public class TutorialAfterDialogueTrigger : MonoBehaviour
                 break;
             case TutorialHandler.TutorialPage.PosEn2:
                 TutorialHandler.Instance.SetActualTutorial(TutorialHandler.TutorialPage.PosEn2);
+                break;
+            case TutorialHandler.TutorialPage.Base:
+                TutorialHandler.Instance.SetActualTutorial(TutorialHandler.TutorialPage.Base);
                 break;
         }
         TutorialHandler.Instance.Show();

@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 
@@ -155,6 +156,11 @@ public class PossessionHandler : MonoBehaviour
     {
         if (_possessionCooldown > 0.0f)
             return;
+
+        if (Gamepad.current != null)
+        {
+            Gamepad.current.SetMotorSpeeds(0f, 0f);
+        }
 
         if (!ShadowHandler.Instance.CurrentPossessable)
             return;

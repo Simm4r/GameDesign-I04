@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.TextCore.Text;
 
 public class Player : MonoBehaviour
@@ -55,6 +56,10 @@ public class Player : MonoBehaviour
         }
         
         Instance = this;
+        if (Gamepad.current != null)
+        {
+            Gamepad.current.SetMotorSpeeds(0f, 0f);
+        }
         Application.targetFrameRate = 500;
     }
 

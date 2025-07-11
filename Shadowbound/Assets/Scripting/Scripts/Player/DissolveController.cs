@@ -72,6 +72,7 @@ public class DissolveController : MonoBehaviour
 
     public void StartDissolve()
     {
+        
         targetRenderer.material = fadeMaterial;
         Time.timeScale = 0.05f;
         dissolveAmount = 0f;

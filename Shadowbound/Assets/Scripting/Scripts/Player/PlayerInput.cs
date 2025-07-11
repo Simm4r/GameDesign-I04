@@ -9,7 +9,6 @@ public class PlayerInput : MonoBehaviour
     private PlayerControls _controls;
     private Vector2 _moveInput;
     private bool _inPossession;
-    private bool _sprintKeyPressed = false;
     private bool _dying = false;
     private Vector2 _lookInput;
     private Vector2 _mousePosition;
@@ -35,30 +34,7 @@ public class PlayerInput : MonoBehaviour
 
     public string CurrentScheme => _currentScheme;
 
-    public bool Sprint
-    {
-        get
-        {
-
-            if (_currentScheme == "Gamepad")
-            {
-                if (_sprintWithButton)
-                {
-                    return _sprintKeyPressed;
-                }
-                else
-                {
-                    Debug.Log("Sprint analogico");
-                    return true;
-                }
-            }
-            else
-            {
-                return _sprintKeyPressed;
-            }
-        }
-    }
-
+    public bool Sprint => _controls.Player.Sprint.ReadValue<float>() > 0.2f;
     public bool ShadowScreen => !Player.Instance.InCutscene && !Player.Instance.Tutorial && !PauseHandler.Instance.InPause && !_dying && !_inPossession && !Player.Instance.Reading && !Player.Instance.InDialogue && _controls.Player.ShadowScreen.ReadValue<float>() > 0;
     public bool Possessing => !Player.Instance.InCutscene && !Player.Instance.Tutorial && !PauseHandler.Instance.InPause && !_dying && !_inPossession && !Player.Instance.Reading && !Player.Instance.InDialogue && _controls.Player.Possession.ReadValue<float>() > 0;
     public bool ShadowVision => !Player.Instance.InCutscene && !Player.Instance.Tutorial && !PauseHandler.Instance.InPause && !_dying && !_inPossession && !Player.Instance.Reading && !Player.Instance.InDialogue && _controls.Player.ShadowVision.ReadValue<float>() > 0;
@@ -76,6 +52,7 @@ public class PlayerInput : MonoBehaviour
     public bool PauseConfirm => PauseHandler.Instance.InPause && _controls.Player.PauseConfirm.triggered;
     public bool MouseConfirm => _controls.Player.MouseConfirm.triggered;
     public bool KillInstant => !_dying && !Player.Instance.InCutscene && !Player.Instance.InDialogue && !PauseHandler.Instance.InPause && _controls.Player.KillInstant.triggered;
+    public bool HideHud => _controls.Player.ToggleHUD.triggered;
     private void Awake()
     {
         if (Instance != null)
@@ -99,12 +76,10 @@ public class PlayerInput : MonoBehaviour
 
         _controls.Player.Sprint.performed += ctx =>
         {
-            _sprintKeyPressed = true;
             UpdateCurrentScheme(ctx.control.device);
         };
         _controls.Player.Sprint.canceled += ctx =>
         {
-            _sprintKeyPressed = false;
             UpdateCurrentScheme(ctx.control.device);
         };
 
@@ -311,20 +286,7 @@ public class PlayerInput : MonoBehaviour
 
     private void ProcessMoveInput(Vector2 inputValue)
     {
-        if (_sprintWithButton)
-        {
-            _moveInput = inputValue;
-        }
-        else if (_currentScheme == "Gamepad")
-        {
-            float mag = inputValue.magnitude;
-            float smoothedMag = Mathf.Pow(mag, 2);
-            _moveInput = mag < 0.3f ? inputValue.normalized * 0.3f : inputValue.normalized * smoothedMag;
-        }
-        else
-        {
-            _moveInput = inputValue;
-        }
+        _moveInput = inputValue.normalized;
     }
 
     private void UpdateCurrentScheme(InputDevice device)
