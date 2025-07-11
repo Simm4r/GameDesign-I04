@@ -288,6 +288,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GodMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""3d882a16-f421-40fa-b35f-19a48802b867"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -759,8 +768,19 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/h"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";MouseKeyboard"",
                     ""action"": ""ToggleHUD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dd4b8f26-3dc4-45d0-8f99-f823f9e53c1b"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";MouseKeyboard"",
+                    ""action"": ""GodMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -982,6 +1002,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_MouseConfirm = m_Player.FindAction("MouseConfirm", throwIfNotFound: true);
         m_Player_KillInstant = m_Player.FindAction("KillInstant", throwIfNotFound: true);
         m_Player_ToggleHUD = m_Player.FindAction("ToggleHUD", throwIfNotFound: true);
+        m_Player_GodMode = m_Player.FindAction("GodMode", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_Up = m_Menu.FindAction("Up", throwIfNotFound: true);
@@ -1093,6 +1114,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MouseConfirm;
     private readonly InputAction m_Player_KillInstant;
     private readonly InputAction m_Player_ToggleHUD;
+    private readonly InputAction m_Player_GodMode;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1193,6 +1215,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @ToggleHUD => m_Wrapper.m_Player_ToggleHUD;
         /// <summary>
+        /// Provides access to the underlying input action "Player/GodMode".
+        /// </summary>
+        public InputAction @GodMode => m_Wrapper.m_Player_GodMode;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -1284,6 +1310,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ToggleHUD.started += instance.OnToggleHUD;
             @ToggleHUD.performed += instance.OnToggleHUD;
             @ToggleHUD.canceled += instance.OnToggleHUD;
+            @GodMode.started += instance.OnGodMode;
+            @GodMode.performed += instance.OnGodMode;
+            @GodMode.canceled += instance.OnGodMode;
         }
 
         /// <summary>
@@ -1361,6 +1390,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ToggleHUD.started -= instance.OnToggleHUD;
             @ToggleHUD.performed -= instance.OnToggleHUD;
             @ToggleHUD.canceled -= instance.OnToggleHUD;
+            @GodMode.started -= instance.OnGodMode;
+            @GodMode.performed -= instance.OnGodMode;
+            @GodMode.canceled -= instance.OnGodMode;
         }
 
         /// <summary>
@@ -1732,6 +1764,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnToggleHUD(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "GodMode" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnGodMode(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Menu" which allows adding and removing callbacks.

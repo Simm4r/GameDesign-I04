@@ -32,25 +32,49 @@ public class PauseHandler : MonoBehaviour
             PauseMenu.Instance.Show();
         }
 
-        if (Time.timeScale != 0 && Time.timeScale != 1)
+        try
         {
-            _sources.ForEach(source =>
+            if (Time.timeScale != 0 && Time.timeScale != 1)
             {
-                if (!source.CompareTag("PossessionRing"))
-                    source.pitch = Time.timeScale;
-            });
+                foreach (var source in _sources)
+                {
+                    if (source == null) continue;
+                    if (!source.CompareTag("PossessionRing"))
+                        source.pitch = Time.timeScale;
+                }
+            }
+            else
+            {
+                foreach (var source in _sources)
+                {
+                    if (source == null) continue;
+                    source.pitch = 1;
+                }
+            }
         }
-        else
-            _sources.ForEach(source => source.pitch = 1);
+        catch (System.Exception e)
+        {
+            Debug.LogWarning($"Errore nell'aggiornamento del pitch audio: {e.Message}");
+        }
     }
 
     public void StopAudio()
     {
-        _sources.ForEach(source => source.Pause());
+        foreach (var source in _sources)
+        {
+            if (source == null) continue;
+            try { source.Pause(); }
+            catch (System.Exception e) { Debug.LogWarning($"Errore nel Pause(): {e.Message}"); }
+        }
     }
 
     public void PlayAudio()
     {
-        _sources.ForEach(source => source.UnPause());
+        foreach (var source in _sources)
+        {
+            if (source == null) continue;
+            try { source.UnPause(); }
+            catch (System.Exception e) { Debug.LogWarning($"Errore nel UnPause(): {e.Message}"); }
+        }
     }
 }

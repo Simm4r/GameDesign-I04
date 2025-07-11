@@ -65,7 +65,7 @@ public class LaserEmitter : MonoBehaviour
                     continue;
 
                 // Se colpisce il player
-                if (hit.collider == Player.Instance.gameObject.GetComponent<CapsuleCollider>() && !PlayerInput.Instance.Dying && PlayerStats.Instance.CanBeHit)
+                if (!GodMode.Instance.godMode && hit.collider == Player.Instance.gameObject.GetComponent<CapsuleCollider>() && !PlayerInput.Instance.Dying && PlayerStats.Instance.CanBeHit)
                 {
                     PlayerStats.Instance.CanBeHit = false;
                     PlayerStats.Instance.HitByLaser = true;
@@ -96,7 +96,7 @@ public class LaserEmitter : MonoBehaviour
                 !_collidersToIgnore.Contains(h.collider) &&
                 h.collider != Player.Instance.gameObject.GetComponent<CapsuleCollider>()
             );
-            if (hits[0].collider == Player.Instance.gameObject.GetComponent<CapsuleCollider>() && !PlayerInput.Instance.Dying && PlayerStats.Instance.CanBeHit)
+            if (!GodMode.Instance.godMode && hits[0].collider == Player.Instance.gameObject.GetComponent<CapsuleCollider>() && !PlayerInput.Instance.Dying && PlayerStats.Instance.CanBeHit)
                 {
                     PlayerStats.Instance.CanBeHit = false;
                     PlayerStats.Instance.HitByLaser = true;

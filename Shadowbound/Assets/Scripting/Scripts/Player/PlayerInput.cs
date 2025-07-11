@@ -53,6 +53,7 @@ public class PlayerInput : MonoBehaviour
     public bool MouseConfirm => _controls.Player.MouseConfirm.triggered;
     public bool KillInstant => !_dying && !Player.Instance.InCutscene && !Player.Instance.InDialogue && !PauseHandler.Instance.InPause && _controls.Player.KillInstant.triggered;
     public bool HideHud => _controls.Player.ToggleHUD.triggered;
+    public bool GodMode => _controls.Player.GodMode.triggered;
     private void Awake()
     {
         if (Instance != null)

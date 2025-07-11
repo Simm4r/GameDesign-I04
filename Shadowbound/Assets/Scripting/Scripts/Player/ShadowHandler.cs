@@ -73,7 +73,8 @@ public class ShadowHandler : MonoBehaviour
             }
             if (!IsInShadow() && _canTakeDamage)
             {
-                PlayerStats.Instance.TakeDamage();
+                if(!GodMode.Instance.godMode)
+                    PlayerStats.Instance.TakeDamage();
             }
             else
             {
