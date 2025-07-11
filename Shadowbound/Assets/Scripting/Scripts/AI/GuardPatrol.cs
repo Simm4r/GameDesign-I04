@@ -899,6 +899,21 @@ public class GuardPatrol : MonoBehaviour
                 // Se la direzione dell'ostacolo è abbastanza allineata col percorso (es: almeno 0.7 su 1)
                 if (dot > 0.7f)
                 {
+                    if (obstacle.GetComponent<PullLeverHandler>() != null)
+                    {
+                        _agent.ResetPath();
+                        Vector3 leverPos = obstacle.transform.position;
+                        Vector3 dirToLever = (leverPos - transform.position).normalized;
+
+                        Vector3 destination = leverPos - dirToLever * 1.5f;
+                        _agent.SetDestination(destination);
+
+                        while (_agent.pathPending || _agent.remainingDistance > _agent.stoppingDistance)
+                        {
+                            yield return null;
+                        }
+                    }
+
                     InteractWithObstacle(obstacle);
 
                     yield return new WaitForSeconds(1.2f);

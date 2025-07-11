@@ -34,7 +34,7 @@ public class CarveHandler : MonoBehaviour
                     Vector3 forward = obstacle.transform.forward;
                     float dot = Vector3.Dot(forward, toAgent);
 
-                    if (dot > 0.5f) // la porta si apre verso l'agente
+                    if (dot > -0.5f) // la porta si apre verso l'agente
                         triggerDistance = 2.5f;
                     else
                         triggerDistance = 1f;
