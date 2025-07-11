@@ -27,10 +27,13 @@ public class Item : Interactable
             return;
         }
 
+
+
         bool inserted = inventory.AddItem(_itemData);
         if (inserted)
         {
             InteractionBarHandler.Instance.RemoveInteraction(_caller);
+            
             Destroy(gameObject);
         }
             
@@ -40,8 +43,8 @@ public class Item : Interactable
     {
         if (!PlayerInput.Instance.InPossession)
         {
-                _caller.Player = null;
-                _canInteract = false;
+            _caller.Player = null;
+            _canInteract = false;
             return;
         }
 
@@ -51,7 +54,7 @@ public class Item : Interactable
 
             _caller.Player = PossessionHandler.Instance.PossessedEntity;
             _canInteract = true;
+            return;
         }
-
     }
 }

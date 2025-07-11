@@ -127,7 +127,7 @@ public class ShadowStep : Interactable
 
     void Update()
     {
-        if (PlayerInput.Instance.InPossession)
+        if (PlayerInput.Instance.InPossession || Player.Instance.InShadowStep)
         {
             if (_canInteract)
                 _canInteract = false;

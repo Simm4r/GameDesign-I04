@@ -91,6 +91,8 @@ public class PauseMenu : MonoBehaviour
                     _highlightCanvas.alpha = _highlightAlpha;
                     if (_alpha == 0)
                     {
+                        if(_oldScaleTime != 0)
+                            PauseHandler.Instance.PlayAudio();
                         _state = State.Idle;
                         PauseHandler.Instance.InPause = false;
                         Time.timeScale = _oldScaleTime;
@@ -119,6 +121,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (PlayerInput.Instance.PauseQuit)
         {
+            HUDAudioHandler.Instance.StartSound();
             Hide();
         }
             
@@ -223,6 +226,7 @@ public class PauseMenu : MonoBehaviour
 
     private void ActivateSlot(int i)
     {
+        HUDAudioHandler.Instance.StartSound();
         Debug.Log(i);
         switch (i)
         {

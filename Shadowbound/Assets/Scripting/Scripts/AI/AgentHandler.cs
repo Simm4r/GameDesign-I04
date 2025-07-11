@@ -78,7 +78,7 @@ public class AgentHandler : MonoBehaviour
 
     private void IsAgentInChase()
     {
-        if(PlayerInput.Instance.Dying) {
+        if(PlayerInput.Instance.Dying && _source.resource != _background) {
             _source.Stop();
             _source.resource = _background;
             _source.volume = 1.0f;

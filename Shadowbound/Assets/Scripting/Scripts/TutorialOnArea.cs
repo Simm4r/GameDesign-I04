@@ -56,6 +56,7 @@ public class TutorialOnArea : MonoBehaviour
                 enabled = false;
                 break;
         }
+        HUDAudioHandler.Instance.StartSound();
     }
         
     private void HandleTutorialPage()

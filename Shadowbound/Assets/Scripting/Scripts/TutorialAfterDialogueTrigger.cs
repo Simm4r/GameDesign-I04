@@ -30,7 +30,7 @@ public class TutorialAfterDialogueTrigger : MonoBehaviour
         }
         else if (TutorialHandler.Instance.GetActualState() == "OnScreen")
         {
-            if(PlayerInput.Instance.DialogueNext) 
+            if(PlayerInput.Instance.DialogueNext)
                 HandleTutorial();
         }
     }
@@ -54,8 +54,9 @@ public class TutorialAfterDialogueTrigger : MonoBehaviour
             case TutorialHandler.TutorialPage.PosEn2:
                 TutorialHandler.Instance.Hide();
                 enabled = false;
-                break; 
+                break;
         }
+        HUDAudioHandler.Instance.StartSound();
     }
 
     private void HandleTutorialPage()

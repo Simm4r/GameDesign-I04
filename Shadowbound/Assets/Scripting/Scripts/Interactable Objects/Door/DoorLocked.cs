@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ public class DoorLocked : Interactable
     [SerializeField] private bool _springLock = false;
     private bool _hasKey = false;
     private bool _canInteract = false;
+    private bool _inCorutine = false;
+    [SerializeField] private AudioSource _source;
 
     public bool IsLocked
     {
@@ -32,9 +35,21 @@ public class DoorLocked : Interactable
             NotificationBar.Instance.StartBlink();
             return;
         }
+        StartCoroutine(OpenDoor());
+    }
+
+    IEnumerator OpenDoor()
+    {
+        _inCorutine = true;
+        if (_isLocked == true && !_doorOpener.IsOpen)
+        {
+            _source.Play();
+            yield return new WaitUntil(() => !_source.isPlaying);
+        }
         _isLocked = false;
         _canInteract = false;
         _doorOpener.StartAnimation();
+        _inCorutine = false;
     }
 
     void Update()

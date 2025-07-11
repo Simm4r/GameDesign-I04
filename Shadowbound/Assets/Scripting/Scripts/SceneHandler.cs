@@ -9,6 +9,7 @@ public class SceneHandler : MonoBehaviour
     [SerializeField] private GameObject _logo;
     [SerializeField] GameObject _logoImage;
     [SerializeField] private GameObject _menu;
+    [SerializeField] private AudioSource _source;
     void Awake()
     {
         if (Instance != null)
@@ -38,6 +39,7 @@ public class SceneHandler : MonoBehaviour
         ScreenFadeController.Instance.FadeToBlack();
         yield return new WaitForSecondsRealtime(2f);
         _logo.SetActive(false);
+        _source.Play();
         _menu.SetActive(true);
         ScreenFadeController.Instance.FadeFromBlack();
     }

@@ -10,6 +10,9 @@ public class Inventory : MonoBehaviour
     [SerializeField] int maxItems = 1;
 
     [SerializeField] private PossessedController _possessedController;
+    [SerializeField] private AudioSource _source;
+    [SerializeField] private AudioClip _pickUp;
+    [SerializeField] private AudioClip _drop;
     public bool showInventory = false;
 
     public bool AddItem(ItemData newItem)
@@ -18,15 +21,19 @@ public class Inventory : MonoBehaviour
 
         if (existingItem == null && items.Count < maxItems)
         {
+            _source.Stop();
+            _source.resource = _pickUp;
+            _source.Play();
             items.Add(new InventoryItem(newItem));
             Debug.Log($"Aggiunto {newItem.itemName}");
             _inventoryUI.UpdateSlot(newItem.icon);
             return true;
 
         }
-        else if (existingItem == null && items.Count >= maxItems)
+        else if (existingItem == null && items.Count >= maxItems && !NotificationBar.Instance.IsBlinking)
         {
-            Debug.Log("Inventory full");
+            NotificationBar.Instance.SetText("Inventory full");
+            NotificationBar.Instance.StartBlink();
         }
         return false;
     }
@@ -40,7 +47,9 @@ public class Inventory : MonoBehaviour
             Debug.LogError("Item Not Found");
             return;
         }
-
+        _source.Stop();
+        _source.resource = _drop;
+        _source.Play();
         items.Remove(item);
         _inventoryUI.ClearSlot();
         InventoryHUD.Instance.ClearSlot();

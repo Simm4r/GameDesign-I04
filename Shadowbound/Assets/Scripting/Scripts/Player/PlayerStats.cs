@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 public class PlayerStats : MonoBehaviour
@@ -79,6 +80,7 @@ public class PlayerStats : MonoBehaviour
 
         if (_currentHealth <= 0)
         {
+            StopRumble();
             Die();
             return;
         }
@@ -88,11 +90,22 @@ public class PlayerStats : MonoBehaviour
             _tickDamageTimer -= Time.deltaTime;
             return;
         }
-
+        if (Gamepad.current != null)
+        {
+            Gamepad.current.SetMotorSpeeds(0.1f, 0.5f);
+        }
         _tickDamageTimer = _damageOverTimeInterval;
         _currentHealth -= _baseDamageTaken;
         Healthbar.Instance.UpdateHealthbar(_maxHealth, _currentHealth);
 
+    }
+
+    void StopRumble()
+    {
+        if (Gamepad.current != null)
+        {
+            Gamepad.current.SetMotorSpeeds(0f, 0f);
+        }
     }
 
     public void HealDamage()
@@ -107,7 +120,7 @@ public class PlayerStats : MonoBehaviour
             _healTimer -= Time.deltaTime;
             return;
         }
-
+        StopRumble();
         _healTimer = _healOverTimeInterval;
         _currentHealth += _baseDamageHealed;
         Healthbar.Instance.UpdateHealthbar(_maxHealth, _currentHealth);

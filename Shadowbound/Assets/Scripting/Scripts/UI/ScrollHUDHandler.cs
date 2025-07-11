@@ -57,7 +57,10 @@ public class ScrollHUDHandler : MonoBehaviour
                 break;
             case State.OnScreen:
                 if (PlayerInput.Instance.DialogueNext)
-                    _state = State.Fading;
+                {
+                    HUDAudioHandler.Instance.StartSound();
+                    _state = State.Fading; 
+                }
                 break;
             case State.Idle:
                 break;
