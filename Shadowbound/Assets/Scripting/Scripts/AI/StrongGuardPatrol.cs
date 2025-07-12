@@ -101,13 +101,8 @@ public class StrongGuardPatrol : GuardPatrol
         if (_isTargetVisible && _target != Player.Instance.transform)
         {
             float dist = Vector3.Distance(transform.position, _target.position);
-            if (dist > 0.5f)
+            if (dist > 1.5f)
             {
-                if (!NavMesh.SamplePosition(_target.position, out _, 1f, NavMesh.AllAreas))
-                {
-                    StartInvestigation();
-                }
-
                 _agent.SetDestination(_target.position);
             }
             else if (_target.GetComponent<MultiTag>() == null) // Lo specchio ha un multi-tag
