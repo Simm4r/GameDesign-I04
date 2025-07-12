@@ -6010,6 +6010,8 @@ GameObject:
   - component: {fileID: 228185111}
   - component: {fileID: 228185112}
   - component: {fileID: 228185113}
+  - component: {fileID: 228185114}
+  - component: {fileID: 228185115}
   m_Layer: 0
   m_Name: RatEasterEgg
   m_TagString: Untagged
@@ -6066,6 +6068,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 261df69a043069f488a8149226613aa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _trigger: {fileID: 228185115}
   _caller: {fileID: 228185112}
   _rat: {fileID: 893048912}
   Momo1: {fileID: 545455781}
@@ -6075,6 +6078,33 @@ MonoBehaviour:
   SoulPos1: {fileID: 1819557416}
   SoulPos2: {fileID: 1117975044}
   camera2: {fileID: 315384014}
+--- !u!114 &228185114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 228185110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd76f6f7a911c23458cfbc204bcabdc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _triggerE: {fileID: 228185115}
+  _dialogueText: {fileID: 11400000, guid: 54489e5abc0c81545b0ae104848b28e1, type: 2}
+--- !u!114 &228185115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 228185110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: decc0f544e32d1140bf165c134a37edc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _read: {fileID: 0}
 --- !u!4 &228473158 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: b81e318bd6b86a746bb627dcbc0c51b9, type: 3}
@@ -76399,6 +76429,13 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4515883377714831899, guid: ee9d7c862b2f5314dba0471c13f6e8a1, type: 3}
+      propertyPath: m_text
+      value: "Guards will chase after Momo if they detect \nher. By pressing            
+        Momo will release a \nthick  shadowy smoke to cover herself in \nshadow and
+        to hide herself from the guards.\nThis strong ability is rechargeable only
+        after\ntotal fading or after a binding to a ritual site."
+      objectReference: {fileID: 0}
     - target: {fileID: 6678009655660329261, guid: ee9d7c862b2f5314dba0471c13f6e8a1, type: 3}
       propertyPath: m_Name
       value: HUD
@@ -76482,6 +76519,15 @@ PrefabInstance:
     - target: {fileID: 7646539262772400506, guid: ee9d7c862b2f5314dba0471c13f6e8a1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7911898935618058014, guid: ee9d7c862b2f5314dba0471c13f6e8a1, type: 3}
+      propertyPath: m_text
+      value: 'While possessing an entity keep an eye on the
+
+        possession bar,
+        when the time runs out, Momo
+
+        will quit the possession.'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

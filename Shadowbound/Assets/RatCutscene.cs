@@ -13,6 +13,7 @@ public class RatCutscene : Interactable
         get => _canInteract;
         set => _canInteract = value;
     }
+    [SerializeField] private EventTriggerGeneral _trigger;
 
     [SerializeField] private InteractionHandler _caller;
     [SerializeField] private FleeingEntity _rat;
@@ -114,5 +115,6 @@ public class RatCutscene : Interactable
         ScreenFadeController.Instance.FadeFromBlack();
         yield return new WaitForSeconds(1.5f);
         Player.Instance.InCutscene = false;
+        _trigger.TriggerEvent();
     }
 }

@@ -18,6 +18,11 @@ public class EventTriggerer : MonoBehaviour
             OnReadFinished?.Invoke();
             enabled = false;
         }
-            
+
+    }
+
+    public void TriggerEvent()
+    {
+        OnReadFinished?.Invoke();
     }
 }
