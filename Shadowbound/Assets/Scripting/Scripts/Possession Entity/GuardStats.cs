@@ -41,10 +41,6 @@ public class GuardStats : EntityStats
                     _sleepAura.Play(true);
                     break;
                 case GuardStatus.Scared:
-                    _source.Stop();
-                    _source.resource = _fearSound;
-                    _source.Play();
-                    _scareAura.Play(true);
                     StartCoroutine(WaitForScare());
                     break;
                 case GuardStatus.Fastened:
@@ -71,6 +67,10 @@ public class GuardStats : EntityStats
     IEnumerator WaitForScare()
     {
         yield return new WaitForSeconds(1.0f);
+        _source.Stop();
+        _source.resource = _fearSound;
+        _source.Play();
+        _scareAura.Play(true);
         PossessionHandler.Instance.QuitImmediate = true;
     }
 

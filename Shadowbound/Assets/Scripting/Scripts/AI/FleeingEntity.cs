@@ -7,7 +7,7 @@ public class FleeingEntity : MonoBehaviour
     public enum EntityState { Idle, Fleeing, Safe }
 
     [SerializeField] private EntityState _currentState = EntityState.Idle;
-
+    public EntityState CurrentState => _currentState;
     [Header("Settings")]
     [SerializeField] private Transform _den;
     [SerializeField] private float _detectionRange = 3f;

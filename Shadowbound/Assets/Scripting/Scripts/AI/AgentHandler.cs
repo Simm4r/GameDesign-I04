@@ -58,7 +58,10 @@ public class AgentHandler : MonoBehaviour
 
             if (_inDialogue || _inCutscene)
             {
-                _scripts.ForEach(script => script.enabled = false);
+                _scripts.ForEach(script => {
+                    if(script != null)
+                        script.enabled = false;
+                });
                 _agents.ForEach(agent => agent.enabled = false);
             }
 
@@ -67,8 +70,10 @@ public class AgentHandler : MonoBehaviour
                 _agents.ForEach(agent => agent.enabled = true);
                 _scripts.ForEach(script =>
                 {
+                    if (script == null)
+                        return;
                     if (script is GuardPatrol gp)
-                        gp.EnableAfterDialogue = true;
+                            gp.EnableAfterDialogue = true;
                     script.enabled = true;
                 });
             }

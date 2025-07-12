@@ -7,6 +7,7 @@ public class RatDen : Interactable
 {
     [SerializeField] private Transform _exitPoint;
     [SerializeField] private InteractionHandler _caller;
+    [SerializeField] private AudioSource _source;
     private enum Direction
     {
         Left,
@@ -33,6 +34,9 @@ public class RatDen : Interactable
 
     IEnumerator waitForFade()
     {
+        yield return new WaitForSeconds(0.5f);
+        _source.Stop();
+        _source.Play();
         yield return new WaitForSeconds(1.5f);
         Player.Instance.GetComponent<KinematicCharacterMotor>().SetPositionAndRotation(_exitPoint.position, Quaternion.LookRotation(_exitPoint.forward));
         Camera.main.GetComponent<ThirdPersonCamera>()?.ForceSetCamera(Player.Instance.transform.position, _direction == Direction.Left ? Player.Instance.transform.right : -Player.Instance.transform.right);

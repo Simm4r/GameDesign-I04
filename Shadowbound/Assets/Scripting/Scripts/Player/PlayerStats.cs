@@ -57,7 +57,7 @@ public class PlayerStats : MonoBehaviour
     {
         get => _currentHealth;
         set => _currentHealth = value;
-    } 
+    }
 
     private void Awake()
     {
@@ -68,7 +68,7 @@ public class PlayerStats : MonoBehaviour
         }
 
         Instance = this;
-    } 
+    }
     private void Start()
     {
         _currentHealth = _maxHealth;
@@ -92,7 +92,8 @@ public class PlayerStats : MonoBehaviour
         }
         if (Gamepad.current != null)
         {
-            Gamepad.current.SetMotorSpeeds(0.1f, 0.5f);
+            Debug.Log("Rumbling");
+            Gamepad.current.SetMotorSpeeds(0.5f, 0.5f);
         }
         _tickDamageTimer = _damageOverTimeInterval;
         _currentHealth -= _baseDamageTaken;
@@ -104,6 +105,7 @@ public class PlayerStats : MonoBehaviour
     {
         if (Gamepad.current != null)
         {
+            Debug.Log("No Rumble");
             Gamepad.current.SetMotorSpeeds(0f, 0f);
         }
     }
@@ -140,7 +142,7 @@ public class PlayerStats : MonoBehaviour
 
         _deathSound.Stop();
         _deathSound.Play();
-        OnPlayerDeath?.Invoke(); // Notifica esterna
+        OnPlayerDeath?.Invoke();
     }
 
     public void ResetPlayer()
@@ -148,5 +150,13 @@ public class PlayerStats : MonoBehaviour
         _currentHealth = _maxHealth;
         _isDead = false;
         Healthbar.Instance.ResetHealthbar();
+    }
+
+    void Update()
+    {
+        if (PlayerInput.Instance.InPossession || Player.Instance.InDialogue || Player.Instance.InCutscene || PauseHandler.Instance.InPause)
+        {
+            StopRumble();
+        }
     }
 }
