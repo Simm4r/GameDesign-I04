@@ -25,6 +25,9 @@ public class RatCutscene : Interactable
     [SerializeField] private Transform SoulPos2;
     private GameObject camera1;
     [SerializeField] private GameObject camera2;
+    [SerializeField] private AudioSource _mouse;
+    [SerializeField] private AudioClip _squeek1;
+    [SerializeField] private AudioClip _squeek2;
 
     void Start()
     {
@@ -73,6 +76,9 @@ public class RatCutscene : Interactable
         _rat.transform.SetPositionAndRotation(Rat1.position, Rat1.rotation);
         agent.SetDestination(Rat2.position);
         yield return new WaitUntil(() => agent.remainingDistance <= agent.stoppingDistance);
+        _mouse.resource = _squeek1;
+        _mouse.Play();
+        yield return new WaitUntil(() => !_mouse.isPlaying);
         float duration = 0.5f;
         float elapsed = 0f;
         Quaternion startRotation = _rat.transform.rotation;
@@ -83,26 +89,35 @@ public class RatCutscene : Interactable
             _rat.transform.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsed / duration);
             yield return null;
         }
+        yield return new WaitForSeconds(0.5f);
+        _mouse.resource = _squeek2;
+        _mouse.Play();
+        yield return new WaitUntil(() => !_mouse.isPlaying);
         RatSoul.transform.position = SoulPos1.position;
         float progress = 0.0f;
-        float soulSpeed = 1.0f;
-        yield return new WaitForSeconds(0.5f);
+        float soulSpeed = 0.5f;
+        yield return new WaitForSeconds(0.2f);
+        var middlePoint = new Vector3(SoulPos1.position.x, SoulPos2.position.y, SoulPos1.position.z);
         RatSoul.Play(true);
-        bool killed = false;
         var ratAnimator = _rat.GetComponent<Animator>();
         while (progress < 1.0f)
         {
             progress = Mathf.Clamp01(progress += Time.deltaTime * soulSpeed);
-            var actualPos = Vector3.Lerp(SoulPos1.position, SoulPos2.position, progress);
+            var actualPos = Vector3.Lerp(SoulPos1.position, middlePoint, progress);
             RatSoul.transform.position = actualPos;
-            if (progress > 0.5f && !killed)
-            {
-                killed = true;
-                ratAnimator.Play("Death");
-                Destroy(_rat.GetComponent<ResetEntity>());
-                Destroy(_rat);
-            }
             yield return null;
+        }
+        progress = 0f;
+        soulSpeed = 1;
+        ratAnimator.Play("Death");
+        Destroy(_rat.GetComponent<ResetEntity>());
+        Destroy(_rat);
+        while (progress < 1.0f)
+        {
+            progress = Mathf.Clamp01(progress += Time.deltaTime * soulSpeed);
+            var actualPos = Vector3.Lerp(middlePoint, SoulPos2.position, progress);
+            RatSoul.transform.position = actualPos;
+            yield return null; 
         }
 
         RatSoul.Stop(true, ParticleSystemStopBehavior.StopEmitting);
